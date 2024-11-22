@@ -1,0 +1,82 @@
+*{
+    margin: 0px; //margen
+    padding:0px; //margen interno
+    font-family: sans-serif, Arial, Helvetica;
+    text-decoration: none;
+}
+
+/* Fondo degradado para toda la página */
+body {
+    background-image: linear-gradient(to top, #55d0e7 0%, #9155e7 100%);
+    background-size: cover; /* Asegura que el fondo cubra toda la página */
+    background-repeat: no-repeat; /* Evita que el fondo se repita */
+    background-attachment: fixed; /* Fija el fondo para que no se desplace al hacer scroll */
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+    text-align: center;
+}
+
+#cabecera {
+    display: flex;
+    align-items: center; /* Centra verticalmente los elementos */
+    justify-content: space-between; /* Coloca los elementos de manera uniforme */
+}
+
+#cabecera img {
+    height: 50px; /* Ajusta el tamaño de las imágenes según sea necesario */
+    margin: 0 10px; /* Espaciado opcional */
+}
+
+#cabecera h1{
+    font-size: 150%;
+    font-family: 'Playfair Display', serif;
+    color: #3e403f;
+    display: block;
+    letter-spacing: 0px;
+    font-weight: normal;
+    color: black;
+    text-align: center;
+}
+
+header{
+    width: 95%;
+    max-width: 1920px;
+    heignt: 140px;
+    margin: 0px auto;
+    padding: 3px 10px;
+}
+.navegacion ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    position: relative;
+    height: 40px;
+    background: black;
+    opacity: 0.6;
+    box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    backdrop-filter: blur(3px);
+    border-radius: 10px;
+}
+.navegacion .paginacion li {
+  list-style-type: none;
+  display: inline-block;
+}
+.navegacion .paginacion li a {
+  position: relative;
+  padding: 10px 25px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+}
+.navegacion .paginacion li a:hover,
+.navegacion .paginacion li.active a {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+
+

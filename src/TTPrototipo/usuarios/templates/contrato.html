@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contrato de Arrendamiento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        p {
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        .firma {
+            margin-top: 50px;
+            text-align: center;
+        }
+        .firma img {
+            width: 200px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        .anexo {
+            margin-top: 50px;
+            page-break-before: always; /* Inicia las fotos en una nueva página en el PDF */
+        }
+        .anexo img {
+            width: 500px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Contrato de Arrendamiento</h1>
+    <p>En la ciudad de {{ ciudad }}, en fecha {{ fecha }}, ante la presencia de los testigos que al final suscriben este documento, comparecieron:</p>
+    <p>Por una parte, el C. {{ nombre_arrendador }}, a quien en lo sucesivo se denominará EL ARRENDADOR.</p>
+    <p>Por otra parte, el C. {{ nombre_arrendatario }}, quien en lo sucesivo se denominará EL ARRENDATARIO.</p>
+    <p>Ambas partes acuerdan celebrar el presente contrato conforme a las disposiciones legales aplicables.</p>
+
+    <h2>Primera Cláusula</h2>
+    <p>EL ARRENDADOR entrega en arrendamiento la {{ tipo_inmueble }}, ubicada en {{ ubicacion }}.</p>
+
+    <h2>Segunda Cláusula</h2>
+    <p>SEGUNDA. El ARRENDATARIO recibe en arrendamiento, en perfectas condiciones de uso, recién
+    pintado y a su entera satisfacción, la finca descrita en la cláusula anterior, obligándose a destinar su uso
+    única y exclusivamente para vivienda, por ningún motivo podrá subarrendar, ni hacer
+    variación alguna de la finca, salvo que por escrito se lo autorice el ARRENDADOR, renunciando
+    además el inquilino al beneficiario concedido por el artículo ________________ del Código Civil.</p>
+
+    <h2>Tercera Cláusula</h2>
+    <p>Los contratantes pactan que el término de duración del presente contrato será de
+    ___________ años, empezando a surtir sus efectos en fecha {{ fecha }},
+    terminando consecuentemente en fecha {{ fecha }}, por lo que en esa fecha el
+    ARRENDATARIO devolverá al ARRENDADOR la posesión de la finca objeto de este contrato, en el
+    mismo buen estado en que la recibe, junto con sus mejoras y accesorios, renunciando expresamente al
+    derecho de prórroga concedido por el artículo ________________ del Código Civil para el Estado de
+    _________________, misma disposición que perfectamente es de su conocimiento y a la que puede
+    renunciar porque no lesiona derechos de terceros y porque además tiene la plena capacidad civil para
+    renunciar en la forma señalada renunciando también a ejercitar cualquier acción que nulifique o
+    entorpezca lo expuesto en esta cláusula.</p>
+
+    <h2>Cuarta Cláusula</h2>
+    <p>Los contratantes pactan de común acuerdo que el ARRENDATARIO pagará al
+    ARRENDADOR por concepto de renta mensual por el uso de la finca objeto del contrato la cantidad de
+    $___________ (____________________________), mensuales, mismo que se obliga a pagar por
+    adelantado los días ____________ de cada mes en el domicilio del ARRENDADOR ubicado en
+    _________________________________, el inquilino se verá obligado a pagar, si existiera demora en
+    el pago de la renta un interés del _________% mensual, sin que dicha morosidad pueda exceder de
+    ___________ días naturales ya que de así suceder se tendrá por rescindido el contrato y el inquilino debe
+    desocupar y entregar de inmediato la finca materia del presente contrato.</p>
+
+    <h2>Quinta Cláusula</h2>
+    <p>Los contratantes estipulan, que si el ARRENDATARIO no desocupa voluntariamente la
+    finca arrendada y la entrega al arrendador al termino de la vigencia del presente instrumento legal, dará
+    motivo a que se le haga una pena, aparte del precio establecido como renta, la cantidad de $_____________
+    diario durante todo el tiempo que durase en desocupar dicho inmueble, pena que será pagadera mensualmente
+    a partir de la terminación del contrato y hasta la desocupación de la finca arrendada, sin que por ello se
+    entienda prorrogado o renovado, y además se deberá seguir pagando la renta que estipulan en la cláusula anterior,
+    o la que estuviera vigente de conformidad con lo establecido en la cláusula _______________, hasta la total
+    desocupación del inmueble.
+
+    <h2>Sexta Cláusula</h2>
+    <p>El ARRENDATARIO está conciente que el valor dela renta señalada en la cláusula
+    ______________ está dentro de los limites a que se refiere el artículo _______________ del Código
+    Civil en virtud del valor comercial actual del inmueble por la renuncia desde este momento a cualquier
+    acción que pudiera intentar contra el ARRENDAMIENTO en cuanto al señalamiento del importe de la
+    renta.</p>
+
+    <h2>Séptima Cláusula</h2>
+    <p>. El ARRENDATARIO se obliga un seguro de incendio y de responsabilidad civil por el
+    valor de la finca a favor del propietario el cual estará vigente durante el tiempo del contrato.</p>
+
+    <h2>Octava Cláusula</h2>
+    <p> Todos los arreglos y composturas de las cañerías, llaves de agua, sumideros comunes y
+    excusados, despostilladas en enjarre y vidrios rotos, chapas, pisos, puertas, azulejos, tuberías, cortos
+    circuitos en las instalaciones eléctricas, desagües, así como todas las pequeñas reparaciones que amerite
+    la finca arrendada, por el mal uso dado por el inquilino o personas que lo frecuenten, será por cuenta y
+    bajo exclusiva responsabilidad del ARRENDATARIO.</p>
+
+    <h2>Novena Cláusula</h2>
+    <p>Queda estrictamente prohibido al ARRENDATARIO hacer variación alguna a la finca
+    arrendada, aún con el carácter de mejora, sin previo consentimiento dado por escrito por le
+    ARRENDADOR. Todas las mejoras que el ARRENDATARIO realice a la finca arrendada, ya sean
+    útiles o de ornato, quedarán en beneficio de la finca, en los términos del artículo ____________ del
+    Código Civil para el Estado de _______________, ya que se considerarán hechas de mala fe, por lo que
+    no procede indemnización alguna al ARRENDATARIO conforme a lo previsto por el artículo
+    _____________ del mismo ordenamiento.</p>
+
+    <h2>Décima Cláusula</h2>
+    Queda prohibido al ARRENDATARIO guardar, conservar o tener bajo cualquier título en la
+    finca materia del contrato, material explosivo o inflamables, en la inteligencia que ser responsable
+    directamente de cualquier riesgo que se presente y que dañe la finca, por este motivo, aun en el caso de
+    fuerza mayor o caso fortuito.</p>
+
+    <h2>Décima Primer Cláusula</h2>
+    <p>Expresamente los contratantes pactan que serán causales de rescisión del
+    presente instrumento legal las siguientes, además de las establecidas por la Ley:
+    1. Subarrendar, traspasar o ceder su derechos al ARRENDATATIO respecto de la finca material
+    del presente contrato.
+    2. El no pago de la renta pactada en el plazo convencido, es decir, el no pago y el pago impuntual
+    de las mismas.
+    3. Variar la finca dada en arrendamiento, haciéndole modificaciones, sean útiles o de ornato.
+    4. Utilizar las áreas del edificio a n fin diferente que su propia naturaleza permita.
+    5. Dedicar la finca arrendada a un uso diferente al estipulado en la cláusula segunda.
+    6. Guardar en al finca sustancias peligrosas, explosivas e inflamables, que amanecen la seguridad
+    de las personas de la finca.
+    7. Que el fiador disponga o grave el bien inmueble con que se garantiza el cumplimiento de sus
+    obligaciones contraídas en el presente contrato.
+    8. El fallecimiento del FIADOR.
+    9. Causar daños al afinca arrendada.
+    10. Colocar rótulos o anuncios en al finca arrendada sin autorización del ARRENDADOR dada por
+    escrito.
+    11. No tener en vigencia el seguro del que habla la cláusula séptima.
+    Se estipula que si el ARRENDATARIO da motivo a la rescisión del presente contrato, por incurrir en
+    cualquiera de las causales a que se refiere esta cláusula, motivará que se le exija el pago de la pena
+    estipulada en la cláusula quinta.</p>
+
+    <h2>Décima Segunda Cláusula</h2>
+    <p>Si el ARRENDATARIO da lugar a tramites judiciales o extrajudiciales, con
+    intervención de Abogados, aun en gestiones privadas, por falta de cumplimiento a sus obligaciones
+    contraídas en el contrato y violaciones a las cláusulas que lo forman, en cualquier sentido, será
+    responsable de los costos que se causen y se obliga a cubrir los Abogados del ARRENDADOR, a razón
+    del pago del informe equivalente a tres meses de renta como mínimo.
+    </p>
+
+    <h2>Décima Tercera Cláusula</h2>
+    <p>Será domicilio convencional para llamar a juicio ala ARRENDATARIO el de
+    la finca dada en arrendamiento y sólo en tal domicilio se le llamará a juicio, aun en el caso de haber
+    desocupado a abandonado la finca arrendada. Se obliga al ARRENDATARIO a mostrar al
+    ARRENDADOR al vencimiento del contrato el recibo extendido por la Comisión Federal de
+    Electricidad que justifique que se encuentra al corriente en el pago de la energía eléctrica, ya que el
+    consumo de la misma será por cuenta del ARRENDATARIO, así como su pago del teléfono y los
+    recibos de las cuotas de la asociación de propietarios, el pago del agua al Sistema de Agua y
+    Alcantarillado respecto de la finca arrendada será por cuenta del ARRENDATARIO, así como el
+    impuesto Predial y el Impuesto al Activo que le corresponda.</p>
+
+    <h2>Décima Cuarta Cláusula</h2>
+    <p>El ARRENDATARIO entrega al ARRENDADOR que recibe en estos momento
+    en calidad de depósito la cantidad de $___________ (________________________), dicha cantidad
+    será reintegrada por el ARRENDADOR al ARRENDATARIO, al vencer el plazo por el cual se celebra
+    el presente instrumento jurídico, siempre y cuando la finca arrendada no presente daños y perjuicios de
+    que solos daños fueran mayores por separado se hará la reclamación, sin perjuicios de que si los daños
+    fueran mayores por separado se hará la reclamación respectiva. La cantidad entregada por concepto de
+    depósito será reintegrada por el ARRENDADOR al ARRENDATARIO en el momento en que quede
+    perfectamente aclarado que no haya ningún pendiente por consumo de energía eléctrica, teléfono y en
+    su caso, agua, así como el impuesto predial y el impuesto al activo.</p>
+
+    <h2>Décima Quinta Cláusula</h2>
+    <p>El ARRENDADOR recibe el inmueble arrendado con instalación eléctrica
+    completa, así como la hidráulica, bomba de agua, excusado, lavabos, dos líneas telefónicas y dos
+    aparatos los que son exclusiva propiedad del ARRENDADOR, cualquier desperfecto o rotura de los
+    mismo, será por cuenta y pago del ARRENDATARIO.</p>
+
+    <h2>Décima Sexta Cláusula</h2>
+    <p>El ARRENDATARIO se obliga a mostrar el interior de la finca al propietario o las
+    personas que éste designe, para darse cuenta del estado que guarda el inmueble, por causas de
+    reparaciones para llevar a efecto su venta o nuevo alquiler en cualquier tiempo. Igualmente se obliga al
+    ARRENDATARIO, a poner cédulas y mostrar el interior de la finca a los que pretendan verla dos meses
+    antes del término de este contrato.</p>
+
+    <h2>Décima Séptima Cláusula</h2>
+    <p>Todo los gastos e impuestos que genere la celebración del presente contrato,
+    serán por cuenta del ARRENDATARIO, tales como el impuesto al valor agregado, impuesto al activo,
+    etc., a excepción del impuesto sobre la renta, que será a cargo del ARRENDADOR.</p>
+
+    <h2>Décima Octava Cláusula</h2>
+    <p>El C. _________________________, quien también asiste a la celebración del
+    presente instrumento jurídico, se constituye FIADOR del ARRENDATARIO a favor del
+    ARRENDADOR, obligándose solidaria y mancomunadamente en el cumplimiento de las obligaciones
+    contraídas en el presente contrato por el ARRENDATARIO, constituyéndose, por tanto, en deudor
+    directo del ARRENDADOR. Renuncia expresamente a los beneficios de orden y excusión previos por
+    los artículos _____________ del código Civil para el Estado de __________________, acepta que su
+    obligación durará por todo el tiempo que dure la del ARRENDATARIO, hasta la devolución y entrega
+    de la finca arrendada y pago total de renta y demás consecuencias pactadas en el presente contrato,
+    renunciando al beneficio establecido en el artículo ______________ del Código Civil para el Estado de
+    __________________.</p>
+
+    <h2>Detalles del Contrato</h2>
+    <p><strong>ID del Contrato:</strong> {{ contrato.id }}</p>
+    <p><strong>Precio de Renta:</strong> ${{ contrato.precio_renta }} MXN</p>
+    <p><strong>Fecha de Inicio:</strong> {{ contrato.fecha_inicio }}</p>
+    <p><strong>Fecha de Fin:</strong> {{ contrato.fecha_fin }}</p>
+
+    <div class="firma">
+        <h3>Firma del Estudiante</h3>
+        {% if contrato.firma_estudiante %}
+        <img src="{{ contrato.firma_estudiante }}" alt="Firma del Estudiante">
+        {% else %}
+        <p>Firma Pendiente</p>
+        {% endif %}
+    </div>
+
+    <div class="firma">
+        <h3>Firma del Anfitrión</h3>
+        {% if contrato.firma_anfitrion %}
+        <img src="{{ contrato.firma_anfitrion }}" alt="Firma del Anfitrión">
+        {% else %}
+        <p>Firma Pendiente</p>
+        {% endif %}
+    </div>
+
+    <!-- Anexo: Fotos del Estado de la Vivienda -->
+    <div class="anexo">
+        <h2>Anexo: Fotos del Estado de la Vivienda</h2>
+        {% if fotos %}
+            {% for foto_url in fotos %}
+            <div>
+                <img src="{{ foto_url }}" alt="Foto del Estado de la Vivienda" style="width:300px; height:auto;">
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No se han subido fotos del estado de la vivienda.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+

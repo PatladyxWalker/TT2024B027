@@ -1,0 +1,25 @@
+# Archivos Python
+*.pyc
+__pycache__/
+
+# Base de datos local
+db.sqlite3
+
+# Entorno virtual
+venv/
+.venv/
+
+# Archivos de configuración sensibles
+.env
+
+# Archivos estáticos y de medios generados
+/staticfiles/
+/media/
+
+# Configuración del entorno
+*.log
+*.pot
+
+# Archivos de configuración del IDE
+.idea/
+

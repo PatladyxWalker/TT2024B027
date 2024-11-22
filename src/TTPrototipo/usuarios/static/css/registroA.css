@@ -1,0 +1,229 @@
+/* Global settings */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: 'Abel', sans-serif;
+    opacity: .95;
+}
+
+/* Form styling */
+form {
+    width: 450px;
+    min-height: 500px;
+    height: auto;
+    border-radius: 5px;
+    margin: 2% auto;
+    box-shadow: 0 9px 50px hsla(20, 67%, 75%, 0.31);
+    padding: 2%;
+    background-image: linear-gradient(-225deg, #55d0e7 30%, #9155e7 60%);
+}
+
+form .con {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin: 0 auto;
+}
+
+/* Header */
+header {
+    margin: 0% auto 2% auto;
+    text-align: center;
+}
+
+header h2 {
+    font-size: 250%;
+    font-family: 'Playfair Display', serif;
+    color: #3e403f;
+}
+
+header p {
+    letter-spacing: 0.05em;
+}
+
+/* Input items */
+.input-item {
+    background: #fff;
+    color: #333;
+    padding: 15.5px 0 16.5px 9px;
+    border-radius: 5px 0 0 5px;
+}
+
+#eye {
+    background: #fff;
+    color: #333;
+    margin: 5.9px 0 0 0;
+    margin-left: -20px;
+    padding: 15px 9px 19px 0;
+    border-radius: 0 5px 5px 0;
+    float: right;
+    position: relative;
+    right: 1%;
+    top: -0.2%;
+    z-index: 5;
+    cursor: pointer;
+}
+
+input[class="form-input"] {
+    width: 240px;
+    height: 50px;
+    margin-top: 2%;
+    padding: 15px;
+    font-size: 16px;
+    font-family: 'Abel', sans-serif;
+    color: #5E6472;
+    outline: none;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    transition: 0.2s linear;
+}
+
+input[id="txt-input"] {
+    width: 250px;
+}
+
+input:focus {
+    transform: translateX(-2px);
+    border-radius: 5px;
+}
+
+/* Buttons */
+button {
+    display: inline-block;
+    color: #252537;
+    width: 280px;
+    height: 50px;
+    padding: 0 20px;
+    background: #fff;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s linear;
+    margin: 7% auto;
+    letter-spacing: 0.05em;
+}
+
+button:hover {
+    transform: translatey(3px);
+    animation: ani9 0.4s ease-in-out infinite alternate;
+}
+
+/* Buttons hover animation */
+@keyframes ani9 {
+    0% {
+        transform: translateY(3px);
+    }
+    100% {
+        transform: translateY(5px);
+    }
+}
+
+.submits {
+    width: 48%;
+    display: inline-block;
+    float: left;
+    margin-left: 2%;
+}
+
+.frgt-pass {
+    background: transparent;
+}
+
+.sign-up {
+    background: #B8F2E6;
+}
+.role-selection {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -8px;
+}
+
+.button-link {
+    display: inline-block;
+    width: 45%; /* Ajusta el ancho de los botones */
+    color: #252537;
+    background: #fff;
+    padding: 0px 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s linear;
+    outline: none;
+}
+
+.button-link:hover {
+    background-color: #e0f7fa; /* Color de fondo al pasar el cursor */
+    transform: translateY(3px);
+    animation: ani9 0.4s ease-in-out infinite alternate;
+}
+
+.form-label {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: #3e403f;
+}
+
+.field-set {
+    margin-bottom: 20px;
+}
+
+.form-question {
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.radio-group {
+    display: flex;
+    gap: 20px;
+    margin-bottom: -25px;
+    justify-content: center;
+}
+
+.radio-label {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.eligibility-message {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* Centrar el contenido principal */
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+}
+
+/* Ajustes para la sección de registro */
+.register {
+    width: 100%;
+    max-width: 500px; /* Limitar el ancho máximo */
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Ajustes para el formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+

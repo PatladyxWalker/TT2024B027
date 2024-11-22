@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subir y Gestionar Fotos</title>
+    <style>
+        img {
+            width: 200px;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            margin: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            display: inline-block;
+            text-align: center;
+        }
+        button {
+            background-color: #ff4d4d;
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        button:hover {
+            background-color: #e60000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Subir Fotos del Estado de la Vivienda</h1>
+    <p><strong>Contrato ID:</strong> {{ contrato.id }}</p>
+    <p><strong>Vivienda:</strong> {{ contrato.vivienda.calle }}, {{ contrato.vivienda.numero_exterior }}</p>
+
+    <!-- Formulario para subir fotos -->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Subir Foto</button>
+    </form>
+
+    <!-- Mostrar fotos ya subidas con opción de eliminar -->
+    <h2>Fotos Subidas</h2>
+    {% if contrato.fotos_estado.all %}
+        <ul>
+            {% for foto_url in contrato.fotos_estado.all %}
+            <li>
+                <img src="{{ foto.imagen.url }}" alt="Foto del estado de la vivienda">
+                <form method="post" action="{% url 'eliminar_foto' contrato.id foto.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Eliminar</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No se han subido fotos aún.</p>
+    {% endif %}
+
+    <!-- Enlace para previsualizar el contrato -->
+    <p><a href="{% url 'generar_contrato_pdf' contrato.id %}">Previsualizar Contrato</a></p>
+</body>
+</html>

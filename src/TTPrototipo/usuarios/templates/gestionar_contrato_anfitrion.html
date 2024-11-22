@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gestionar Contrato (Anfitrión)</title>
+</head>
+<body>
+    <h1>Gestionar Contrato</h1>
+    <p><strong>ID del Contrato:</strong> {{ contrato.id }}</p>
+    <p><strong>Estudiante:</strong> {{ contrato.estudiante.nombre }}</p>
+    <p><strong>Vivienda:</strong> {{ contrato.vivienda.calle }}, {{ contrato.vivienda.numero_exterior }}</p>
+    <p><strong>Estado del Contrato:</strong>
+        {% if contrato.firmado %}
+            Firmado por ambas partes.
+        {% else %}
+            Pendiente de firma.
+        {% endif %}
+    </p>
+    <ul>
+        <li>Firma del Estudiante: {% if contrato.firma_estudiante %}✅ Firmada{% else %}❌ Pendiente{% endif %}</li>
+        <li>Firma del Anfitrión: {% if contrato.firma_anfitrion %}✅ Firmada{% else %}❌ Pendiente{% endif %}</li>
+    </ul>
+
+
+    <h2>Fotos del Estado de la Vivienda</h2>
+    {% if fotos %}
+        {% for foto in fotos %}
+        <div>
+            <img src="{{ foto.imagen.url }}" alt="Foto de la vivienda" style="width: 300px; height: auto;">
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No se han subido fotos.</p>
+    {% endif %}
+
+    <h3>Subir Fotos Obligatorias</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="subir_fotos">Subir Foto</button>
+    </form>
+
+    <h3>Firmar Contrato</h3>
+    {% if contrato.puede_firmarse %}
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" name="firmar">Firmar Contrato</button>
+        </form>
+    {% else %}
+        <p>No puedes firmar el contrato hasta que se suban las fotos obligatorias.</p>
+    {% endif %}
+
+    <h3>Previsualizar Contrato</h3>
+    <form method="get" action="{% url 'generar_contrato_pdf' contrato.id %}">
+        <button type="submit">Previsualizar Contrato</button>
+    </form>
+</body>
+</html>

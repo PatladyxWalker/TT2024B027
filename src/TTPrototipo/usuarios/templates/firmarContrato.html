@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firmar Contrato</title>
+</head>
+<body>
+    <h1>Firmar Contrato</h1>
+    <p><strong>ID del Contrato:</strong> {{ contrato.id }}</p>
+    <p><strong>Anfitrión:</strong> {{ contrato.anfitrion.nombre }}</p>
+    <p><strong>Estudiante:</strong> {{ contrato.estudiante.nombre }}</p>
+    <p><strong>Estado:</strong>
+        {% if contrato.fotos_subidas_anfitrion %}
+            Fotos del anfitrión subidas.
+        {% else %}
+            Pendiente de fotos del anfitrión.
+        {% endif %}
+    </p>
+
+    {% if contrato.puede_firmarse %}
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Firmar Contrato</button>
+        </form>
+    {% else %}
+        <p>No puedes firmar el contrato hasta que el anfitrión haya subido las fotos obligatorias.</p>
+    {% endif %}
+
+    <p><a href="{% url 'generar_contrato_pdf' contrato.id %}">Previsualizar Contrato</a></p>
+</body>
+</html>

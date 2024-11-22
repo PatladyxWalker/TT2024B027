@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Seleccionar Vivienda</title>
+</head>
+<body>
+    <h1>Seleccionar Vivienda para Generar Contrato</h1>
+    <form method="post">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Calle</th>
+                    <th>Número Exterior</th>
+                    <th>Precio de Renta</th>
+                    <th>Seleccionar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vivienda in viviendas %}
+                <tr>
+                    <td>{{ vivienda.calle }}</td>
+                    <td>{{ vivienda.numero_exterior }}</td>
+                    <td>${{ vivienda.precio_renta }} MXN</td>
+                    <td>
+                        <input type="radio" name="vivienda_id" value="{{ vivienda.id }}" required>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Generar Contrato</button>
+    </form>
+</body>
+</html>

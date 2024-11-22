@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/inicio.css' %}">
+
+<div class="container">
+    <!-- Sección izquierda con el texto -->
+    <div class="left-section">
+        <div>
+            <h1>Empieza a buscar tu casa de estudiante hoy.</h1>
+            <p>Explora opciones de vivienda diseñadas para estudiantes dentro de la alcaldia Gustavo A. Madero en la CMDX.</p>
+            <a href="{% url 'Inicio de Sesion' %}" class="button">Iniciar Sesión / Registrarse</a>
+        </div>
+    </div>
+
+    <!-- Sección derecha con la imagen -->
+    <div class="right-section"></div>
+</div>
+{% endblock %}

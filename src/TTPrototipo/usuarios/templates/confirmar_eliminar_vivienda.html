@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Confirmar eliminación de la vivienda</h2>
+<p>¿Estás seguro de que deseas eliminar esta vivienda?</p>
+
+<p><strong>Dirección:</strong> {{ vivienda.calle }}, {{ vivienda.numero_exterior }}</p>
+<p><strong>Precio de Renta:</strong> ${{ vivienda.precio_renta }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a href="{% url 'listar_viviendas' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

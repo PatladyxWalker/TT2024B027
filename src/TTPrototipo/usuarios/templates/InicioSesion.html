@@ -1,0 +1,80 @@
+{% extends 'layout.html' %}
+
+{% block title %}Inicio de Sesión{% endblock %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/loginstyle.css' %}">
+
+<main>
+    <div class="overlay">
+        <form action="{% url 'Inicio de Sesion' %}" method="post">
+            {% csrf_token %}
+            <div class="con">
+                <!-- Header -->
+                <header class="head-form">
+                    <h2>Inicio de Sesión</h2>
+                    <p>Ingresa usando tu nombre y contraseña</p>
+                </header>
+                <br>
+
+                <!-- Input fields -->
+                <div class="field-set">
+                    <!-- Username -->
+                    <span class="input-item">
+                        <i class="fa fa-user-circle"></i>
+                    </span>
+                    <input class="form-input" id="txt-input" type="text" name="username" placeholder="@Nombre de Usuario" required>
+                    <br>
+
+                    <!-- Password -->
+                    <span class="input-item">
+                        <i class="fa fa-key"></i>
+                    </span>
+                    <input class="form-input" type="password" placeholder="Contraseña" id="pwd" name="password" required>
+                    <span>
+                        <i class="fa fa-eye" aria-hidden="true" type="button" id="eye"></i>
+                    </span>
+                    <br>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="log-in">Entrar</button>
+                </div>
+
+                <!-- Other options -->
+                <div class="other">
+                    <button class="btn submits frgt-pass">¿Olvidaste tu contraseña?</button>
+                    <a href="{% url 'Registro de Usuario' %}">
+                        <button type="button" class="btn submits sign-up">Regístrate <i class="fa fa-user-plus" aria-hidden="true"></i></button>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+
+<script>
+    function show() {
+        var p = document.getElementById('pwd');
+        p.setAttribute('type', 'text');
+    }
+
+    function hide() {
+        var p = document.getElementById('pwd');
+        p.setAttribute('type', 'password');
+    }
+
+    var pwShown = 0;
+
+    document.getElementById("eye").addEventListener("click", function () {
+        if (pwShown == 0) {
+            pwShown = 1;
+            show();
+        } else {
+            pwShown = 0;
+            hide();
+        }
+    }, false);
+</script>
+{% endblock %}
+

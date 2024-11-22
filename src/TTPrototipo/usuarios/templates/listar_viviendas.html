@@ -1,0 +1,32 @@
+{% extends 'layout3.html' %}
+
+{% block title %}Mis Viviendas{% endblock %}
+
+{% block content %}
+<h1>Mis Viviendas</h1>
+<a href="{% url 'Registro de vivienda' %}">Registrar Nueva Vivienda</a>
+<table>
+    <thead>
+        <tr>
+            <th>Calle</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for vivienda in viviendas %}
+        <tr>
+            <td>{{ vivienda.calle }}</td>
+            <td>{{ vivienda.precio_renta }} MXN</td>
+            <td>
+                <a href="{% url 'editar_vivienda' vivienda.id %}">Editar</a>
+                <form action="{% url 'eliminar_vivienda' vivienda.id %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
