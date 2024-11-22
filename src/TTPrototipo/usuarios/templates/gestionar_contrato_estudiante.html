@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gestionar Contrato</title>
+</head>
+<body>
+    <h1>Gestionar Contrato</h1>
+    <p><strong>ID del Contrato:</strong> {{ contrato.id }}</p>
+    <p><strong>Anfitrión:</strong> {{ contrato.anfitrion.nombre }}</p>
+    <p><strong>Estudiante:</strong> {{ contrato.estudiante.nombre }}</p>
+    <p><strong>Vivienda:</strong> {{ contrato.vivienda.calle }}, {{ contrato.vivienda.numero_exterior }}</p>
+    <p><strong>Estado del Contrato:</strong>
+        {% if contrato.firmado %}
+            Firmado por ambas partes.
+        {% else %}
+            Pendiente de firma.
+        {% endif %}
+    </p>
+    <h2>Fotos del Estado de la Vivienda</h2>
+    {% if fotos %}
+        {% for foto in fotos %}
+        <div>
+            <img src="{{ foto.imagen.url }}" alt="Foto de la vivienda" style="width: 300px; height: auto;">
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No se han subido fotos.</p>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="subir_fotos">Subir Fotos</button>
+    </form>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="firmar">Firmar Contrato</button>
+    </form>
+
+    <form method="get">
+        <button type="submit" name="previsualizar">Previsualizar Contrato</button>
+    </form>
+
+    <h3>Cancelar Contrato</h3>
+    {% if not contrato.firmado and not contrato.cancelado %}
+        <form method="post" action="{% url 'cancelar_contrato' contrato.id %}">
+            {% csrf_token %}
+            <button type="submit" style="color: red;">Cancelar Contrato</button>
+        </form>
+    {% elif contrato.cancelado %}
+        <p style="color: red;">Este contrato ha sido cancelado.</p>
+    {% else %}
+        <p>No puedes cancelar este contrato porque ya ha sido firmado.</p>
+    {% endif %}
+
+</body>
+</html>

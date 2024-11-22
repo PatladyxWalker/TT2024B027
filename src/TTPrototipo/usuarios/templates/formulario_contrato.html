@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generar Contrato</title>
+</head>
+<body>
+    <h1>Generar Contrato de Arrendamiento</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="ciudad">Ciudad:</label>
+        <input type="text" id="ciudad" name="ciudad" value="Ciudad de México" required><br><br>
+
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" name="fecha" required><br><br>
+
+        <label for="tipo_inmueble">Tipo de Inmueble:</label>
+        <select id="tipo_inmueble" name="tipo_inmueble">
+            <option value="Casa" {% if contrato.vivienda.detalles_inmueble.tipo == "Casa" %}selected{% endif %}>Casa</option>
+            <option value="Departamento" {% if contrato.vivienda.detalles_inmueble.tipo == "Departamento" %}selected{% endif %}>Departamento</option>
+            <option value="Habitación" {% if contrato.vivienda.detalles_inmueble.tipo == "Habitación" %}selected{% endif %}>Habitación</option>
+        </select><br><br>
+
+        <button type="submit">Generar Contrato</button>
+    </form>
+</body>
+</html>
