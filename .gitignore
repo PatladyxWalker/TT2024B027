@@ -14,7 +14,7 @@ venv/
 
 # Archivos estáticos y de medios generados
 /staticfiles/
-/media/
+/src/TTPrototipo/media/
 
 # Configuración del entorno
 *.log
