@@ -18,6 +18,21 @@
                 </header>
                 <br>
 
+                <!-- Mensaje Flash de Error diciendo que insertaste las credenciales incorrectas.  -->
+                {% if messages %}
+
+                    <!-- Mensaje de error de que el usuario y/o contraseñas son incorrectos
+                    Quiero que el mensaje sea rojo, y que no salgan los puntos de las listas.
+                    -->
+                    <ul class="messages" style="list-style-type:none">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: red">
+                                {{ message }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
                 <!-- Input fields -->
                 <div class="field-set">
                     <!-- Username -->
