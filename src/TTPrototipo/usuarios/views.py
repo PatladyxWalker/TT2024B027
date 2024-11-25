@@ -408,13 +408,22 @@ def Registrovivienda(request):
         # DEBO MODIFICAR ESTO PARA QUE LOS CAMPOS ACEPTEN TEXTO SIMPLE EN LUGAR DE JSON.
         # BOOKMARK.
 
-        detalles_inmueble = {
-            "tipo": request.POST.get('TipoInmueble'),
-            "num_habitaciones": request.POST.get('NumHabitaciones'),
-            "num_banos": request.POST.get('NumBaños'),
-            "num_medio_banos": request.POST.get('NumMedBaños'),
-            "compartido": request.POST.get('Compartido') == 'Si',
-        }
+        # Modifiqué los detalles del Inmueble para que guarde texto simple en la base de datos en lugar de JSON.
+        detalles_inmueble = (
+            f"Tipo: {request.POST.get('TipoInmueble')}\n"
+            f"Número de habitaciones: {request.POST.get('NumHabitaciones')}\n"
+            f"Número de baños: {request.POST.get('NumBaños')}\n"
+            f"Número de medio baños: {request.POST.get('NumMedBaños')}\n"
+            f"Compartido: {'Sí' if request.POST.get('Compartido') == 'Si' else 'No'}"
+        )
+
+        # detalles_inmueble = {
+        #     "tipo": request.POST.get('TipoInmueble'),
+        #     "num_habitaciones": request.POST.get('NumHabitaciones'),
+        #     "num_banos": request.POST.get('NumBaños'),
+        #     "num_medio_banos": request.POST.get('NumMedBaños'),
+        #     "compartido": request.POST.get('Compartido') == 'Si',
+        # }
 
         servicios = {
             "Luz": request.POST.get("Luz") == "on",
@@ -425,7 +434,7 @@ def Registrovivienda(request):
             "Limpieza": request.POST.get("Limpieza") == "on",
             "GYM": request.POST.get("GYM") == "on",
             "Elevador": request.POST.get("Elevador") == "on",
-            "Lavanderia": request.POST.get("Lavanderia") == "on",
+            "Lavandería": request.POST.get("Lavanderia") == "on",
             "Entrada Propia": request.POST.get("Entrada-Propia") == "on",
             "Mascotas": request.POST.get("Mascotas") == "on",
             "Gas": request.POST.get("Gas") == "on",
