@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
-from .models import Estudiante, Anfitrion, Vivienda,ViviendaFoto,Contrato,FotoEstadoVivienda
+from .models import Estudiante, Anfitrion, Vivienda, ViviendaFoto, Contrato, FotoEstadoVivienda
 from django.template.loader import render_to_string
 from django.http import FileResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -12,6 +12,7 @@ from .forms import FotoEstadoViviendaForm, ViviendaForm
 import logging
 from django.conf import settings
 
+
 @login_required
 def listar_viviendas(request):
     if not hasattr(request.user, 'anfitrion'):
@@ -21,6 +22,7 @@ def listar_viviendas(request):
     anfitrion = request.user.anfitrion
     viviendas = Vivienda.objects.filter(anfitrion=anfitrion)
     return render(request, 'listar_viviendas.html', {'viviendas': viviendas})
+
 
 @login_required
 def editar_vivienda(request, vivienda_id):
@@ -40,6 +42,8 @@ def editar_vivienda(request, vivienda_id):
         form = ViviendaForm(instance=vivienda)
 
     return render(request, 'editar_vivienda.html', {'form': form})
+
+
 @login_required
 def eliminar_vivienda(request, vivienda_id):
     vivienda = get_object_or_404(Vivienda, id=vivienda_id)
@@ -57,6 +61,7 @@ def eliminar_vivienda(request, vivienda_id):
         return redirect('listar_viviendas')  # Redirige después de la eliminación
 
     return render(request, 'confirmar_eliminar_vivienda.html', {'vivienda': vivienda})
+
 
 @login_required
 def gestionar_contrato(request, contrato_id=None):
@@ -164,6 +169,7 @@ def gestionar_contrato(request, contrato_id=None):
 
     return HttpResponseForbidden("No tienes permisos para gestionar este contrato.")
 
+
 @login_required
 def cancelar_contrato(request, contrato_id):
     contrato = get_object_or_404(Contrato, id=contrato_id)
@@ -181,6 +187,7 @@ def cancelar_contrato(request, contrato_id):
     else:
         messages.error(request, "El contrato no puede ser cancelado porque ya ha sido firmado.")
         return redirect('gestionar_contrato', contrato_id=contrato.id)
+
 
 @login_required
 def seleccionar_vivienda(request):
@@ -216,6 +223,7 @@ def seleccionar_vivienda(request):
 
     return render(request, 'seleccionar_vivienda.html', {'viviendas': viviendas})
 
+
 @login_required
 def subir_fotos(request, contrato_id):
     contrato = get_object_or_404(Contrato, id=contrato_id)
@@ -243,9 +251,12 @@ def subir_fotos(request, contrato_id):
 
     return render(request, 'subir_fotos.html', {'form': form, 'contrato': contrato})
 
+
 # Generar PDF del Contrato
 # Habilitar el logging de WeasyPrint
 logging.basicConfig(level=logging.DEBUG)
+
+
 def generar_contrato_pdf(request, contrato_id):
     contrato = get_object_or_404(Contrato, id=contrato_id)
 
@@ -279,6 +290,7 @@ def generar_contrato_pdf(request, contrato_id):
     # Renderizar el formulario para generar el contrato
     return render(request, "formulario_contrato.html", {"contrato": contrato})
 
+
 # Firmar Contrato
 @login_required
 def firmar_contrato(request, contrato_id):
@@ -305,10 +317,12 @@ def firmar_contrato(request, contrato_id):
     contrato.save()
     return redirect('generar_contrato_pdf', contrato_id=contrato.id)
 
+
 # Descargar Contrato Firmado
 def descargar_contrato(request, contrato_id):
     contrato = get_object_or_404(Contrato, id=contrato_id, firmado=True)
     return FileResponse(contrato.archivo_contrato.open(), as_attachment=True, filename=f"Contrato_{contrato.id}.pdf")
+
 
 def RegistroUsuario(request):
     if request.method == 'POST':
@@ -352,6 +366,21 @@ def RegistroUsuario(request):
 
     return render(request, 'RegistroUsuario.html')
 
+
+""" Registro de Vivienda.
+
+Esta vista permite a los anfitriones registrar una vivienda en la plataforma. Se requiere que el usuario esté 
+autenticado.
+
+Voy a modificar esta vista, ya que está insertando los datos de la vivienda como JSON en la base de datos, pero yo
+quiero meterlos como texto simple.
+
+Cuando el anfitrión registra una vivienda, es redirigido a la página de inicio de sesión, como que si cerrara su 
+sesión. ¿Debería cambiar esto? Redirigir al usuario al formulario de inicio de sesión despues de registrar una vivienda
+no tiene mucho sentido. Tendría más sentido redirigirlo a la página de inicio de anfitrión, o a la lista de viviendas.
+"""
+
+
 @login_required
 def Registrovivienda(request):
     if request.method == 'POST':
@@ -366,8 +395,8 @@ def Registrovivienda(request):
             messages.error(request, "No tienes un perfil de anfitrión. Por favor, regístrate como anfitrión primero.")
             return redirect('Registro de Usuario')
 
-        #anfitrion = get_object_or_404(Anfitrion, correo=request.user.email)
-        #anfitrion = request.user.anfitrion  # Obtiene el anfitrión autenticado
+        # anfitrion = get_object_or_404(Anfitrion, correo=request.user.email)
+        # anfitrion = request.user.anfitrion  # Obtiene el anfitrión autenticado
 
         # Recibe los datos del formulario
         calle = request.POST.get('Ingresar-calle')
@@ -375,87 +404,90 @@ def Registrovivienda(request):
         codigo_postal = request.POST.get('CP')
         precio_renta = request.POST.get('Renta')
 
-        # Servicios en JSON
+        # Servicios en JSON.
+        # DEBO MODIFICAR ESTO PARA QUE LOS CAMPOS ACEPTEN TEXTO SIMPLE EN LUGAR DE JSON.
+        # BOOKMARK.
 
         detalles_inmueble = {
-                "tipo": request.POST.get('TipoInmueble'),
-                "num_habitaciones": request.POST.get('NumHabitaciones'),
-                "num_banos": request.POST.get('NumBaños'),
-                "num_medio_banos": request.POST.get('NumMedBaños'),
-                "compartido": request.POST.get('Compartido') == 'Si',
-            }
+            "tipo": request.POST.get('TipoInmueble'),
+            "num_habitaciones": request.POST.get('NumHabitaciones'),
+            "num_banos": request.POST.get('NumBaños'),
+            "num_medio_banos": request.POST.get('NumMedBaños'),
+            "compartido": request.POST.get('Compartido') == 'Si',
+        }
 
         servicios = {
-                "Luz": request.POST.get("Luz") == "on",
-                "Agua": request.POST.get("Agua") == "on",
-                "Internet": request.POST.get("Internet") == "on",
-                "Vigilancia": request.POST.get("vigilancia") == "on",
-                "Portero": request.POST.get("Portero") == "on",
-                "Limpieza": request.POST.get("Limpieza") == "on",
-                "GYM": request.POST.get("GYM") == "on",
-                "Elevador": request.POST.get("Elevador") == "on",
-                "Lavanderia": request.POST.get("Lavanderia") == "on",
-                "Entrada Propia": request.POST.get("Entrada-Propia") == "on",
-                "Mascotas": request.POST.get("Mascotas") == "on",
-                "Gas": request.POST.get("Gas") == "on",
-            }
+            "Luz": request.POST.get("Luz") == "on",
+            "Agua": request.POST.get("Agua") == "on",
+            "Internet": request.POST.get("Internet") == "on",
+            "Vigilancia": request.POST.get("vigilancia") == "on",
+            "Portero": request.POST.get("Portero") == "on",
+            "Limpieza": request.POST.get("Limpieza") == "on",
+            "GYM": request.POST.get("GYM") == "on",
+            "Elevador": request.POST.get("Elevador") == "on",
+            "Lavanderia": request.POST.get("Lavanderia") == "on",
+            "Entrada Propia": request.POST.get("Entrada-Propia") == "on",
+            "Mascotas": request.POST.get("Mascotas") == "on",
+            "Gas": request.POST.get("Gas") == "on",
+        }
 
         detalles_inmueble_compartido = {
-                "visitas": request.POST.get('visitas'),
-                "NumPersonasMax": request.POST.get('NumPersonasMax'),
-                "Genero": request.POST.get('Genero'),
-            }
+            "visitas": request.POST.get('visitas'),
+            "NumPersonasMax": request.POST.get('NumPersonasMax'),
+            "Genero": request.POST.get('Genero'),
+        }
 
         areas_comunes = {
-                "Sala": "on" if request.POST.get("Sala") else "off",
-                "Cocina": "on" if request.POST.get("Cocina") else "off",
-                "Regadera": "on" if request.POST.get("Regadera") else "off",
-                "Baño": "on" if request.POST.get("Baño") else "off",
-                "Comedor": "on" if request.POST.get("Comedor") else "off",
-                "Garage": "on" if request.POST.get("Garage") else "off",
-            }
+            "Sala": "on" if request.POST.get("Sala") else "off",
+            "Cocina": "on" if request.POST.get("Cocina") else "off",
+            "Regadera": "on" if request.POST.get("Regadera") else "off",
+            "Baño": "on" if request.POST.get("Baño") else "off",
+            "Comedor": "on" if request.POST.get("Comedor") else "off",
+            "Garage": "on" if request.POST.get("Garage") else "off",
+        }
 
         # Recoger datos estacionamiento
         estacionamiento = {
-                "Auto": "on" if request.POST.get("Auto") else "off",
-                "Bicicleta": "on" if request.POST.get("Bicicleta") else "off",
-                "Moto": "on" if request.POST.get("Moto") else "off",
-                "Scooter": "on" if request.POST.get("Scooter") else "off",
-            }
+            "Auto": "on" if request.POST.get("Auto") else "off",
+            "Bicicleta": "on" if request.POST.get("Bicicleta") else "off",
+            "Moto": "on" if request.POST.get("Moto") else "off",
+            "Scooter": "on" if request.POST.get("Scooter") else "off",
+        }
 
         # Recoger los muebles
         muebles = {
-                "Locker": "on" if request.POST.get("Locker") else "off",
-                "Closet": "on" if request.POST.get("Closet") else "off",
-                "Cama": "on" if request.POST.get("Cama") else "off",
-                "Escritorio": "on" if request.POST.get("Escritorio") else "off",
-                "Silla": "on" if request.POST.get("Silla") else "off",
-            }
+            "Locker": "on" if request.POST.get("Locker") else "off",
+            "Closet": "on" if request.POST.get("Closet") else "off",
+            "Cama": "on" if request.POST.get("Cama") else "off",
+            "Escritorio": "on" if request.POST.get("Escritorio") else "off",
+            "Silla": "on" if request.POST.get("Silla") else "off",
+        }
 
         # Recoger los electrodomésticos
         electrodomesticos = {
-                "Microondas": "on" if request.POST.get("Micro") else "off",
-                "Refrigerador": "on" if request.POST.get("Refri") else "off",
-                "Clima": "on" if request.POST.get("Micro") else "off",
-                "Lavadora": "on" if request.POST.get("Refri") else "off",
-                "Licuadora": "on" if request.POST.get("Micro") else "off",
-                "Cafetera": "on" if request.POST.get("Refri") else "off",
-            }
+            "Microondas": "on" if request.POST.get("Micro") else "off",
+            "Refrigerador": "on" if request.POST.get("Refri") else "off",
+            "Clima": "on" if request.POST.get("Micro") else "off",
+            "Lavadora": "on" if request.POST.get("Refri") else "off",
+            "Licuadora": "on" if request.POST.get("Micro") else "off",
+            "Cafetera": "on" if request.POST.get("Refri") else "off",
+        }
 
         # Recoger los medios de transporte cercanos
         transporte_cercano = {
-                "Metro": "on" if request.POST.get("Metro") else "off",
-                "Metrobus": "on" if request.POST.get("Metrobus") else "off",
-                "Trolebus": "on" if request.POST.get("Metro") else "off",
-                "RTP": "on" if request.POST.get("Metrobus") else "off",
-                "Bus": "on" if request.POST.get("Metro") else "off",
-                "Cablebus": "on" if request.POST.get("Metrobus") else "off",
-            }
+            "Metro": "on" if request.POST.get("Metro") else "off",
+            "Metrobus": "on" if request.POST.get("Metrobus") else "off",
+            "Trolebus": "on" if request.POST.get("Metro") else "off",
+            "RTP": "on" if request.POST.get("Metrobus") else "off",
+            "Bus": "on" if request.POST.get("Metro") else "off",
+            "Cablebus": "on" if request.POST.get("Metrobus") else "off",
+        }
+        # Fin de la recolección de datos en JSON que debo modificar para aceptar texto simple en lugar de JSON.
 
         # Guardar en la base de datos
         vivienda = Vivienda(
             anfitrion=anfitrion,  # Asigna el anfitrión
-            calle=calle,# Guardamos los detalles en un JSON
+            calle=calle,  # Guardamos los detalles en un JSON
             numero_exterior=numero_exterior,
             codigo_postal=codigo_postal,
             precio_renta=precio_renta,
@@ -477,7 +509,11 @@ def Registrovivienda(request):
 
         messages.success(request, "Vivienda registrada exitosamente con fotos.")
 
-        return redirect('Inicio de Sesion')
+        # Redirigir a la lista de viviendas en lugar del Formulario de Inicio de Sesión
+        return redirect('listar_viviendas')
+
+        # return redirect('Inicio de Sesion')
+
     return render(request, 'Registrovivienda.html')
 
 
@@ -521,19 +557,21 @@ def login_view(request):
     else:
         return render(request, 'InicioSesion.html')
 
+
 def logout_view(request):
     logout(request)
     return redirect('Inicio')
+
 
 @login_required
 def InicioAnfitrion(request):
     return render(request, 'InicioAnfitrion.html')
 
+
 @login_required
 def InicioEstudiante(request):
     return render(request, 'InicioEstudiante.html')
 
+
 def Inicio(request):
     return render(request, 'Inicio.html')
-
-
