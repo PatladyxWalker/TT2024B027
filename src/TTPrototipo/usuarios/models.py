@@ -18,12 +18,15 @@ class Estudiante(models.Model):
     def __str__(self):
         return self.nombre
 
+
 """ Modelo de Anfitrión.
 
 Este modelo representa a un anfitrión, que es un usuario que ofrece una vivienda en renta a estudiantes.
     
 Le voy a cambiar el __str__ para que muestre el nombre del anfitrión en lugar de "Anfitrion Object(numero)". 
 """
+
+
 class Anfitrion(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
