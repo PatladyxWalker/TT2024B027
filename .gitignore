@@ -23,3 +23,10 @@ venv/
 # Archivos de configuración del IDE
 .idea/
 
+# Carpetas con otras versiones de la web app
+TTPrototipoORIGINAL/
+adrianaViviendas/
+
+# Otros archivos y directorios
+TTPrototipo/copilot-pycharm-chat.txt
+/src/TTPrototipo/copilot-pycharm-chat.txt
