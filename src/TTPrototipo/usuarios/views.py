@@ -480,6 +480,17 @@ def Registrovivienda(request):
         return redirect('Inicio de Sesion')
     return render(request, 'Registrovivienda.html')
 
+
+""" Formulario de Inicio de Sesión.
+
+Aquí es donde debo redirigir al usuario si intenta meterse en una página en donde se requiere estar autenticado, o si
+inserta unas credenciales erróneas al intentar iniciar sesión.
+
+Corregí un bug el cual te mostraba un mensaje de error de Django amarillo si intentabas iniciar sesión con un usuario
+que no existía o con credenciales incorrectas.
+"""
+
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -495,10 +506,18 @@ def login_view(request):
                 return redirect('Inicio de Anfitrion')
             else:
                 messages.error(request, "No se pudo determinar el rol del usuario.")
-                return redirect('login')
+
+                # Esto redirige al usuario a esta misma página
+                return render(request, 'InicioSesion.html')
+                # return redirect('login')
         else:
             messages.error(request, "Nombre de usuario o contraseña incorrectos.")
-            return redirect('login')
+
+            # Esto redirige al usuario a esta misma página
+            return render(request, 'InicioSesion.html')
+            # return redirect('login')
+
+    # Esto se ejecuta si el método de la petición es GET, para así mostrar el formulario de inicio de sesión
     else:
         return render(request, 'InicioSesion.html')
 
