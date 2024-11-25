@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 import hashlib
 from datetime import date
 
+
 class Estudiante(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -40,6 +41,14 @@ class Anfitrion(models.Model):
     def __str__(self):
         return self.nombre
 
+
+""" Modelo de Vivienda.
+
+Tengo que modificar este modelo para que todos los campos acepten texto simple en lugar de JSON. Creo que TextField
+sería el tipo de dato más adecuado para la mayoría de los campos que usaban JSON.
+"""
+
+
 class Vivienda(models.Model):
     id = models.AutoField(primary_key=True)
     anfitrion = models.ForeignKey(Anfitrion, on_delete=models.CASCADE)
@@ -48,21 +57,35 @@ class Vivienda(models.Model):
     codigo_postal = models.CharField(max_length=5, default="07000")
     precio_renta = models.DecimalField(max_digits=10, decimal_places=2, default=2000.00)
 
-    detalles_inmueble = models.JSONField(default=dict)  # Almacena tipo, num_habitaciones, num_banos, etc.
-    servicios = models.JSONField(default=dict)  # Para almacenar los servicios en un diccionario
-    detalles_inmueble_compartido = models.JSONField(default=dict) #Para almacenar detalles si es compartido
-    areas_comunes = models.JSONField(default=dict)  # Áreas comunes como Sala, Cocina, Baño, etc.
-    estacionamiento = models.JSONField(default=dict) #Areas de estacionamiento
-    muebles = models.JSONField(default=dict)  # Muebles como Cama, Closet, Escritorio, etc.
-    electrodomesticos = models.JSONField(default=dict)  # Electrodomésticos como Microondas, Refri, Lavadora, etc.
-    transporte_cercano = models.JSONField(default=dict)  # Transporte como Metro, Metrobus, RTP, etc.
-    #fotos = models.ImageField(upload_to='viviendas_fotos/', blank=True, null=True)
+    # Estos campos debo modificarlos para que acepten texto simple en lugar de JSON
+    detalles_inmueble = models.TextField()  # Almacena tipo, num_habitaciones, num_banos, etc.
+    servicios = models.TextField()  # Para almacenar los servicios en un diccionario
+    detalles_inmueble_compartido = models.TextField()  # Para almacenar detalles si es compartido
+    areas_comunes = models.TextField()  # Áreas comunes como Sala, Cocina, Baño, etc.
+    estacionamiento = models.TextField()  # Areas de estacionamiento
+    muebles = models.TextField()  # Muebles como Cama, Closet, Escritorio, etc.
+    electrodomesticos = models.TextField()  # Electrodomésticos como Microondas, Refri, Lavadora, etc.
+    transporte_cercano = models.TextField()  # Transporte como Metro, Metrobus, RTP, etc.
 
-    #def __str__(self):
-        #return f"{self.detalles_inmueble.get('tipo', 'Inmueble')} en {self.calle}, {self.codigo_postal}"
+    # detalles_inmueble = models.JSONField(default=dict)  # Almacena tipo, num_habitaciones, num_banos, etc.
+    # servicios = models.JSONField(default=dict)  # Para almacenar los servicios en un diccionario
+    # detalles_inmueble_compartido = models.JSONField(default=dict)  # Para almacenar detalles si es compartido
+    # areas_comunes = models.JSONField(default=dict)  # Áreas comunes como Sala, Cocina, Baño, etc.
+    # estacionamiento = models.JSONField(default=dict)  # Areas de estacionamiento
+    # muebles = models.JSONField(default=dict)  # Muebles como Cama, Closet, Escritorio, etc.
+    # electrodomesticos = models.JSONField(default=dict)  # Electrodomésticos como Microondas, Refri, Lavadora, etc.
+    # transporte_cercano = models.JSONField(default=dict)  # Transporte como Metro, Metrobus, RTP, etc.
+
+    # Fin de los campos que debo modificar para aceptar texto simple en lugar de JSON
+
+    # fotos = models.ImageField(upload_to='viviendas_fotos/', blank=True, null=True)
+
+    # def __str__(self):
+    # return f"{self.detalles_inmueble.get('tipo', 'Inmueble')} en {self.calle}, {self.codigo_postal}"
 
     def __str__(self):
         return f"{self.calle}, {self.numero_exterior} ({self.precio_renta} MXN)"
+
 
 class ViviendaFoto(models.Model):
     vivienda = models.ForeignKey(Vivienda, on_delete=models.CASCADE, related_name="fotos")
@@ -70,6 +93,7 @@ class ViviendaFoto(models.Model):
 
     def __str__(self):
         return f"Foto de {self.vivienda.calle}"
+
 
 class Contrato(models.Model):
     id = models.AutoField(primary_key=True)
@@ -80,7 +104,7 @@ class Contrato(models.Model):
     archivo_contrato = models.FileField(upload_to="contratos/", null=True, blank=True)
     firmado = models.BooleanField(default=False)
     firma_estudiante = models.TextField(null=True, blank=True)  # Firma digital del estudiante
-    firma_anfitrion = models.TextField(null=True, blank=True)   # Firma digital del anfitrión
+    firma_anfitrion = models.TextField(null=True, blank=True)  # Firma digital del anfitrión
     fotos_subidas_anfitrion = models.BooleanField(default=False)
     fotos_subidas_estudiante = models.BooleanField(default=False)
     cancelado = models.BooleanField(default=False)
@@ -130,10 +154,10 @@ class Contrato(models.Model):
     def __str__(self):
         return f"Contrato {self.id}: Estudiante {self.estudiante.nombre} - Vivienda {self.vivienda.calle}"
 
+
 class FotoEstadoVivienda(models.Model):
     contrato = models.ForeignKey(Contrato, on_delete=models.CASCADE, related_name="fotos_estado")
     imagen = models.ImageField(upload_to="contratos/fotos_vivienda/")
 
     def __str__(self):
         return f"Foto para contrato {self.contrato.id}"
-
