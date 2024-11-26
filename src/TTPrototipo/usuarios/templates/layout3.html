@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+
 </head>
 
 <body>
@@ -22,17 +24,36 @@
             <h1>TT 2024-B027 </h1>
             <img src="{% static 'images/escudoIPN.png' %}" alt="Escudo IPN" />
         </div>
-            <nav class="navegacion">
-                <ul class="paginacion">
-                    <li><a href="{% url 'Inicio' %}">Inicio</a></li>
-                    <li><a href="{% url 'listar_viviendas' %}">Vivienda</a></li>
-                    <li><a href="{% url 'Inicio' %}">Realizar Consulta</a></li>
-                    <li><a href="{% url 'Inicio' %}">Chat</a></li>
-                    <li><a href="{% url 'gestionar_contrato' %}">Contratos</a></li>
-                    <li><a href="{% url 'Inicio' %}">Cuenta</a></li>
-                    <li><a href="{% url 'Inicio' %}">Acerca de Nosotros</a></li>
-                </ul>
-            </nav>
+        <nav class="navegacion">
+            <ul class="paginacion">
+                <li><a href="{% url 'Inicio' %}">Inicio</a></li>
+                <li><a href="{% url 'listar_viviendas' %}">Vivienda</a></li>
+                <li><a href="{% url 'Inicio' %}">Realizar Consulta</a></li>
+                <li><a href="{% url 'Inicio' %}">Chat</a></li>
+                <li><a href="{% url 'gestionar_contrato' %}">Contratos</a></li>
+                <li><a href="{% url 'Inicio' %}">Cuenta</a></li>
+                <li><a href="{% url 'Inicio' %}">Acerca de Nosotros</a></li>
+
+                {% if user.is_authenticated %}
+                    <!-- Esto solo saldrá si el usuario está autenticado -->
+                    <!-- Nombre de Usuario del Usuario Autenticado con Dropdown -->
+                    <li class="dropdown">
+                        {# <a style="text-decoration: underline;" href="#" class="dropbtn">{{ user.username }}</a>#}
+                        <a href="#" class="dropbtn">{{ user.username }}</a>
+                        <div class="dropdown-content" style="padding: 40px 22px;">
+
+                            <!-- Enlace para cerrar sesión -->
+                            <a href="{% url 'logout' %}">Cerrar Sesión</a>
+                        </div>
+                    </li>
+
+
+                {% else %}
+                    <!-- Enlace para iniciar sesión -->
+                    <li><a href="{% url 'Inicio de Sesion' %}">Iniciar Sesión</a></li>
+                {% endif %}
+            </ul>
+        </nav>
     </header>
 
     <div id="content">

@@ -27,6 +27,14 @@
                     <li><a href="{% url 'Inicio' %}">Inicio</a></li>
                     <li><a href="{% url 'Inicio' %}">Acerca de nosotros</a></li>
                     <li><a href="{% url 'Inicio' %}">Ayuda</a></li>
+                    {% if user.is_authenticated %}
+                        <!-- Esto solo saldrá si el usuario está autenticado -->
+                        <!-- Nombre de Usuario del Usuario Autenticado -->
+                        <li><a href="#">{{ user.username }}</a></li>
+                    {% else %}
+                        <!-- Enlace para iniciar sesión -->
+                        <li><a href="{% url 'Inicio de Sesion' %}">Iniciar Sesión</a></li>
+                    {% endif %}
                 </ul>
             </nav>
     </header>
