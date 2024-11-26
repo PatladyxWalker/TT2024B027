@@ -39,8 +39,10 @@
                     <!-- Nombre de Usuario del Usuario Autenticado con Dropdown -->
                     <li class="dropdown">
                         {# <a style="text-decoration: underline;" href="#" class="dropbtn">{{ user.username }}</a>#}
-                        <a href="#" class="dropbtn">{{ user.username }}</a>
-                        <div class="dropdown-content" style="padding: 40px 22px;">
+                        <a href="#" class="dropbtn"><b>{{ user.username }}</b></a>
+
+                        {#  Agregué el padding para que el menú de cerrar sesión sea más alto y ancho #}
+                        <div class="dropdown-content">
 
                             <!-- Enlace para cerrar sesión -->
                             <a href="{% url 'logout' %}">Cerrar Sesión</a>

@@ -99,9 +99,10 @@ autenticado en la barra de navegación, saldrá el enlace para poder cerrar sesi
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
-
+    padding: 40px 22px;
 }
 
+/* Esto no hace nada. */
 .dropdown-content a {
     color: black;
     padding: 12px 16px;
