@@ -95,13 +95,29 @@ class ViviendaFoto(models.Model):
         return f"Foto de {self.vivienda.calle}"
 
 
+""" Modelo de Contrato.
+
+Debido a que no puse ningún archivo PDF ni ningún archivo de texto a un contrato de prueba, me salió un error al 
+intentar descargar ese contrato. Entonces, para evitar que le salga este error de Django a un usuario, haré que el 
+campo con el archivo del contrato (archivo_contrato) sea obligatorio.
+
+Los archivos que se deben adjuntar deben ser obligatoriamente PDFs. de lo contrario, te generará PDFs dañados 
+al descargar el documento, y no podrás abrir esos contratos.
+"""
+
+
 class Contrato(models.Model):
     id = models.AutoField(primary_key=True)
     estudiante = models.OneToOneField(Estudiante, on_delete=models.CASCADE, related_name="contrato")
     vivienda = models.OneToOneField(Vivienda, on_delete=models.CASCADE, related_name="contrato")
     anfitrion = models.ForeignKey(Anfitrion, on_delete=models.CASCADE, related_name="contratos")
     precio_renta = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    archivo_contrato = models.FileField(upload_to="contratos/", null=True, blank=True)
+
+    # Archivo del Contrato. Lo cambiaré a obligatorio para evitar errores al descargar un contrato.
+    archivo_contrato = models.FileField(upload_to="contratos/")
+
+    # archivo_contrato = models.FileField(upload_to="contratos/", null=True, blank=True)
+
     firmado = models.BooleanField(default=False)
     firma_estudiante = models.TextField(null=True, blank=True)  # Firma digital del estudiante
     firma_anfitrion = models.TextField(null=True, blank=True)  # Firma digital del anfitrión
