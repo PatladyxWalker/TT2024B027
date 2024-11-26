@@ -318,7 +318,12 @@ def firmar_contrato(request, contrato_id):
     return redirect('generar_contrato_pdf', contrato_id=contrato.id)
 
 
-# Descargar Contrato Firmado
+""" Descargar Contrato Firmado.
+
+Si el contrato no está firmado, me saldrá una página de error 404: "page not found".
+"""
+
+
 def descargar_contrato(request, contrato_id):
     contrato = get_object_or_404(Contrato, id=contrato_id, firmado=True)
     return FileResponse(contrato.archivo_contrato.open(), as_attachment=True, filename=f"Contrato_{contrato.id}.pdf")
