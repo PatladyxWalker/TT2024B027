@@ -425,44 +425,82 @@ def Registrovivienda(request):
         #     "compartido": request.POST.get('Compartido') == 'Si',
         # }
 
-        servicios = {
-            "Luz": request.POST.get("Luz") == "on",
-            "Agua": request.POST.get("Agua") == "on",
-            "Internet": request.POST.get("Internet") == "on",
-            "Vigilancia": request.POST.get("vigilancia") == "on",
-            "Portero": request.POST.get("Portero") == "on",
-            "Limpieza": request.POST.get("Limpieza") == "on",
-            "GYM": request.POST.get("GYM") == "on",
-            "Elevador": request.POST.get("Elevador") == "on",
-            "Lavandería": request.POST.get("Lavanderia") == "on",
-            "Entrada Propia": request.POST.get("Entrada-Propia") == "on",
-            "Mascotas": request.POST.get("Mascotas") == "on",
-            "Gas": request.POST.get("Gas") == "on",
-        }
+        servicios = (
+            f"Luz: {'Sí' if request.POST.get('Luz') == 'on' else 'No'}\n"
+            f"Agua: {'Sí' if request.POST.get('Agua') == 'on' else 'No'}\n"
+            f"Internet: {'Sí' if request.POST.get('Internet') == 'on' else 'No'}\n"
+            f"Vigilancia: {'Sí' if request.POST.get('vigilancia') == 'on' else 'No'}\n"
+            f"Portero: {'Sí' if request.POST.get('Portero') == 'on' else 'No'}\n"
+            f"Limpieza: {'Sí' if request.POST.get('Limpieza') == 'on' else 'No'}\n"
+            f"Gym: {'Sí' if request.POST.get('GYM') == 'on' else 'No'}\n"
+            f"Elevador: {'Sí' if request.POST.get('Elevador') == 'on' else 'No'}\n"
+            f"Lavandería: {'Sí' if request.POST.get('Lavanderia') == 'on' else 'No'}\n"
+            f"Entrada Propia: {'Sí' if request.POST.get('Entrada-Propia') == 'on' else 'No'}\n"
+            f"Mascotas: {'Sí' if request.POST.get('Mascotas') == 'on' else 'No'}\n"
+            f"Gas: {'Sí' if request.POST.get('Gas') == 'on' else 'No'}"
+        )
 
-        detalles_inmueble_compartido = {
-            "visitas": request.POST.get('visitas'),
-            "NumPersonasMax": request.POST.get('NumPersonasMax'),
-            "Genero": request.POST.get('Genero'),
-        }
+        # servicios = {
+        #     "Luz": request.POST.get("Luz") == "on",
+        #     "Agua": request.POST.get("Agua") == "on",
+        #     "Internet": request.POST.get("Internet") == "on",
+        #     "Vigilancia": request.POST.get("vigilancia") == "on",
+        #     "Portero": request.POST.get("Portero") == "on",
+        #     "Limpieza": request.POST.get("Limpieza") == "on",
+        #     "GYM": request.POST.get("GYM") == "on",
+        #     "Elevador": request.POST.get("Elevador") == "on",
+        #     "Lavandería": request.POST.get("Lavanderia") == "on",
+        #     "Entrada Propia": request.POST.get("Entrada-Propia") == "on",
+        #     "Mascotas": request.POST.get("Mascotas") == "on",
+        #     "Gas": request.POST.get("Gas") == "on",
+        # }
 
-        areas_comunes = {
-            "Sala": "on" if request.POST.get("Sala") else "off",
-            "Cocina": "on" if request.POST.get("Cocina") else "off",
-            "Regadera": "on" if request.POST.get("Regadera") else "off",
-            "Baño": "on" if request.POST.get("Baño") else "off",
-            "Comedor": "on" if request.POST.get("Comedor") else "off",
-            "Garage": "on" if request.POST.get("Garage") else "off",
-        }
+        detalles_inmueble_compartido = (
+            f"Visitas: {request.POST.get('visitas')}\n"
+            f"Número Máximo de Personas: {request.POST.get('NumPersonasMax')}\n"
+            f"Género: {request.POST.get('Genero')}"
+        )
+
+        # detalles_inmueble_compartido = {
+        #     "visitas": request.POST.get('visitas'),
+        #     "NumPersonasMax": request.POST.get('NumPersonasMax'),
+        #     "Genero": request.POST.get('Genero'),
+        # }
+
+        areas_comunes = (
+            f"Sala: {'Sí' if request.POST.get('Sala') == 'on' else 'No'}\n"
+            f"Cocina: {'Sí' if request.POST.get('Cocina') == 'on' else 'No'}\n"
+            f"Regadera: {'Sí' if request.POST.get('Regadera') == 'on' else 'No'}\n"
+            f"Baño: {'Sí' if request.POST.get('Baño') == 'on' else 'No'}\n"
+            f"Comedor: {'Sí' if request.POST.get('Comedor') == 'on' else 'No'}\n"
+            f"Garage: {'Sí' if request.POST.get('Garage') == 'on' else 'No'}"
+        )
+
+        # areas_comunes = {
+        #     "Sala": "on" if request.POST.get("Sala") else "off",
+        #     "Cocina": "on" if request.POST.get("Cocina") else "off",
+        #     "Regadera": "on" if request.POST.get("Regadera") else "off",
+        #     "Baño": "on" if request.POST.get("Baño") else "off",
+        #     "Comedor": "on" if request.POST.get("Comedor") else "off",
+        #     "Garage": "on" if request.POST.get("Garage") else "off",
+        # }
 
         # Recoger datos estacionamiento
-        estacionamiento = {
-            "Auto": "on" if request.POST.get("Auto") else "off",
-            "Bicicleta": "on" if request.POST.get("Bicicleta") else "off",
-            "Moto": "on" if request.POST.get("Moto") else "off",
-            "Scooter": "on" if request.POST.get("Scooter") else "off",
-        }
+        estacionamiento = (
+            f"Auto: {'Sí' if request.POST.get('Auto') == 'on' else 'No'}\n"
+            f"Bicicleta: {'Sí' if request.POST.get('Bicicleta') == 'on' else 'No'}\n"
+            f"Moto: {'Sí' if request.POST.get('Moto') == 'on' else 'No'}\n"
+            f"Scooter: {'Sí' if request.POST.get('Scooter') == 'on' else 'No'}"
+        )
 
+        # estacionamiento = {
+        #     "Auto": "on" if request.POST.get("Auto") else "off",
+        #     "Bicicleta": "on" if request.POST.get("Bicicleta") else "off",
+        #     "Moto": "on" if request.POST.get("Moto") else "off",
+        #     "Scooter": "on" if request.POST.get("Scooter") else "off",
+        # }
+
+        # BOOKMARK
         # Recoger los muebles
         muebles = {
             "Locker": "on" if request.POST.get("Locker") else "off",
