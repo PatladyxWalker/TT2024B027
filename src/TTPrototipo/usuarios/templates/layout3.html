@@ -36,8 +36,11 @@
 
                 {% if user.is_authenticated %}
                     <!-- Esto solo saldrá si el usuario está autenticado -->
-                    <!-- Nombre de Usuario del Usuario Autenticado con Dropdown -->
-                    <li class="dropdown">
+                    <!-- Nombre de Usuario del Usuario Autenticado con Dropdown
+
+                    Si le haces clic a tu nombre de usuario, se desplegará un menú con la opción de cerrar sesión.
+                    -->
+                    <li class="dropdown" onclick="toggleDropdown(event)">
                         {# <a style="text-decoration: underline;" href="#" class="dropbtn">{{ user.username }}</a>#}
                         <a href="#" class="dropbtn"><b>{{ user.username }}</b></a>
 
@@ -63,6 +66,55 @@
 
         {% endblock %}
     </div>
+
+    {# Función de JS para mostrar el menú desplegable que te permite cerrar sesión si clicas en tu propio nombre de #}
+    {# usuario. #}
+    <script>
+
+        /* To ensure that the dropdown menu shows up when you click anywhere within the li element, you can add the
+        * onclick event to the li element and remove the a element from the username.
+        *
+        * This code ensures that the dropdown menu is toggled when you click anywhere within the li element. The
+        * event.stopPropagation() method prevents the click event from bubbling up to the window, ensuring the dropdown
+        * menu behaves correctly.
+        * */
+
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            var dropdownContent = event.currentTarget.querySelector('.dropdown-content');
+            dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            var dropdowns = document.getElementsByClassName('dropdown-content');
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.style.display === 'block') {
+                    openDropdown.style.display = 'none';
+                }
+            }
+        }
+
+        {#function toggleDropdown(event) {#}
+        {#    event.preventDefault();#}
+        {#    var dropdownContent = event.target.nextElementSibling;#}
+        {#    dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';#}
+
+        {##}
+        {#// Close the dropdown if the user clicks outside of it#}
+        {#window.onclick = function(event) {#}
+        {#    if (!event.target.matches('.dropbtn')) {#}
+        {#        var dropdowns = document.getElementsByClassName('dropdown-content');#}
+        {#        for (var i = 0; i < dropdowns.length; i++) {#}
+        {#            var openDropdown = dropdowns[i];#}
+        {#            if (openDropdown.style.display === 'block') {#}
+        {#                openDropdown.style.display = 'none';#}
+        {#            }#}
+        {#        }#}
+        {#    }#}
+
+    </script>
 
 </body>
 </html>

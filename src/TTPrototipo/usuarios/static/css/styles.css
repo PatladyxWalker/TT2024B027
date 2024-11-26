@@ -80,6 +80,9 @@ header{
 
 /* Estilos para crear un menú desplegable al que, si le pasas el mouse encima al nombre de usuario del usuario
 autenticado en la barra de navegación, saldrá el enlace para poder cerrar sesión.
+
+ELIMINÉ la funcionalidad de mostrar u ocultar el boton de Cerrar Sesion al pasar el mouse por encima del nombre de
+usuario. Prefiero que el botón de Cerrar Sesión solo aparezca cuando el usuario haga click en su nombre de usuario.
 */
 .dropdown {
     position: relative;
@@ -114,9 +117,11 @@ autenticado en la barra de navegación, saldrá el enlace para poder cerrar sesi
     background-color: #f1f1f1;
 }
 
-.dropdown:hover .dropdown-content {
-    display: block;
-}
+/* Comenté esto para quitar la funcionalidad que hace que el menú desplegable se muestre al pasar el mouse por encima
+del nombre de usuario. */
+/*.dropdown:hover .dropdown-content {*/
+/*    display: block;*/
+/*}*/
 
 /* Fin de los estilos para el menú desplegable
 */
