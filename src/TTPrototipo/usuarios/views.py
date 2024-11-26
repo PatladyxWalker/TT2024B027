@@ -13,6 +13,13 @@ import logging
 from django.conf import settings
 
 
+""" Vista con la Lista de Viviendas.
+
+Tienes que estar autenticado como anfitrión para acceder a esta vista. Si no estás autenticado, o si no eres anfitrión, 
+te redirigirá a la página de inicio de sesión.
+"""
+
+
 @login_required
 def listar_viviendas(request):
     if not hasattr(request.user, 'anfitrion'):
@@ -61,6 +68,10 @@ def eliminar_vivienda(request, vivienda_id):
         return redirect('listar_viviendas')  # Redirige después de la eliminación
 
     return render(request, 'confirmar_eliminar_vivienda.html', {'vivienda': vivienda})
+
+
+""" Vista para Gestionar todos los Contratos.
+"""
 
 
 @login_required
