@@ -376,8 +376,11 @@ Voy a modificar esta vista, ya que está insertando los datos de la vivienda com
 quiero meterlos como texto simple.
 
 Cuando el anfitrión registra una vivienda, es redirigido a la página de inicio de sesión, como que si cerrara su 
-sesión. ¿Debería cambiar esto? Redirigir al usuario al formulario de inicio de sesión despues de registrar una vivienda
+sesión. ¿Debería cambiar esto? Redirigir al usuario al formulario de inicio de sesión después de registrar una vivienda
 no tiene mucho sentido. Tendría más sentido redirigirlo a la página de inicio de anfitrión, o a la lista de viviendas.
+
+BUGFIX: tuve que colocar "Microondas" y "Refrigerador" al agarrar esos campos del formulario, ya que en esta vista
+estaban como "Refri" y "Micro", por lo que siempre marcaba esos valores como "Off" o "No".
 """
 
 
@@ -404,9 +407,7 @@ def Registrovivienda(request):
         codigo_postal = request.POST.get('CP')
         precio_renta = request.POST.get('Renta')
 
-        # Servicios en JSON.
-        # DEBO MODIFICAR ESTO PARA QUE LOS CAMPOS ACEPTEN TEXTO SIMPLE EN LUGAR DE JSON.
-        # BOOKMARK.
+        # Servicios en JSON. LO MODIFIQUÉ ESTO PARA QUE LOS CAMPOS ACEPTEN TEXTO SIMPLE EN LUGAR DE JSON.
 
         # Modifiqué los detalles del Inmueble para que guarde texto simple en la base de datos en lugar de JSON.
         detalles_inmueble = (
@@ -500,35 +501,61 @@ def Registrovivienda(request):
         #     "Scooter": "on" if request.POST.get("Scooter") else "off",
         # }
 
-        # BOOKMARK
         # Recoger los muebles
-        muebles = {
-            "Locker": "on" if request.POST.get("Locker") else "off",
-            "Closet": "on" if request.POST.get("Closet") else "off",
-            "Cama": "on" if request.POST.get("Cama") else "off",
-            "Escritorio": "on" if request.POST.get("Escritorio") else "off",
-            "Silla": "on" if request.POST.get("Silla") else "off",
-        }
+        muebles = (
+            f"Locker: {'Sí' if request.POST.get('Locker') == 'on' else 'No'}\n"
+            f"Closet: {'Sí' if request.POST.get('Closet') == 'on' else 'No'}\n"
+            f"Cama: {'Sí' if request.POST.get('Cama') == 'on' else 'No'}\n"
+            f"Escritorio: {'Sí' if request.POST.get('Escritorio') == 'on' else 'No'}\n"
+            f"Silla: {'Sí' if request.POST.get('Silla') == 'on' else 'No'}"
+        )
+
+        # muebles = {
+        #     "Locker": "on" if request.POST.get("Locker") else "off",
+        #     "Closet": "on" if request.POST.get("Closet") else "off",
+        #     "Cama": "on" if request.POST.get("Cama") else "off",
+        #     "Escritorio": "on" if request.POST.get("Escritorio") else "off",
+        #     "Silla": "on" if request.POST.get("Silla") else "off",
+        # }
 
         # Recoger los electrodomésticos
-        electrodomesticos = {
-            "Microondas": "on" if request.POST.get("Micro") else "off",
-            "Refrigerador": "on" if request.POST.get("Refri") else "off",
-            "Clima": "on" if request.POST.get("Micro") else "off",
-            "Lavadora": "on" if request.POST.get("Refri") else "off",
-            "Licuadora": "on" if request.POST.get("Micro") else "off",
-            "Cafetera": "on" if request.POST.get("Refri") else "off",
-        }
+        electrodomesticos = (
+            f"Microondas: {'Sí' if request.POST.get('Microondas') == 'on' else 'No'}\n"
+            f"Refrigerador: {'Sí' if request.POST.get('Refrigerador') == 'on' else 'No'}\n"
+            f"Clima: {'Sí' if request.POST.get('Clima') == 'on' else 'No'}\n"
+            f"Lavadora: {'Sí' if request.POST.get('Lavadora') == 'on' else 'No'}\n"
+            f"Licuadora: {'Sí' if request.POST.get('Licuadora') == 'on' else 'No'}\n"
+            f"Cafetera: {'Sí' if request.POST.get('Cafetera') == 'on' else 'No'}"
+        )
+
+        # electrodomesticos = {
+        #     "Microondas": "on" if request.POST.get("Micro") else "off",
+        #     "Refrigerador": "on" if request.POST.get("Refri") else "off",
+        #     "Clima": "on" if request.POST.get("Clima") else "off",
+        #     "Lavadora": "on" if request.POST.get("Lavadora") else "off",
+        #     "Licuadora": "on" if request.POST.get("Licuadora") else "off",
+        #     "Cafetera": "on" if request.POST.get("Cafetera") else "off",
+        # }
 
         # Recoger los medios de transporte cercanos
-        transporte_cercano = {
-            "Metro": "on" if request.POST.get("Metro") else "off",
-            "Metrobus": "on" if request.POST.get("Metrobus") else "off",
-            "Trolebus": "on" if request.POST.get("Metro") else "off",
-            "RTP": "on" if request.POST.get("Metrobus") else "off",
-            "Bus": "on" if request.POST.get("Metro") else "off",
-            "Cablebus": "on" if request.POST.get("Metrobus") else "off",
-        }
+        transporte_cercano = (
+            f"Metro: {'Sí' if request.POST.get('Metro') == 'on' else 'No'}\n"
+            f"Metrobus: {'Sí' if request.POST.get('Metrobus') == 'on' else 'No'}\n"
+            f"Trolebus: {'Sí' if request.POST.get('Trolebus') == 'on' else 'No'}\n"
+            f"RTP: {'Sí' if request.POST.get('RTP') == 'on' else 'No'}\n"
+            f"Bus: {'Sí' if request.POST.get('Bus') == 'on' else 'No'}\n"
+            f"Cablebus: {'Sí' if request.POST.get('Cablebus') == 'on' else 'No'}"
+        )
+
+        # transporte_cercano = {
+        #     "Metro": "on" if request.POST.get("Metro") else "off",
+        #     "Metrobus": "on" if request.POST.get("Metrobus") else "off",
+        #     "Trolebus": "on" if request.POST.get("Metro") else "off",
+        #     "RTP": "on" if request.POST.get("Metrobus") else "off",
+        #     "Bus": "on" if request.POST.get("Metro") else "off",
+        #     "Cablebus": "on" if request.POST.get("Metrobus") else "off",
+        # }
+
         # Fin de la recolección de datos en JSON que debo modificar para aceptar texto simple en lugar de JSON.
 
         # Guardar en la base de datos
