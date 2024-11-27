@@ -24,20 +24,68 @@
     <a href="{% url 'crear_contrato' %}">Crear un Nuevo Contrato</a>
 
     <!-- Lista de Contratos -->
-    <ul>
-        {% for contrato in contratos %}
-            <li>
-                Vivienda: {{ contrato.vivienda.calle }} <br>
-                Estudiante: {{ contrato.estudiante.nombre }} <br>
-                Estado:
-                {% if contrato.firmado %}
-                    Firmado
-                {% else %}
-                    Pendiente de firma
-                {% endif %}
-                <a href="{% url 'gestionar_contrato' contrato.id %}">Gestionar Contrato</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <!-- Tabla con la Lista de Contratos -->
+    <table>
+        <thead>
+            <tr>
+                <th>Contrato</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contrato in contratos %}
+            <tr>
+                <td>
+                    Vivienda: {{ contrato.vivienda.calle }} <br>
+                    Estudiante: {{ contrato.estudiante.nombre }} <br>
+                    Estado:
+                    {% if contrato.firmado %}
+                        Firmado
+                    {% else %}
+                        Pendiente de firma
+                    {% endif %}
+                    {#                    <a href="{% url 'gestionar_contrato' contrato.id %}">Gestionar Contrato</a>#}
+                </td>
+
+                <td>
+                    <!-- Botón para Gestionar el Contrato -->
+                    <a href="{% url 'gestionar_contrato' contrato.id %}">Gestionar Contrato</a> |
+                    <!-- Botón para Editar el Contrato -->
+                    <a href="#">Editar</a> |
+
+                    <!-- Botón para Eliminar el Contrato -->
+                    <form action="#" method="POST" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+    {#    <ul>#}
+    {#        {% for contrato in contratos %}#}
+    {#            <li>#}
+    {#                Vivienda: {{ contrato.vivienda.calle }} <br>#}
+    {#                Estudiante: {{ contrato.estudiante.nombre }} <br>#}
+    {#                Estado:#}
+    {#                {% if contrato.firmado %}#}
+    {#                    Firmado#}
+    {#                {% else %}#}
+    {#                    Pendiente de firma#}
+    {#                {% endif %}#}
+    {#                <a href="{% url 'gestionar_contrato' contrato.id %}">Gestionar Contrato</a>#}
+    {#            </li>#}
+    {#        {% endfor %}#}
+    {#    </ul>#}
 
 {% endblock %}
