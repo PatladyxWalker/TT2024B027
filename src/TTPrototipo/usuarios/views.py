@@ -430,6 +430,10 @@ no tiene mucho sentido. Tendría más sentido redirigirlo a la página de inicio
 
 BUGFIX: tuve que colocar "Microondas" y "Refrigerador" al agarrar esos campos del formulario, ya que en esta vista
 estaban como "Refri" y "Micro", por lo que siempre marcaba esos valores como "Off" o "No".
+
+Voy a meter el tipo de inmueble en un nuevo campo del modelo de Vivienda llamado "Tipo de Inmueble", mientras que el
+resto de los detalles del inmueble los dejaré en el campo "Detalles del Inmueble". Esto es apra corregir un bug que no
+me dejaba generar el contrato como PDF.
 """
 
 
@@ -456,11 +460,14 @@ def Registrovivienda(request):
         codigo_postal = request.POST.get('CP')
         precio_renta = request.POST.get('Renta')
 
+        # Esto solo recoge el Tipo de Inmueble
+        tipo_inmueble = request.POST.get('TipoInmueble')
+
         # Servicios en JSON. LO MODIFIQUÉ ESTO PARA QUE LOS CAMPOS ACEPTEN TEXTO SIMPLE EN LUGAR DE JSON.
 
         # Modifiqué los detalles del Inmueble para que guarde texto simple en la base de datos en lugar de JSON.
         detalles_inmueble = (
-            f"Tipo: {request.POST.get('TipoInmueble')}\n"
+            # f"Tipo: {request.POST.get('TipoInmueble')}\n"
             f"Número de habitaciones: {request.POST.get('NumHabitaciones')}\n"
             f"Número de baños: {request.POST.get('NumBaños')}\n"
             f"Número de medio baños: {request.POST.get('NumMedBaños')}\n"
@@ -614,6 +621,7 @@ def Registrovivienda(request):
             numero_exterior=numero_exterior,
             codigo_postal=codigo_postal,
             precio_renta=precio_renta,
+            tipo_inmueble=tipo_inmueble,    # Guardamos el tipo de inmueble en un campo separado
             detalles_inmueble=detalles_inmueble,
             detalles_inmueble_compartido=detalles_inmueble_compartido,
             servicios=servicios,
