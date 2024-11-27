@@ -5,6 +5,25 @@
 {% block content %}
 
     <h1>Contratos Asociados</h1>
+
+        <!-- Aquí imprimiré un mensaje flash de confirmación cuando el anfitrión registre una vivienda. -->
+    {% if messages %}
+
+        <!-- Quiero que el mensaje sea verde, y que no salgan los puntos de las listas. -->
+        <ul class="messages" style="list-style-type:none">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: green">
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <!-- Fin del mensaje flash de confirmación. -->
+
+    <!-- Botón o Enlace para Crear un Nuevo Contrato -->
+    <a href="{% url 'crear_contrato' %}">Crear un Nuevo Contrato</a>
+
+    <!-- Lista de Contratos -->
     <ul>
         {% for contrato in contratos %}
             <li>
