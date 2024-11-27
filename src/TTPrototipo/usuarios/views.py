@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseForbidden
 from weasyprint import HTML
-from .forms import FotoEstadoViviendaForm, ViviendaForm
+from .forms import FotoEstadoViviendaForm, ViviendaForm, CrearContratoForm
 import logging
 from django.conf import settings
 
@@ -195,6 +195,20 @@ def gestionar_contrato(request, contrato_id=None):
         })
 
     return HttpResponseForbidden("No tienes permisos para gestionar este contrato.")
+
+
+""" Vista para Cancelar un Contrato.
+
+¿Supongo que esto es para cuando se quiere eliminar el contrato? No estoy seguro.
+
+Las funciones de cancelar_contrato() y puede_cancelarse() están en el modelo de Contrato en el models.py.
+
+Lo que hace el meterme a la URL de esta vista es marcar la casilla “Cancelado” del campo “cancelado” del modelo de 
+Contrato. Es decir, marca el booleano “Cancelado” como “true”. El contrato solo puede marcarse como cancelado si no
+está firmado. De lo contrario, esta vista no hará nada.
+
+Te redirige a la página principal después de cancelar el contrato.
+"""
 
 
 @login_required
@@ -664,6 +678,91 @@ def Registrovivienda(request):
         # return redirect('Inicio de Sesion')
 
     return render(request, 'Registrovivienda.html')
+
+
+""" Vista para Crear un Contrato.
+
+Here is the new view crear_contrato for creating contracts, similar to the Registrovivienda view but using the Contrato 
+model.
+
+This view handles the creation of a new contract by gathering data from the form, validating the user, and saving the 
+contract to the database. It also renders a template crear_contrato.html with lists of students and properties for 
+selection.
+
+Voy a validar el formulario por razones de ciberseguridad.
+"""
+
+
+@login_required
+def crear_contrato(request):
+
+    # Si el usuario es un estudiante, redirigirlo a la página de inicio de estudiante
+    if hasattr(request.user, 'estudiante'):
+        return redirect('Inicio de Estudiante')
+
+    # Si el Anfitrión Envía el Formulario
+    if request.method == 'POST':
+        form = CrearContratoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Contrato creado exitosamente.")
+
+            # Redirigir a la lista de contratos
+            return redirect('gestionar_contrato')
+    else:
+        form = CrearContratoForm()
+
+        # Esto renderiza el Formulario para Crear un Contrato
+        return render(request, 'crear-contrato.html', {'form': form})
+
+    # if request.method == 'POST':
+    #     # Verificar que el usuario esté autenticado y que tenga un perfil de anfitrión
+    #     if not request.user.is_authenticated:
+    #         messages.error(request, "Necesitas iniciar sesión para crear un contrato.")
+    #         return redirect('Inicio de Sesion')
+    #     try:
+    #         anfitrion = request.user.anfitrion  # Obtiene el anfitrión autenticado
+    #         print(f"Anfitrión ID asociado al usuario autenticado: {anfitrion.id}")  # Verifica el ID del anfitrión
+    #     except Anfitrion.DoesNotExist:
+    #         messages.error(request,
+    #                        "No tienes un perfil de anfitrión. Por favor, regístrate como anfitrión primero."
+    #                        )
+    #         return redirect('Registro de Usuario')
+    #
+    #     # Recibe los datos del formulario
+    #     estudiante_id = request.POST.get('estudiante_id')
+    #     vivienda_id = request.POST.get('vivienda_id')
+    #     precio_renta = request.POST.get('precio_renta')
+    #     fecha_inicio = request.POST.get('fecha_inicio')
+    #     fecha_fin = request.POST.get('fecha_fin')
+    #
+    #     # Obtener las instancias de Estudiante y Vivienda
+    #     estudiante = get_object_or_404(Estudiante, id=estudiante_id)
+    #     vivienda = get_object_or_404(Vivienda, id=vivienda_id)
+    #
+    #     # Crear el contrato
+    #     contrato = Contrato(
+    #         estudiante=estudiante,
+    #         vivienda=vivienda,
+    #         anfitrion=anfitrion,
+    #         precio_renta=precio_renta,
+    #         fecha_inicio=fecha_inicio,
+    #         fecha_fin=fecha_fin,
+    #     )
+    #     contrato.save()
+    #
+    #     messages.success(request, "Contrato creado exitosamente.")
+    #     return redirect('listar_contratos')  # Redirigir a la lista de contratos
+    #
+    # # Esto renderiza el formulario para crear un contrato
+    # else:
+    #
+    #     estudiantes = Estudiante.objects.all()
+    #     viviendas = Vivienda.objects.filter(anfitrion=request.user.anfitrion)
+    #
+    #     return render(request, 'crear-contrato.html', {
+    #         'estudiantes': estudiantes, 'viviendas': viviendas
+    #     })
 
 
 """ Formulario de Inicio de Sesión.

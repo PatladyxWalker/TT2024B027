@@ -108,6 +108,8 @@ You can set null=True and blank=True to allow the field to be empty.
 
 Los archivos que se deben adjuntar deben ser obligatoriamente PDFs. de lo contrario, te generará PDFs dañados 
 al descargar el documento, y no podrás abrir esos contratos.
+
+Aquí es que están las funciones para cancelar un contrato, y la que verifica si puede cancelarse.
 """
 
 
@@ -132,10 +134,12 @@ class Contrato(models.Model):
     fecha_inicio = models.DateField(null=False, blank=False, default=date.today)
     fecha_fin = models.DateField(null=True, blank=True)
 
+    # Función para verificar si el contrato puede cancelarse
     def puede_cancelarse(self):
         """Verifica si el contrato puede ser cancelado"""
         return not self.firmado  # Sólo se puede cancelar si no está firmado
 
+    # Función para cancelar un contrato
     def cancelar_contrato(self):
         """Marca el contrato como cancelado y libera la vivienda y el estudiante"""
         if self.puede_cancelarse():
