@@ -46,6 +46,9 @@ class Anfitrion(models.Model):
 
 Tengo que modificar este modelo para que todos los campos acepten texto simple en lugar de JSON. Creo que TextField
 sería el tipo de dato más adecuado para la mayoría de los campos que usaban JSON.
+
+Creé un nuevo campo llamado "tipo de inmueble" para que el usuario pueda seleccionar si es un departamento, casa, etc.
+Esto será usado al generar el PDF con el contrato para evitar un bug que no me dejaba generar el contrato.
 """
 
 
@@ -56,6 +59,9 @@ class Vivienda(models.Model):
     numero_exterior = models.CharField(max_length=10, default="S/N")
     codigo_postal = models.CharField(max_length=5, default="07000")
     precio_renta = models.DecimalField(max_digits=10, decimal_places=2, default=2000.00)
+
+    # Tipo de inmueble: Departamento, Casa, Habitación, etc.
+    tipo_inmueble = models.CharField(max_length=150, default="Departamento")
 
     # Estos campos debo modificarlos para que acepten texto simple en lugar de JSON
     detalles_inmueble = models.TextField()  # Almacena tipo, num_habitaciones, num_banos, etc.
@@ -97,9 +103,8 @@ class ViviendaFoto(models.Model):
 
 """ Modelo de Contrato.
 
-Debido a que no puse ningún archivo PDF ni ningún archivo de texto a un contrato de prueba, me salió un error al 
-intentar descargar ese contrato. Entonces, para evitar que le salga este error de Django a un usuario, haré que el 
-campo con el archivo del contrato (archivo_contrato) sea obligatorio.
+If you don't have the contratos/default.pdf file, it would be better to leave the archivo_contrato field as optional. 
+You can set null=True and blank=True to allow the field to be empty.
 
 Los archivos que se deben adjuntar deben ser obligatoriamente PDFs. de lo contrario, te generará PDFs dañados 
 al descargar el documento, y no podrás abrir esos contratos.
@@ -113,8 +118,8 @@ class Contrato(models.Model):
     anfitrion = models.ForeignKey(Anfitrion, on_delete=models.CASCADE, related_name="contratos")
     precio_renta = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
-    # Archivo del Contrato. Lo cambiaré a obligatorio para evitar errores al descargar un contrato.
-    archivo_contrato = models.FileField(upload_to="contratos/")
+    # Archivo del Contrato. Lo deje como opcional para evitar bugs.
+    archivo_contrato = models.FileField(upload_to="contratos/", null=True, blank=True)
 
     # archivo_contrato = models.FileField(upload_to="contratos/", null=True, blank=True)
 

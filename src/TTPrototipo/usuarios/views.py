@@ -12,6 +12,8 @@ from .forms import FotoEstadoViviendaForm, ViviendaForm
 import logging
 from django.conf import settings
 
+# Importar el módulo ast para convertir un string en un diccionario para las Viviendas
+import ast
 
 """ Vista con la Lista de Viviendas.
 
@@ -267,6 +269,26 @@ def subir_fotos(request, contrato_id):
 # Habilitar el logging de WeasyPrint
 logging.basicConfig(level=logging.DEBUG)
 
+""" Vista para Generar el Contrato en PDF.
+
+Esta vista aparece cuando clicas en el botón de "Generar Contrato" en la página para Gestionar un Contrato
+Seleccionado si eres un anfitrión.
+
+BUG: la línea del tipo de inmueble me está generando un bug que no me deja terminar de generar el contrato.
+
+Si desactivo la línea de tipo_inmueble del view de generar_contrato_pdf(), al hacer clic en Generar contrato, me genera 
+perfectamente un PDF. La manera en la que se está agarrando el tipo de inmueble en esta vista está generando un bug,
+ya que se está agarrando de manera ineficiente y errónea del modelo de Vivienda.
+
+Entonces, los pasos a seguir para arreglar este bug y agarrar el tipo de inmueble son:
+1) Crear el campo “tipo de inmueble” en el modelo de Vivienda.
+2) Meter el tipo de inmueble en ese nuevo campo al registrar una nueva vivienda.
+3) Meter el resto de los detalles del inmueble en la variable de “detalles del inmueble”.
+4) En el view de generar_contrato_pdf(), agarrare el tipo del inmueble del campo “tipo de inmueble” del modelo de 
+Vivienda.
+
+"""
+
 
 def generar_contrato_pdf(request, contrato_id):
     contrato = get_object_or_404(Contrato, id=contrato_id)
@@ -274,7 +296,16 @@ def generar_contrato_pdf(request, contrato_id):
     if request.method == "POST":
         ciudad = request.POST.get("ciudad", "Ciudad de México")  # Valor por defecto
         fecha = request.POST.get("fecha", "")
-        tipo_inmueble = contrato.vivienda.detalles_inmueble.get("tipo", "Inmueble")
+
+        # BOOKMARK
+
+        # # Esto debería resolver el bug que no me deja generar el contrato. NO FUNCIONO.
+        # detalles_inmueble = ast.literal_eval(contrato.vivienda.detalles_inmueble)
+        # tipo_inmueble = detalles_inmueble.get("tipo", "Inmueble")
+
+        # BUG: Esta linea no m está dejando terminar de generar el contrato.
+        # tipo_inmueble = contrato.vivienda.detalles_inmueble.get("tipo", "Inmueble")
+
         ubicacion = f"{contrato.vivienda.calle}, {contrato.vivienda.numero_exterior}, {contrato.vivienda.codigo_postal} CDMX"
         nombre_arrendador = contrato.anfitrion.nombre
         nombre_arrendatario = contrato.estudiante.nombre
@@ -286,7 +317,7 @@ def generar_contrato_pdf(request, contrato_id):
             "contrato": contrato,
             "ciudad": ciudad,
             "fecha": fecha,
-            "tipo_inmueble": tipo_inmueble,
+            # "tipo_inmueble": tipo_inmueble, # DEBUGGEO: desactivare esto para ver si puedo generar el contrato
             "ubicacion": ubicacion,
             "nombre_arrendador": nombre_arrendador,
             "nombre_arrendatario": nombre_arrendatario,
