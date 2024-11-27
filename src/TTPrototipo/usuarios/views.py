@@ -299,11 +299,15 @@ def generar_contrato_pdf(request, contrato_id):
 
         # BOOKMARK
 
-        # # Esto debería resolver el bug que no me deja generar el contrato. NO FUNCIONO.
+        # Esto debería resolver el bug que no me deja generar el contrato.
+        # Agarrando el tipo de inmueble del campo "Tipo de Inmueble" del modelo de Vivienda.
+        tipo_inmueble = contrato.vivienda.tipo_inmueble
+
+        # NO FUNCIONO.
         # detalles_inmueble = ast.literal_eval(contrato.vivienda.detalles_inmueble)
         # tipo_inmueble = detalles_inmueble.get("tipo", "Inmueble")
 
-        # BUG: Esta linea no m está dejando terminar de generar el contrato.
+        # BUG: Esta linea no me está dejando terminar de generar el contrato.
         # tipo_inmueble = contrato.vivienda.detalles_inmueble.get("tipo", "Inmueble")
 
         ubicacion = f"{contrato.vivienda.calle}, {contrato.vivienda.numero_exterior}, {contrato.vivienda.codigo_postal} CDMX"
@@ -317,7 +321,7 @@ def generar_contrato_pdf(request, contrato_id):
             "contrato": contrato,
             "ciudad": ciudad,
             "fecha": fecha,
-            # "tipo_inmueble": tipo_inmueble, # DEBUGGEO: desactivare esto para ver si puedo generar el contrato
+            "tipo_inmueble": tipo_inmueble,  # DEBUGGEO: desactivare esto para ver si puedo generar el contrato
             "ubicacion": ubicacion,
             "nombre_arrendador": nombre_arrendador,
             "nombre_arrendatario": nombre_arrendatario,
@@ -621,7 +625,7 @@ def Registrovivienda(request):
             numero_exterior=numero_exterior,
             codigo_postal=codigo_postal,
             precio_renta=precio_renta,
-            tipo_inmueble=tipo_inmueble,    # Guardamos el tipo de inmueble en un campo separado
+            tipo_inmueble=tipo_inmueble,  # Guardamos el tipo de inmueble en un campo separado
             detalles_inmueble=detalles_inmueble,
             detalles_inmueble_compartido=detalles_inmueble_compartido,
             servicios=servicios,
