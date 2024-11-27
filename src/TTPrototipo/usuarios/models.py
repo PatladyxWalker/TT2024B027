@@ -176,9 +176,18 @@ class Contrato(models.Model):
         return f"Contrato {self.id}: Estudiante {self.estudiante.nombre} - Vivienda {self.vivienda.calle}"
 
 
+""" Fotos del Estado de la Vivienda al momento de firmar el contrato. Aquí se meten las Fotos de un Contrato al Editar
+un Contrato.
+
+Quiero agregar el ID del registro de la foto en la lista de entradas usando un __str__ personalizado, ya que si
+un solo contrato tiene varias fotos, todas tendrán el mismo nombre en la lista de entradas en el panel de admin de +
+Django.
+"""
+
+
 class FotoEstadoVivienda(models.Model):
     contrato = models.ForeignKey(Contrato, on_delete=models.CASCADE, related_name="fotos_estado")
     imagen = models.ImageField(upload_to="contratos/fotos_vivienda/")
 
     def __str__(self):
-        return f"Foto para contrato {self.contrato.id}"
+        return f"ID: {self.id} - Foto para contrato {self.contrato.id}"

@@ -84,7 +84,9 @@ def eliminar_vivienda(request, vivienda_id):
     return render(request, 'confirmar_eliminar_vivienda.html', {'vivienda': vivienda})
 
 
-""" Vista para Gestionar todos los Contratos.
+""" Vista para ver la Lista de Contratos de una Anfitrión, y para Modificar o Gestionar un Contrato.
+
+Esta vista se usa para 2 páginas distintas: para ver la lista de Contratos, y para Editar un Contrato.
 """
 
 
