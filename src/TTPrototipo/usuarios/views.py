@@ -33,6 +33,18 @@ def listar_viviendas(request):
     return render(request, 'listar_viviendas.html', {'viviendas': viviendas})
 
 
+""" Vista para Editar una Vivienda.
+
+Solo el anfitrión asociado a la vivienda puede editarla. 
+
+Si el usuario no tiene permiso para editar la vivienda, se le mostrará un mensaje de error y se le redirigirá a la
+lista de viviendas.
+
+Tengo que editar esta vista ya que ahora el Tipo de Inmueble y el resto de los detalles del inmueble se guardan en
+campos separados en el modelo de Vivienda.
+"""
+
+
 @login_required
 def editar_vivienda(request, vivienda_id):
     vivienda = get_object_or_404(Vivienda, id=vivienda_id)
