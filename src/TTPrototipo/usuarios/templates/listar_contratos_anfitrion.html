@@ -30,20 +30,37 @@
     {# y Eliminar Contrato, utilizo la variable contrato.id en el atributo href de los enlaces. El "contrato.id" es la#}
     {# forma en Jinja y Django para meterle el parámetro del ID del contrato a las URLs de los enlaces al usar #}
     {# 'url'. #}
-    <table>
+    {#    #}
+    {#    Le metí una clase de Bootstrap a la Tabla para que se vea más bonito y mejor diseñado, y sea más fácil de #}
+    {# diferenciar entre contrato y contrato. #}
+    {#    #}
+    {#    Y decidí separar cada detalle del contrato en títulos o encabezados distintos. Esto hace que la tabla sea más #}
+    {# fácil de entender y esté mejor presentada.#}
+    <table class="table table-striped table-hover">
         <thead>
-            <tr>
-                <th>Contrato</th>
+            <tr>    <!-- Encabezados o Títulos de la Tabla -->
+                <th>ID del Contrato</th>
+                <th>Vivienda</th>
+                <th>Estudiante</th>
+                <th>Estado</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
             {% for contrato in contratos %}
             <tr>
-                <td>
-                    Vivienda: {{ contrato.vivienda.calle }} <br>
-                    Estudiante: {{ contrato.estudiante.nombre }} <br>
-                    Estado:
+                <!-- Datos del Contrato -->
+                <td>    <!-- ID del Contrato -->
+                    {{ contrato.id }} <br>
+                </td>
+                <td>    <!-- Vivienda del contrato -->
+                    {{ contrato.vivienda.calle }} <br>
+
+                </td>
+                <td> <!-- Estudiante -->
+                    {{ contrato.estudiante.nombre }} <br>
+                </td>
+                <td>    <!-- Estado del Contrato -->
                     {% if contrato.firmado %}
                         Firmado
                     {% else %}

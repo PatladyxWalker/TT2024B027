@@ -1,1 +1,12 @@
-Editar un contrato
+{% extends 'layout3.html' %}
+
+{% block title %}Editar Contrato{% endblock %}
+
+{% block content %}
+    <h1>Editar Contrato</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar Cambios</button>
+    </form>
+{% endblock %}

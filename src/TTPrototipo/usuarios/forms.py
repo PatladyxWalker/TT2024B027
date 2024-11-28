@@ -50,7 +50,17 @@ class CrearContratoForm(forms.ModelForm):
                   ]
 
 
+""" Formulario para Editar un Contrato.
+
+En la página de editar un contrato, pondré que el anfitrión pueda editar su propia firma, PERO NO LA FIRMA DEL 
+ESTUDIANTE. QUE EL ANFITRIÓN pueda editar la firma de un estudiante sería muy peligroso.
+"""
 
 
-
-
+class EditarContratoForm(forms.ModelForm):
+    class Meta:
+        model = Contrato
+        fields = ['estudiante', 'vivienda', 'anfitrion', 'precio_renta', 'archivo_contrato', 'firmado',
+                  'firma_anfitrion', 'fotos_subidas_anfitrion', 'fotos_subidas_estudiante', 'cancelado', 'fecha_inicio',
+                  'fecha_fin'
+                  ]

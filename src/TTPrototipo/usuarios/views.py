@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseForbidden
 from weasyprint import HTML
-from .forms import FotoEstadoViviendaForm, ViviendaForm, CrearContratoForm
+from .forms import FotoEstadoViviendaForm, ViviendaForm, CrearContratoForm, EditarContratoForm
 import logging
 from django.conf import settings
 
@@ -792,7 +792,7 @@ def editar_contrato(request, contrato_id):
 
     # Si el Anfitrión Envía el Formulario
     if request.method == 'POST':
-        form = CrearContratoForm(request.POST, request.FILES, instance=contrato)
+        form = EditarContratoForm(request.POST, request.FILES, instance=contrato)
 
         # Esto valida el formulario
         if form.is_valid():
@@ -806,7 +806,7 @@ def editar_contrato(request, contrato_id):
 
     # Esto renderiza el Formulario para Editar un Contrato
     else:
-        form = CrearContratoForm(instance=contrato)
+        form = EditarContratoForm(instance=contrato)
 
         return render(request, 'editar_contrato.html', {'form': form})
 

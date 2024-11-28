@@ -125,15 +125,31 @@ del nombre de usuario. */
 
 /* Fin de los estilos para el menú desplegable */
 
-/* Estilos para personalizar la barra de Navegación de Boostrap que agregué.
-*/
-.custom-navbar {
-    background-color: rgba(0, 0, 0, 0.6) !important;
+/* Estilos para las Tablas */
+.custom-table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 100%;
 }
 
-.custom-navbar .nav-link {
-    color: white !important;
+.custom-table th,
+.custom-table td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
 }
+
+/* Fin de los estilos para las Tablas */
+
+/* Estilos para personalizar la barra de Navegación de Boostrap que agregué.
+*/
+/*.custom-navbar {*/
+/*    background-color: rgba(0, 0, 0, 0.6) !important;*/
+/*}*/
+
+/*.custom-navbar .nav-link {*/
+/*    color: white !important;*/
+/*}*/
 
 
 /* Fin de los estilos para la barra de navegación de Bootstrap que agregué */
