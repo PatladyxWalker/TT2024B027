@@ -15,6 +15,13 @@ from django.conf import settings
 # Esto me permite convertir una firma dibujada en una Imagen o en un PDF
 from jsignature.utils import draw_signature
 
+# Esto es para especificar donde quiero que se me guarden las Firmas Dibujadas
+import os
+
+# Necesito estas 2 bibliotecas para meter mi firma dibujada en mi carpeta "media"
+from django.core.files.base import ContentFile
+import base64
+
 # # Importar el módulo ast para convertir un string en un diccionario para las Viviendas
 # import ast
 
@@ -98,6 +105,30 @@ refiero a poder firmar, agregarle fotos a un contrato, y hasta generar ese contr
 desde aquí.
 
 Esta vista se usa para 2 páginas distintas: para ver la lista de Contratos, y para Firmar un Contrato.
+
+Uso el paquete django-jsignature para poder firmar contratos dibujando en la pantalla. Para poder usarlo, tengo que
+importar la vista SignatureField y el formulario SignatureForm en el forms.py.
+
+Para poder firmar un contrato, tengo que meter la firma dibujada en la base de datos. Para hacer esto, tengo que
+importar el modelo SignatureModel en el models.py.
+
+**Problem 1: Incorrect handling of the signature file**
+
+The code is attempting to save the signature as a file, but the method used to create the `ContentFile` object is 
+incorrect. The `draw_signature` function returns a file path, not the file content. This needs to be corrected to 
+properly save the image file.
+
+**Solution: Read the file content and save it correctly**
+
+This code correctly reads the content of the generated signature file and saves it as a `ContentFile` in the 
+`SignatureModel`. This should resolve the issue of the corrupted PNG image.
+
+Estoy haciendo una prueba para dibujar una firma, y meterlo en un modelo de Prueba usando Jsignature. Ya se 
+puede hacer: dibujas una firma, clicas en "Save", y se genera una imagen PNG con la firma, y se mete
+en la carpeta "firmas/archivos" de la carpeta "media". Se mete en el modelo de SignatureModel, en el campo de
+"file".
+
+Es algo complicado de usar.
 """
 
 
@@ -163,11 +194,24 @@ def gestionar_contrato(request, contrato_id=None):
                     # Save the signature as a file
                     signature_file_path = draw_signature(signature, as_file=True)
 
+                    # Read the file content
+                    with open(signature_file_path, 'rb') as f:
+                        image_content = f.read()
+
+                    # # Decode the base64 image and save it to the media folder
+                    # # image_data = base64.b64decode(signature_file_path)
+                    # image = ContentFile(signature_file_path, 'signature.png')
+
                     # Save the instance of the Jsignature field (neither image nor file) to the database
                     signature_model = SignatureModel(
                         signature=signature,
-                        file=signature_file_path,  # This saves the image version of the signature
+                        # file=signature_file_path,  # This saves the image version of the signature
                     )
+                    signature_model.file.save('signature.png', ContentFile(image_content))
+
+                    # signature_model.file.save(signature_file_path)
+                    # signature_model.file.save('signature.png', image)
+                    # signature_model.file.save('signature.png', signature_file_path)
                     signature_model.save()
                     # FIN de la prueba de meter una Firma Dibujada en la base de datos usando Django JSignature
 

@@ -214,5 +214,5 @@ momentos.
 class SignatureModel(models.Model):
     signature = JSignatureField()
 
-    image = models.ImageField(upload_to='signatures/images/', null=True, blank=True)
-    file = models.FileField(upload_to='signatures/files/', null=True, blank=True)
+    image = models.ImageField(upload_to='firmas/imagenes/', null=True, blank=True)
+    file = models.FileField(upload_to='firmas/archivos/', null=True, blank=True)
