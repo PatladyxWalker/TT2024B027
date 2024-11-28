@@ -39,6 +39,9 @@ urlpatterns = [
 
                   # Para Editar un Contrato
                   path('contrato/editar/<int:contrato_id>/', views.editar_contrato, name='editar_contrato'),
+
+                  # Para Eliminar un Contrato
+                  path('contrato/eliminar/<int:contrato_id>/', views.eliminar_contrato, name='eliminar_contrato'),
                   # Fin de las URLs de los Contratos.
 
                   path('viviendas/', views.listar_viviendas, name='listar_viviendas'),

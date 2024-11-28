@@ -80,10 +80,14 @@
                     </a>
 
                     <!-- Botón para Eliminar el Contrato Seleccionado -->
-                    <form action="#" method="POST" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
-                    </form>
+                    <a href="{% url 'eliminar_contrato' contrato.id %}" class="btn btn-danger">
+                        Eliminar
+                    </a>
+
+                    {#                    <form action="#" method="POST" style="display:inline;">#}
+                    {#                        {% csrf_token %}#}
+                    {#                        <button type="submit" class="btn btn-danger">Eliminar</button>#}
+                    {#                    </form>#}
                 </td>
             </tr>
             {% endfor %}

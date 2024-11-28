@@ -65,6 +65,12 @@ def editar_vivienda(request, vivienda_id):
     return render(request, 'editar_vivienda.html', {'form': form})
 
 
+""" Vista para Eliminar una Vivienda.
+
+No te sale un mensaje de confirmación antes de borrar la vivienda. Solo se borra directamente.
+"""
+
+
 @login_required
 def eliminar_vivienda(request, vivienda_id):
     vivienda = get_object_or_404(Vivienda, id=vivienda_id)
@@ -697,7 +703,6 @@ Voy a validar el formulario por razones de ciberseguridad.
 
 @login_required
 def crear_contrato(request):
-
     # Si el usuario es un estudiante, redirigirlo a la página de inicio de estudiante
     if hasattr(request.user, 'estudiante'):
         return redirect('Inicio de Estudiante')
@@ -779,7 +784,6 @@ for editing the contract.
 
 @login_required
 def editar_contrato(request, contrato_id):
-
     # Esto verifica que el contrato exista, y agarra la instancia del contrato del modelo de Contrato
     contrato = get_object_or_404(Contrato, id=contrato_id)
 
@@ -796,7 +800,6 @@ def editar_contrato(request, contrato_id):
 
         # Esto valida el formulario
         if form.is_valid():
-
             # Esto actualiza el contrato seleccionado en la base de datos
             form.save()
             messages.success(request, "Contrato actualizado exitosamente.")
@@ -809,6 +812,37 @@ def editar_contrato(request, contrato_id):
         form = EditarContratoForm(instance=contrato)
 
         return render(request, 'editar_contrato.html', {'form': form})
+
+
+""" Vista para Eliminar un Contrato.
+
+Here is the eliminar_contrato() view, which deletes records from the Contrato model in a similar way to how the 
+eliminar_vivienda() view deletes instances of the Vivienda model.
+
+This view checks if the user has permission to delete the contract, processes the deletion, and renders a 
+confirmation page before deleting the contract.
+
+Esta vista debería ser como una API. No debe renderizar ninguna página cuando el usuario entre aquí.
+"""
+
+
+@login_required
+def eliminar_contrato(request, contrato_id):
+    contrato = get_object_or_404(Contrato, id=contrato_id)
+
+    # Verificar permisos: solo el anfitrión asociado puede eliminar un contrato
+    if request.user.anfitrion != contrato.anfitrion:
+        messages.error(request, "No tienes permiso para eliminar este contrato.")
+        return redirect('gestionar_contrato')
+
+    if request.method == 'POST':
+        contrato.delete()
+        messages.success(request, "Contrato eliminado exitosamente.")
+        return redirect('gestionar_contrato')  # Redirige después de la eliminación
+
+    else:
+        # Esto le pregunta al usuario si realmente quiere borrar el Contrato seleccionado
+        return render(request, 'confirmar-eliminar-contrato.html', {'contrato': contrato})
 
 
 """ Formulario de Inicio de Sesión.
