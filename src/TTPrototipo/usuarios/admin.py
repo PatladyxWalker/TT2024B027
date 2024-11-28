@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Estudiante, Anfitrion, Vivienda, ViviendaFoto, Contrato, FotoEstadoVivienda
+from .models import Estudiante, Anfitrion, Vivienda, ViviendaFoto, Contrato, FotoEstadoVivienda, SignatureModel
 
 """ This file is used for registering the models in the Django admin panel, so that you can easily add, delete, and
 see the database records in the Django admin panel.
@@ -18,3 +18,4 @@ admin.site.register(Vivienda)
 admin.site.register(ViviendaFoto)
 admin.site.register(Contrato)
 admin.site.register(FotoEstadoVivienda)
+admin.site.register(SignatureModel)  # Esto es para probar guardar las Firmas de Django JSignature

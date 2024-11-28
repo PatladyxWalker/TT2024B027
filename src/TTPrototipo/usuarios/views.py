@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
-from .models import Estudiante, Anfitrion, Vivienda, ViviendaFoto, Contrato, FotoEstadoVivienda
+from .models import Estudiante, Anfitrion, Vivienda, ViviendaFoto, Contrato, FotoEstadoVivienda, SignatureModel
 from django.template.loader import render_to_string
 from django.http import FileResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -8,12 +8,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseForbidden
 from weasyprint import HTML
-from .forms import FotoEstadoViviendaForm, ViviendaForm, CrearContratoForm, EditarContratoForm
+from .forms import FotoEstadoViviendaForm, ViviendaForm, CrearContratoForm, EditarContratoForm, SignatureForm
 import logging
 from django.conf import settings
 
-# Importar el módulo ast para convertir un string en un diccionario para las Viviendas
-import ast
+# Esto me permite convertir una firma dibujada en una Imagen o en un PDF
+from jsignature.utils import draw_signature
+
+# # Importar el módulo ast para convertir un string en un diccionario para las Viviendas
+# import ast
 
 """ Vista con la Lista de Viviendas.
 
@@ -144,6 +147,30 @@ def gestionar_contrato(request, contrato_id=None):
         fotos = contrato.fotos_estado.all()
         form = FotoEstadoViviendaForm()
 
+        # BOOKMARK
+        # Formulario de prueba para guardar Firmas Dibujadas. Esto activa el canvas para dibujar
+        form_firma_prueba = SignatureForm()
+
+        # Prueba para meter una Firma Dibujada en la base de datos usando Django JSignature
+        if request.method == 'POST':
+            form_firma_prueba = SignatureForm(request.POST)
+            if form_firma_prueba.is_valid():
+                signature = form_firma_prueba.cleaned_data.get('signature')
+                if signature:
+                    # # Save the signature as an image
+                    # signature_picture = draw_signature(signature)
+
+                    # Save the signature as a file
+                    signature_file_path = draw_signature(signature, as_file=True)
+
+                    # Save the instance of the Jsignature field (neither image nor file) to the database
+                    signature_model = SignatureModel(
+                        signature=signature,
+                        file=signature_file_path,  # This saves the image version of the signature
+                    )
+                    signature_model.save()
+                    # FIN de la prueba de meter una Firma Dibujada en la base de datos usando Django JSignature
+
         if request.method == 'POST' and 'subir_fotos' in request.POST:
             form = FotoEstadoViviendaForm(request.POST, request.FILES)
             if form.is_valid():
@@ -169,6 +196,7 @@ def gestionar_contrato(request, contrato_id=None):
             'contrato': contrato,
             'fotos': fotos,
             'form': form,
+            'form_firma_prueba': form_firma_prueba,
         })
 
     if hasattr(usuario, 'estudiante') and contrato.estudiante.user == usuario:

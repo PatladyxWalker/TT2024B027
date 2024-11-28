@@ -1,6 +1,9 @@
 from django import forms
 from .models import FotoEstadoVivienda, Vivienda, Contrato
 
+# Esto me deja usar el campo JSignatureField en los formularios para Guardar Firmas Dibujadas.
+from jsignature.forms import JSignatureField
+
 """ Formulario para Registrar una nueva Vivienda.
 """
 
@@ -91,3 +94,12 @@ class EditarContratoForm(forms.ModelForm):
             'fecha_inicio': forms.DateInput(attrs={'type': 'date'}),
             'fecha_fin': forms.DateInput(attrs={'type': 'date'}),
         }
+
+
+""" Formulario de prueba para guardar Firmas Dibujadas.
+
+"""
+
+
+class SignatureForm(forms.Form):
+    signature = JSignatureField()

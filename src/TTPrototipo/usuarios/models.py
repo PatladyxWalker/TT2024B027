@@ -3,6 +3,10 @@ from django.contrib.auth.models import User
 import hashlib
 from datetime import date
 
+# Esto me deja usar el campo JSignatureField en los modelos para Guardar Firmas Dibujadas.
+# Fuente: https://github.com/fle/django-jsignature.
+from jsignature.fields import JSignatureField
+
 
 class Estudiante(models.Model):
     id = models.AutoField(primary_key=True)
@@ -195,3 +199,20 @@ class FotoEstadoVivienda(models.Model):
 
     def __str__(self):
         return f"ID: {self.id} - Foto para contrato {self.contrato.id}"
+
+
+""" Modelo de Prueba de Firmas Digitales usando Django JSignature.
+
+El JSignature Field NO se puede renderizar en el panel de administración de Django, pero sí se puede guardar en
+este modelo.
+
+Dejame ver si puedo guardar la firma como una imagen y/o como un archivo. Haré estos 2 campos opcionales por los 
+momentos.
+"""
+
+
+class SignatureModel(models.Model):
+    signature = JSignatureField()
+
+    image = models.ImageField(upload_to='signatures/images/', null=True, blank=True)
+    file = models.FileField(upload_to='signatures/files/', null=True, blank=True)
