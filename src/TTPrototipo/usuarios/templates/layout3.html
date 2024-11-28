@@ -27,41 +27,119 @@
             <h1>TT 2024-B027 </h1>
             <img src="{% static 'images/escudoIPN.png' %}" alt="Escudo IPN" />
         </div>
-        <nav class="navegacion">
-            <ul class="paginacion">
-                <li><a href="{% url 'Inicio' %}">Inicio</a></li>
-                <li><a href="{% url 'listar_viviendas' %}">Vivienda</a></li>
-                <li><a href="{% url 'Inicio' %}">Realizar Consulta</a></li>
-                <li><a href="{% url 'Inicio' %}">Chat</a></li>
-                <li><a href="{% url 'gestionar_contrato' %}">Contratos</a></li>
-                <li><a href="{% url 'Inicio' %}">Cuenta</a></li>
-                <li><a href="{% url 'Inicio' %}">Acerca de Nosotros</a></li>
 
-                {% if user.is_authenticated %}
-                    <!-- Esto solo saldrá si el usuario está autenticado -->
-                    <!-- Nombre de Usuario del Usuario Autenticado con Dropdown
+        <!-- Navbar de Boostrap.
 
-                    Si le haces clic a tu nombre de usuario, se desplegará un menú con la opción de cerrar sesión.
-                    -->
-                    <li class="dropdown" onclick="toggleDropdown(event)">
-                        {# <a style="text-decoration: underline;" href="#" class="dropbtn">{{ user.username }}</a>#}
-                        <a href="#" class="dropbtn"><b>{{ user.username }}</b></a>
+        Al menos es Responsive, por lo que se ve mejor en móviles que el navbar que venía por defecto.
 
-                        {#  Agregué el padding para que el menú de cerrar sesión sea más alto y ancho #}
-                        <div class="dropdown-content">
+        ELIMINAR DESPUES si no es lo que se quería.
 
-                            <!-- Enlace para cerrar sesión -->
-                            <a href="{% url 'logout' %}">Cerrar Sesión</a>
-                        </div>
-                    </li>
+        Le puse el mismo color que el navbar anterior, y puse el color de las letras de cada opción en blanco.
 
+        Puse un icono de Font Awesome para el toggler de la barra de navegación (cuando se contrae la barra de
+        navegación).
 
-                {% else %}
-                    <!-- Enlace para iniciar sesión -->
-                    <li><a href="{% url 'Inicio de Sesion' %}">Iniciar Sesión</a></li>
-                {% endif %}
-            </ul>
+        Agregué más padding horizontal entre cada enlace de la barra de navegación para que se vea más espaciado.
+        -->
+        {#        <nav class="navbar navbar-expand-lg navbar-light custom-navbar">#}
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgba(0, 0, 0, 0.6)">
+
+            <div class="container-fluid">
+                {#        <a class="navbar-brand" href="{% url 'Inicio' %}">TT 2024-B027</a>#}
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+                >
+                    {#                    <span class="navbar-toggler-icon"></span>#}
+                    {#                    Icono de Font Awesome para el toggler de la barra de navegación.#}
+                    <i class="fas fa-bars" style="color: white;"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item" style="padding-right: 20px;">
+                            <a class="nav-link" href="{% url 'Inicio' %}" style="color: white">Inicio</a>
+                        </li>
+                        <li class="nav-item" style="padding-right: 20px;">
+                            <a class="nav-link" href="{% url 'listar_viviendas' %}" style="color: white">Vivienda</a>
+                        </li>
+                        <li class="nav-item" style="padding-right: 20px;">
+                            <a class="nav-link" href="{% url 'Inicio' %}" style="color: white">Realizar Consulta</a>
+                        </li>
+                        <li class="nav-item" style="padding-right: 20px;">
+                            <a class="nav-link" href="{% url 'Inicio' %}" style="color: white">Chat</a>
+                        </li>
+                        <li class="nav-item" style="padding-right: 20px;">
+                            <a class="nav-link" href="{% url 'gestionar_contrato' %}" style="color: white">Contratos</a>
+                        </li>
+                        <li class="nav-item" style="padding-right: 20px;">
+                            <a class="nav-link" href="{% url 'Inicio' %}" style="color: white">Cuenta</a>
+                        </li>
+                        <li class="nav-item" style="padding-right: 20px;">
+                            <a class="nav-link" href="{% url 'Inicio' %}" style="color: white">Acerca de Nosotros</a>
+                        </li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false" style="color: white"
+                                >
+                                    <b>{{ user.username }}</b>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'logout' %}">
+                                            Cerrar Sesión
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="nav-item" style="color: white">
+                                <a class="nav-link" href="{% url 'Inicio de Sesion' %}">Iniciar Sesión</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
         </nav>
+
+    <!-- Navbar que vino con el codigo fuente.
+
+     VOLVER A ACTIVAR DE SER NECESARIO.
+     -->
+{#        <nav class="navegacion">#}
+{#            <ul class="paginacion">#}
+{#                <li><a href="{% url 'Inicio' %}">Inicio</a></li>#}
+{#                <li><a href="{% url 'listar_viviendas' %}">Vivienda</a></li>#}
+{#                <li><a href="{% url 'Inicio' %}">Realizar Consulta</a></li>#}
+{#                <li><a href="{% url 'Inicio' %}">Chat</a></li>#}
+{#                <li><a href="{% url 'gestionar_contrato' %}">Contratos</a></li>#}
+{#                <li><a href="{% url 'Inicio' %}">Cuenta</a></li>#}
+{#                <li><a href="{% url 'Inicio' %}">Acerca de Nosotros</a></li>#}
+{##}
+{#                {% if user.is_authenticated %}#}
+{#                    <!-- Esto solo saldrá si el usuario está autenticado -->#}
+{#                    <!-- Nombre de Usuario del Usuario Autenticado con Dropdown#}
+{##}
+{#                    Si le haces clic a tu nombre de usuario, se desplegará un menú con la opción de cerrar sesión.#}
+{#                    -->#}
+{#                    <li class="dropdown" onclick="toggleDropdown(event)">#}
+{#                         <a style="text-decoration: underline;" href="#" class="dropbtn">{{ user.username }}</a>#}
+{#                        <a href="#" class="dropbtn"><b>{{ user.username }}</b></a>#}
+{##}
+{#                          Agregué el padding para que el menú de cerrar sesión sea más alto y ancho#}
+{#                        <div class="dropdown-content">#}
+{##}
+{#                            <!-- Enlace para cerrar sesión -->#}
+{#                            <a href="{% url 'logout' %}">Cerrar Sesión</a>#}
+{#                        </div>#}
+{#                    </li>#}
+{##}
+{##}
+{#                {% else %}#}
+{#                    <!-- Enlace para iniciar sesión -->#}
+{#                    <li><a href="{% url 'Inicio de Sesion' %}">Iniciar Sesión</a></li>#}
+{#                {% endif %}#}
+{#            </ul>#}
+{#        </nav>#}
     </header>
 
     <div id="content">

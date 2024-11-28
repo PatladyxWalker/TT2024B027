@@ -123,8 +123,20 @@ del nombre de usuario. */
 /*    display: block;*/
 /*}*/
 
-/* Fin de los estilos para el menú desplegable
+/* Fin de los estilos para el menú desplegable */
+
+/* Estilos para personalizar la barra de Navegación de Boostrap que agregué.
 */
+.custom-navbar {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.custom-navbar .nav-link {
+    color: white !important;
+}
+
+
+/* Fin de los estilos para la barra de navegación de Bootstrap que agregué */
 
 
 
