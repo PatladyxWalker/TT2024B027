@@ -38,6 +38,15 @@ not have a save method by default.  To fix this, you need to change the CrearCon
 forms.ModelForm and ensure it is correctly set up to handle the Contrato model.
 
 No pondré los campos para firmar, ya que, cuando creas un contrato, no tiene sentido que el contrato este firmado.
+
+To add a date picker widget to the fecha_inicio and fecha_fin fields in your Django form, you can use the DateInput 
+widget with the attrs parameter to specify the HTML5 date input type. Here is how you can do it:  
+
+1) Import the DateInput widget from django.forms.
+2) Update the CrearContratoForm to use the DateInput widget for the fecha_inicio and fecha_fin fields.
+
+This will render the fecha inicio and fecha fin fields as date pickers in your form, allowing users to select dates 
+from a calendar widget.
 """
 
 
@@ -49,11 +58,23 @@ class CrearContratoForm(forms.ModelForm):
                   'fecha_fin'
                   ]
 
+        # Esto le agregará el widget para seleccionar una fecha de un calendario para los campos de las fechas
+        widgets = {
+            'fecha_inicio': forms.DateInput(attrs={'type': 'date'}),
+            'fecha_fin': forms.DateInput(attrs={'type': 'date'}),
+        }
+
 
 """ Formulario para Editar un Contrato.
 
 En la página de editar un contrato, pondré que el anfitrión pueda editar su propia firma, PERO NO LA FIRMA DEL 
 ESTUDIANTE. QUE EL ANFITRIÓN pueda editar la firma de un estudiante sería muy peligroso.
+
+To add a date picker widget to the fecha_inicio and fecha_fin fields in your Django form, you can use the DateInput 
+widget with the attrs parameter to specify the HTML5 date input type. Here is how you can do it:  
+
+1) Import the DateInput widget from django.forms.
+2) Update the EditarContratoForm to use the DateInput widget for the fecha_inicio and fecha_fin fields.
 """
 
 
@@ -64,3 +85,9 @@ class EditarContratoForm(forms.ModelForm):
                   'firma_anfitrion', 'fotos_subidas_anfitrion', 'fotos_subidas_estudiante', 'cancelado', 'fecha_inicio',
                   'fecha_fin'
                   ]
+
+        # Esto le agregará el widget para seleccionar una fecha de un calendario para los campos de las fechas
+        widgets = {
+            'fecha_inicio': forms.DateInput(attrs={'type': 'date'}),
+            'fecha_fin': forms.DateInput(attrs={'type': 'date'}),
+        }
