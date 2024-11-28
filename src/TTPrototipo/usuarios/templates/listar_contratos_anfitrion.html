@@ -51,14 +51,16 @@
                     <!-- Botón para Gestionar el Contrato -->
                     <a href="{% url 'gestionar_contrato' contrato.id %}" class="btn btn-secondary">
                         Gestionar Contrato
-                    </a> |
+                    </a>
                     <!-- Botón para Editar el Contrato -->
-                    <a href="#">Editar</a> |
+                    <a href="#" class="btn btn-secondary">
+                        Editar
+                    </a>
 
                     <!-- Botón para Eliminar el Contrato -->
                     <form action="#" method="POST" style="display:inline;">
                         {% csrf_token %}
-                        <button type="submit">Eliminar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
                     </form>
                 </td>
             </tr>
