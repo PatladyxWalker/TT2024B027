@@ -21,7 +21,7 @@
     <!-- Fin del mensaje flash de confirmación. -->
 
     <!-- Botón o Enlace para Crear un Nuevo Contrato -->
-    <a href="{% url 'crear_contrato' %}">Crear un Nuevo Contrato</a>
+    <a href="{% url 'crear_contrato'  %}" class="btn btn-primary mb-3">Crear un Nuevo Contrato</a>
 
     <!-- Lista de Contratos -->
     <!-- Tabla con la Lista de Contratos -->
@@ -49,7 +49,9 @@
 
                 <td>
                     <!-- Botón para Gestionar el Contrato -->
-                    <a href="{% url 'gestionar_contrato' contrato.id %}">Gestionar Contrato</a> |
+                    <a href="{% url 'gestionar_contrato' contrato.id %}" class="btn btn-secondary">
+                        Gestionar Contrato
+                    </a> |
                     <!-- Botón para Editar el Contrato -->
                     <a href="#">Editar</a> |
 
