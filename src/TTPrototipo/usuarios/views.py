@@ -30,7 +30,7 @@ def listar_viviendas(request):
 
     anfitrion = request.user.anfitrion
     viviendas = Vivienda.objects.filter(anfitrion=anfitrion)
-    return render(request, 'listar_viviendas.html', {'viviendas': viviendas})
+    return render(request, 'viviendas/listar_viviendas.html', {'viviendas': viviendas})
 
 
 """ Vista para Editar una Vivienda.
@@ -62,7 +62,7 @@ def editar_vivienda(request, vivienda_id):
     else:
         form = ViviendaForm(instance=vivienda)
 
-    return render(request, 'editar_vivienda.html', {'form': form})
+    return render(request, 'viviendas/editar_vivienda.html', {'form': form})
 
 
 """ Vista para Eliminar una Vivienda.
@@ -87,7 +87,7 @@ def eliminar_vivienda(request, vivienda_id):
         messages.success(request, "Vivienda eliminada exitosamente.")
         return redirect('listar_viviendas')  # Redirige después de la eliminación
 
-    return render(request, 'confirmar_eliminar_vivienda.html', {'vivienda': vivienda})
+    return render(request, 'viviendas/confirmar_eliminar_vivienda.html', {'vivienda': vivienda})
 
 
 """ Vista para ver la Lista de Contratos de una Anfitrión, y para Gestionar un Contrato. Por gestionar un contrato, me
@@ -128,12 +128,12 @@ def gestionar_contrato(request, contrato_id=None):
                 estudiante.save()
                 return redirect('gestionar_contrato', contrato_id=contrato.id)
 
-            return render(request, 'seleccionar_vivienda.html', {'viviendas': viviendas_disponibles})
+            return render(request, 'viviendas/seleccionar_vivienda.html', {'viviendas': viviendas_disponibles})
 
         if hasattr(usuario, 'anfitrion'):
             anfitrion = usuario.anfitrion
             contratos = Contrato.objects.filter(anfitrion=anfitrion)
-            return render(request, 'listar_contratos_anfitrion.html', {'contratos': contratos})
+            return render(request, 'contratos/listar_contratos_anfitrion.html', {'contratos': contratos})
 
         return HttpResponseForbidden("No tienes permisos para acceder a esta página.")
 
@@ -165,7 +165,7 @@ def gestionar_contrato(request, contrato_id=None):
             contrato.save()
             messages.success(request, "Has firmado el contrato.")
 
-        return render(request, 'gestionar_contrato_anfitrion.html', {
+        return render(request, 'contratos/gestionar_contrato_anfitrion.html', {
             'contrato': contrato,
             'fotos': fotos,
             'form': form,
@@ -196,7 +196,7 @@ def gestionar_contrato(request, contrato_id=None):
             contrato.save()
             messages.success(request, "Has firmado el contrato.")
 
-        return render(request, 'gestionar_contrato_estudiante.html', {
+        return render(request, 'contratos/gestionar_contrato_estudiante.html', {
             'contrato': contrato,
             'fotos': fotos,
             'form': form,
@@ -270,7 +270,7 @@ def seleccionar_vivienda(request):
         messages.success(request, "El contrato ha sido generado correctamente.")
         return redirect('generar_contrato_pdf', contrato_id=contrato.id)
 
-    return render(request, 'seleccionar_vivienda.html', {'viviendas': viviendas})
+    return render(request, 'viviendas/seleccionar_vivienda.html', {'viviendas': viviendas})
 
 
 @login_required
@@ -353,7 +353,7 @@ def generar_contrato_pdf(request, contrato_id):
         fotos = contrato.fotos_estado.all()
         fotos_urls = [request.build_absolute_uri(settings.MEDIA_URL + foto.imagen.name) for foto in fotos]
 
-        html_content = render_to_string("contrato.html", {
+        html_content = render_to_string("contratos/contrato.html", {
             "contrato": contrato,
             "ciudad": ciudad,
             "fecha": fecha,
@@ -370,7 +370,7 @@ def generar_contrato_pdf(request, contrato_id):
         return response
 
     # Renderizar el formulario para generar el contrato
-    return render(request, "formulario_contrato.html", {"contrato": contrato})
+    return render(request, "contratos/formulario_contrato.html", {"contrato": contrato})
 
 
 # Firmar Contrato
@@ -685,7 +685,7 @@ def Registrovivienda(request):
 
         # return redirect('Inicio de Sesion')
 
-    return render(request, 'Registrovivienda.html')
+    return render(request, 'viviendas/Registrovivienda.html')
 
 
 """ Vista para Crear un Contrato.
@@ -720,7 +720,7 @@ def crear_contrato(request):
         form = CrearContratoForm()
 
         # Esto renderiza el Formulario para Crear un Contrato
-        return render(request, 'crear-contrato.html', {'form': form})
+        return render(request, 'contratos/crear-contrato.html', {'form': form})
 
     # if request.method == 'POST':
     #     # Verificar que el usuario esté autenticado y que tenga un perfil de anfitrión
@@ -811,7 +811,7 @@ def editar_contrato(request, contrato_id):
     else:
         form = EditarContratoForm(instance=contrato)
 
-        return render(request, 'editar_contrato.html', {'form': form})
+        return render(request, 'contratos/editar_contrato.html', {'form': form})
 
 
 """ Vista para Eliminar un Contrato.
@@ -842,7 +842,7 @@ def eliminar_contrato(request, contrato_id):
 
     else:
         # Esto le pregunta al usuario si realmente quiere borrar el Contrato seleccionado
-        return render(request, 'confirmar-eliminar-contrato.html', {'contrato': contrato})
+        return render(request, 'contratos/confirmar-eliminar-contrato.html', {'contrato': contrato})
 
 
 """ Formulario de Inicio de Sesión.
@@ -872,18 +872,18 @@ def login_view(request):
                 messages.error(request, "No se pudo determinar el rol del usuario.")
 
                 # Esto redirige al usuario a esta misma página
-                return render(request, 'InicioSesion.html')
+                return render(request, 'inicio/InicioSesion.html')
                 # return redirect('login')
         else:
             messages.error(request, "Nombre de usuario o contraseña incorrectos.")
 
             # Esto redirige al usuario a esta misma página
-            return render(request, 'InicioSesion.html')
+            return render(request, 'inicio/InicioSesion.html')
             # return redirect('login')
 
     # Esto se ejecuta si el método de la petición es GET, para así mostrar el formulario de inicio de sesión
     else:
-        return render(request, 'InicioSesion.html')
+        return render(request, 'inicio/InicioSesion.html')
 
 
 def logout_view(request):
@@ -893,13 +893,13 @@ def logout_view(request):
 
 @login_required
 def InicioAnfitrion(request):
-    return render(request, 'InicioAnfitrion.html')
+    return render(request, 'inicio/InicioAnfitrion.html')
 
 
 @login_required
 def InicioEstudiante(request):
-    return render(request, 'InicioEstudiante.html')
+    return render(request, 'inicio/InicioEstudiante.html')
 
 
 def Inicio(request):
-    return render(request, 'Inicio.html')
+    return render(request, 'inicio/Inicio.html')
