@@ -6,7 +6,7 @@
 
     <h1>Contratos Asociados</h1>
 
-        <!-- Aquí imprimiré un mensaje flash de confirmación cuando el anfitrión registre una vivienda. -->
+    <!-- Aquí imprimiré un mensaje flash de confirmación cuando el anfitrión registre una vivienda. -->
     {% if messages %}
 
         <!-- Quiero que el mensaje sea verde, y que no salgan los puntos de las listas. -->
@@ -24,7 +24,12 @@
     <a href="{% url 'crear_contrato'  %}" class="btn btn-primary mb-3">Crear un Nuevo Contrato</a>
 
     <!-- Lista de Contratos -->
-    <!-- Tabla con la Lista de Contratos -->
+    {# Tabla con la Lista de Contratos. #}
+    {##}
+    {# Para meterle la ID del Contrato Seleccionado como parámetro a las URLs de Gestionar Contrato, Editar, Contrato,#}
+    {# y Eliminar Contrato, utilizo la variable contrato.id en el atributo href de los enlaces. El "contrato.id" es la#}
+    {# forma en Jinja y Django para meterle el parámetro del ID del contrato a las URLs de los enlaces al usar #}
+    {# 'url'. #}
     <table>
         <thead>
             <tr>
@@ -48,16 +53,16 @@
                 </td>
 
                 <td>
-                    <!-- Botón para Gestionar el Contrato -->
+                    <!-- Botón para Gestionar el Contrato Seleccionado -->
                     <a href="{% url 'gestionar_contrato' contrato.id %}" class="btn btn-secondary">
                         Gestionar Contrato
                     </a>
-                    <!-- Botón para Editar el Contrato -->
-                    <a href="#" class="btn btn-secondary">
+                    <!-- Botón para Editar el Contrato Seleccionado -->
+                    <a href="{% url 'editar_contrato' contrato.id %}" class="btn btn-secondary">
                         Editar
                     </a>
 
-                    <!-- Botón para Eliminar el Contrato -->
+                    <!-- Botón para Eliminar el Contrato Seleccionado -->
                     <form action="#" method="POST" style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger">Eliminar</button>

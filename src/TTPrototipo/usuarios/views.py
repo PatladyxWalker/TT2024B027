@@ -84,9 +84,11 @@ def eliminar_vivienda(request, vivienda_id):
     return render(request, 'confirmar_eliminar_vivienda.html', {'vivienda': vivienda})
 
 
-""" Vista para ver la Lista de Contratos de una Anfitrión, y para Modificar o Gestionar un Contrato.
+""" Vista para ver la Lista de Contratos de una Anfitrión, y para Gestionar un Contrato. Por gestionar un contrato, me
+refiero a poder firmar, agregarle fotos a un contrato, y hasta generar ese contrato en PDF. No puedes editar un contrato 
+desde aquí.
 
-Esta vista se usa para 2 páginas distintas: para ver la lista de Contratos, y para Editar un Contrato.
+Esta vista se usa para 2 páginas distintas: para ver la lista de Contratos, y para Firmar un Contrato.
 """
 
 
@@ -763,6 +765,50 @@ def crear_contrato(request):
     #     return render(request, 'crear-contrato.html', {
     #         'estudiantes': estudiantes, 'viviendas': viviendas
     #     })
+
+
+""" Vista para Editar un Contrato.
+
+Here is the editar_contrato() view, which allows you to edit a selected contract from the Contrato model in a similar 
+way to how the editar_vivienda() view edits an instance of an apartment from the Vivienda model.
+
+This view checks if the user has permission to edit the contract, processes the form submission, and renders the form 
+for editing the contract.
+"""
+
+
+@login_required
+def editar_contrato(request, contrato_id):
+
+    # Esto verifica que el contrato exista, y agarra la instancia del contrato del modelo de Contrato
+    contrato = get_object_or_404(Contrato, id=contrato_id)
+
+    # Verificar permisos: solo el anfitrión asociado puede editar un contrato
+    if request.user.anfitrion != contrato.anfitrion:
+        messages.error(request, "No tienes permiso para editar este contrato.")
+
+        # Si el usuario es un estudiante, se le redirige a la página de inicio para estudiantes
+        return redirect('Inicio de Estudiante')
+
+    # Si el Anfitrión Envía el Formulario
+    if request.method == 'POST':
+        form = CrearContratoForm(request.POST, request.FILES, instance=contrato)
+
+        # Esto valida el formulario
+        if form.is_valid():
+
+            # Esto actualiza el contrato seleccionado en la base de datos
+            form.save()
+            messages.success(request, "Contrato actualizado exitosamente.")
+
+            # Te redirige a la lista de contratos
+            return redirect('gestionar_contrato')
+
+    # Esto renderiza el Formulario para Editar un Contrato
+    else:
+        form = CrearContratoForm(instance=contrato)
+
+        return render(request, 'editar_contrato.html', {'form': form})
 
 
 """ Formulario de Inicio de Sesión.

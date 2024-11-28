@@ -23,7 +23,7 @@ urlpatterns = [
                   # Para firmar el contrato seleccionado. Creo que es una API.
                   path('contrato/firmar/<int:contrato_id>/', views.firmar_contrato, name='firmar_contrato'),
                   path('contrato/generar-pdf/<int:contrato_id>/', views.generar_contrato_pdf,
-                       name='generar_contrato_pdf'),    # Para convertir el Contrato seleccionado a un archivo PDF
+                       name='generar_contrato_pdf'),  # Para convertir el Contrato seleccionado a un archivo PDF
 
                   # Para subir fotos del estado de la vivienda al Contrato Seleccionado
                   path('contrato/subir-fotos/<int:contrato_id>/', views.subir_fotos, name='subir_fotos'),
@@ -31,15 +31,22 @@ urlpatterns = [
                   # Para gestionar el contrato seleccionado
                   path('contrato/gestionar/<int:contrato_id>/', views.gestionar_contrato, name='gestionar_contrato'),
 
-                  # Para gestionar Todos los Contratos. TIENE EL MISMO VIEW QUE EL ANTERIOR. BUG.
+                  # Muestra la Lista de Todos los Contratos. TIENE EL MISMO VIEW QUE EL ANTERIOR.
                   path('contrato/gestionar/', views.gestionar_contrato, name='gestionar_contrato'),
 
                   # Para cancelar el contrato seleccionado, si el contrato no está firmado.
                   path('contrato/cancelar/<int:contrato_id>/', views.cancelar_contrato, name='cancelar_contrato'),
+
+                  # Para Editar un Contrato
+                  path('contrato/editar/<int:contrato_id>/', views.editar_contrato, name='editar_contrato'),
                   # Fin de las URLs de los Contratos.
 
                   path('viviendas/', views.listar_viviendas, name='listar_viviendas'),
+
+                  # Para crear una Vivienda
                   path('viviendas/registro/', views.Registrovivienda, name='Registro de vivienda'),
+
+                  # Para Editar una Vivienda
                   path('viviendas/editar/<int:vivienda_id>/', views.editar_vivienda, name='editar_vivienda'),
                   path('viviendas/eliminar/<int:vivienda_id>/', views.eliminar_vivienda, name='eliminar_vivienda'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
