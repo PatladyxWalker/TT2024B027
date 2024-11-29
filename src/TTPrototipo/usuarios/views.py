@@ -134,6 +134,9 @@ firma del Jsignature, NO la del hash. Ya no quiero generar el hash.
 Ya puedo guardar la firma dibujada del anfitrión correctamente en el campo de la firma del anfitrión como una imagen 
 PNG, y me guarda la firma dibujada.
 
+To change the name of the generated image to include the username of the logged user, you can retrieve the username 
+from the request.user object and concatenate it to the filename. I'm retrieving the username of the logged user and 
+I use it to create a new filename for the signature image. The image is then saved with this new filename.
 """
 
 
@@ -143,6 +146,12 @@ def gestionar_contrato(request, contrato_id=None):
     Vista general para gestionar contratos.
     """
     usuario = request.user
+
+    # Get the username of the logged user
+    username = request.user.username
+
+    # Concatenate the username to the signature image's filename
+    filename = f'signature_{username}.png'
 
     # Caso 1: Sin contrato_id
     if contrato_id is None:
@@ -183,8 +192,7 @@ def gestionar_contrato(request, contrato_id=None):
         fotos = contrato.fotos_estado.all()
         form = FotoEstadoViviendaForm()
 
-        # BOOKMARK
-        # Formulario de prueba para guardar Firmas Dibujadas. Esto activa el canvas para dibujar
+        # Formulario para guardar Firmas Dibujadas. Esto activa el canvas para dibujar
         form_firma_dibujada = SignatureForm()
 
         # form_firma_prueba = SignatureForm()
@@ -268,7 +276,7 @@ def gestionar_contrato(request, contrato_id=None):
                     # )
 
                     # Metiendo de manera permanente la imagen de la firma del anfitrión en el modelo de Contrato
-                    contrato.firma_anfitrion.save('signature.png', ContentFile(image_content))
+                    contrato.firma_anfitrion.save(filename, ContentFile(image_content))
 
                     contrato.save()  # Guarda todos los cambios hechos en el modelo de Contrato
                     # FIN del snippet que mete una Firma Dibujada en la base de datos usando Django JSignature
