@@ -150,7 +150,7 @@ def gestionar_contrato(request, contrato_id=None):
     # Get the username of the logged user
     username = request.user.username
 
-    # Concatenate the username to the signature image's filename
+    # Concatenate the username to the signature image's filename. This will be used later to save the image.
     filename = f'signature_{username}.png'
 
     # Caso 1: Sin contrato_id
@@ -243,7 +243,6 @@ def gestionar_contrato(request, contrato_id=None):
                 messages.error(request, "No se pudo subir la foto. Verifica el formulario.")
 
         # Esto firma el contrato. Lo voy a modificar para que meta una imagen en lugar de un hash.
-        # BOOKMARK
         if request.method == 'POST' and 'firmar' in request.POST:
 
             # Necesitas haber subido al menos una foto antes de firmar el contrato
@@ -447,6 +446,13 @@ Entonces, los pasos a seguir para arreglar este bug y agarrar el tipo de inmuebl
 4) En el view de generar_contrato_pdf(), agarrare el tipo del inmueble del campo “tipo de inmueble” del modelo de 
 Vivienda.
 
+En ningun momento se estaban agarrando las firmas, fueran en hash, o fueran en imagen. Voy a agarrar las firmas
+como imagenes, y las intentaré meter en el PDF del contrato.
+
+The issue is that the firma_anfitrion field is being accessed directly as a URL, but it should be accessed through the 
+settings.MEDIA_URL to generate the correct URL for the image.  Solution: Use settings.MEDIA_URL to generate the correct 
+URL for the signature image. This change ensures that the URL for the signature image is correctly generated using
+settings.MEDIA_URL.
 """
 
 
@@ -456,8 +462,6 @@ def generar_contrato_pdf(request, contrato_id):
     if request.method == "POST":
         ciudad = request.POST.get("ciudad", "Ciudad de México")  # Valor por defecto
         fecha = request.POST.get("fecha", "")
-
-        # BOOKMARK
 
         # Esto debería resolver el bug que no me deja generar el contrato.
         # Agarrando el tipo de inmueble del campo "Tipo de Inmueble" del modelo de Vivienda.
@@ -477,15 +481,22 @@ def generar_contrato_pdf(request, contrato_id):
         fotos = contrato.fotos_estado.all()
         fotos_urls = [request.build_absolute_uri(settings.MEDIA_URL + foto.imagen.name) for foto in fotos]
 
+        # Esto agarra la imagen con la Firma del Anfitrión del Contrato Seleccionado.
+        # Correctly generate the URL for the signature image.
+        firma_anfitrion = request.build_absolute_uri(settings.MEDIA_URL + contrato.firma_anfitrion.name)
+
+        # firma_anfitrion = contrato.firma_anfitrion.url
+
         html_content = render_to_string("contratos/contrato.html", {
             "contrato": contrato,
             "ciudad": ciudad,
             "fecha": fecha,
-            "tipo_inmueble": tipo_inmueble,  # DEBUGGEO: desactivare esto para ver si puedo generar el contrato
+            "tipo_inmueble": tipo_inmueble,
             "ubicacion": ubicacion,
             "nombre_arrendador": nombre_arrendador,
             "nombre_arrendatario": nombre_arrendatario,
             "fotos": fotos_urls,
+            "firma_anfitrion": firma_anfitrion,  # Mete la imagen de la firma del anfitrión en el PDF
         })
 
         pdf = HTML(string=html_content).write_pdf()

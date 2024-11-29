@@ -207,19 +207,27 @@
     <p><strong>Fecha de Inicio:</strong> {{ contrato.fecha_inicio }}</p>
     <p><strong>Fecha de Fin:</strong> {{ contrato.fecha_fin }}</p>
 
+    <!-- Firma del Estudiante -->
+    {# Si el estudiante ha firmado, se muestra la imagen de la firma. De lo contrario, se muestra un mensaje que diga #}
+    {# "Firma Pendiente". #}
+    {##}
+    {#    Se debe usar la notación "firma_estudiante", NO "contrato.firma_estudiante". #}
     <div class="firma">
         <h3>Firma del Estudiante</h3>
         {% if contrato.firma_estudiante %}
-        <img src="{{ contrato.firma_estudiante }}" alt="Firma del Estudiante">
+        <img src="{{ firma_estudiante }}" alt="Firma del Estudiante">
         {% else %}
         <p>Firma Pendiente</p>
         {% endif %}
     </div>
 
+    <!-- Firma del Anfitrión -->
+    {# Si el anfitrión ha firmado, se muestra la imagen de la firma. De lo contrario, se muestra un mensaje que diga #}
+    {# "Firma Pendiente". #}
     <div class="firma">
         <h3>Firma del Anfitrión</h3>
         {% if contrato.firma_anfitrion %}
-        <img src="{{ contrato.firma_anfitrion }}" alt="Firma del Anfitrión">
+            <img src="{{ firma_anfitrion }}" alt="Firma del Anfitrión">
         {% else %}
         <p>Firma Pendiente</p>
         {% endif %}
