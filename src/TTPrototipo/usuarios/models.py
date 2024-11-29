@@ -114,6 +114,9 @@ Los archivos que se deben adjuntar deben ser obligatoriamente PDFs. de lo contra
 al descargar el documento, y no podrás abrir esos contratos.
 
 Aquí es que están las funciones para cancelar un contrato, y la que verifica si puede cancelarse.
+
+Tendré que modificar el campo de “firma” para que acepte archivos o imagenes (ImageField o FileField), y le meteré la 
+firma generada por Jsignature cuando el usuario la dibuje y clique en “Firmar” en la pagina de “gestionar contratos”. 
 """
 
 
@@ -131,7 +134,12 @@ class Contrato(models.Model):
 
     firmado = models.BooleanField(default=False)
     firma_estudiante = models.TextField(null=True, blank=True)  # Firma digital del estudiante
-    firma_anfitrion = models.TextField(null=True, blank=True)  # Firma digital del anfitrión
+
+    # Firma del anfitrión (OPCIONAL)
+    firma_anfitrion = models.ImageField(upload_to="firmas/firmas_anfitriones/", null=True, blank=True)
+
+    # firma_anfitrion = models.TextField(null=True, blank=True)  # Firma digital del anfitrión
+
     fotos_subidas_anfitrion = models.BooleanField(default=False)
     fotos_subidas_estudiante = models.BooleanField(default=False)
     cancelado = models.BooleanField(default=False)
@@ -208,6 +216,8 @@ este modelo.
 
 Dejame ver si puedo guardar la firma como una imagen y/o como un archivo. Haré estos 2 campos opcionales por los 
 momentos.
+
+NO USAR. ESTO ES SOLO DE PRUEBA.
 """
 
 

@@ -57,29 +57,35 @@
     <!-- Sección Firmar el Contrato Seleccionado -->
     <h3>Firmar Contrato</h3>
 
-    <!-- Prueba para usar el Canvar de Django JSisngature para dibujar una Firma -->
-    {{ form_firma_prueba.media }}
-    <form action="" method="post">
-        {{ form_firma_prueba }}
-        <input type="submit" value="Save" />
-        {% csrf_token %}
-    </form>
+    {#    <!-- Prueba para usar el Canvas de Django JSignature para dibujar una Firma -->#}
+    {#    {{ form_firma_prueba.media }}#}
+    {#    <form action="" method="post">#}
+    {#        {{ form_firma_prueba }}#}
+    {#        <input type="submit" value="Save" />#}
+    {#        {% csrf_token %}#}
+    {#    </form>#}
 
     {% if contrato.puede_firmarse %}
+
+        <!-- Formulario para que el Anfitrión firme. El usuario deberá dibujar la firma -->
         <form method="post">
             {% csrf_token %}
 
-
+            {#  Esto me permite usar la biblioteca Signature Pad para dejarme dibujar una firma en la pantalla #}
+            {# Es decir, esto crea el Canvas para que puedas dibujar la firma. #}
+            {{ form_firma_dibujada.media }}
+            {{ form_firma_dibujada }}
 
             {#  Canvas para dibujar la Firma del Anfitrión #}
-{#            <div>#}
-{#                <canvas id="signature-pad" width="400" height="200" style="border: 1px solid #000;"></canvas>#}
-{#                <button type="button" id="clear">Clear</button>#}
-{#            </div>#}
-{#            <input type="hidden" name="signature" id="signature">#}
+            {#            <div>#}
+            {#                <canvas id="signature-pad" width="400" height="200" style="border: 1px solid #000;"></canvas>#}
+            {#                <button type="button" id="clear">Clear</button>#}
+            {#            </div>#}
+            {#            <input type="hidden" name="signature" id="signature">#}
 
             <br>
 
+            <!-- Esto envía la Firma del Anfitrión al back-end -->
             <button type="submit" name="firmar">Firmar Contrato</button>
         </form>
     {% else %}

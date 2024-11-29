@@ -126,9 +126,10 @@ This code correctly reads the content of the generated signature file and saves 
 Estoy haciendo una prueba para dibujar una firma, y meterlo en un modelo de Prueba usando Jsignature. Ya se 
 puede hacer: dibujas una firma, clicas en "Save", y se genera una imagen PNG con la firma, y se mete
 en la carpeta "firmas/archivos" de la carpeta "media". Se mete en el modelo de SignatureModel, en el campo de
-"file".
+"file". Es algo complicado de usar.
 
-Es algo complicado de usar.
+Ahora, voy a modificar el view de gestionar_contrato del anfitrión para que, cuando cliques en “Firmar”, se envíe es la 
+firma del Jsignature, NO la del hash. Ya no quiero generar el hash.
 """
 
 
@@ -180,40 +181,42 @@ def gestionar_contrato(request, contrato_id=None):
 
         # BOOKMARK
         # Formulario de prueba para guardar Firmas Dibujadas. Esto activa el canvas para dibujar
-        form_firma_prueba = SignatureForm()
+        form_firma_dibujada = SignatureForm()
 
-        # Prueba para meter una Firma Dibujada en la base de datos usando Django JSignature
-        if request.method == 'POST':
-            form_firma_prueba = SignatureForm(request.POST)
-            if form_firma_prueba.is_valid():
-                signature = form_firma_prueba.cleaned_data.get('signature')
-                if signature:
-                    # # Save the signature as an image
-                    # signature_picture = draw_signature(signature)
+        # form_firma_prueba = SignatureForm()
 
-                    # Save the signature as a file
-                    signature_file_path = draw_signature(signature, as_file=True)
-
-                    # Read the file content
-                    with open(signature_file_path, 'rb') as f:
-                        image_content = f.read()
-
-                    # # Decode the base64 image and save it to the media folder
-                    # # image_data = base64.b64decode(signature_file_path)
-                    # image = ContentFile(signature_file_path, 'signature.png')
-
-                    # Save the instance of the Jsignature field (neither image nor file) to the database
-                    signature_model = SignatureModel(
-                        signature=signature,
-                        # file=signature_file_path,  # This saves the image version of the signature
-                    )
-                    signature_model.file.save('signature.png', ContentFile(image_content))
-
-                    # signature_model.file.save(signature_file_path)
-                    # signature_model.file.save('signature.png', image)
-                    # signature_model.file.save('signature.png', signature_file_path)
-                    signature_model.save()
-                    # FIN de la prueba de meter una Firma Dibujada en la base de datos usando Django JSignature
+        # # Prueba para meter una Firma Dibujada en la base de datos usando Django JSignature
+        # if request.method == 'POST':
+        #     form_firma_prueba = SignatureForm(request.POST)
+        #     if form_firma_prueba.is_valid():
+        #         signature = form_firma_prueba.cleaned_data.get('signature')
+        #         if signature:
+        #             # # Save the signature as an image
+        #             # signature_picture = draw_signature(signature)
+        #
+        #             # Save the signature as a file
+        #             signature_file_path = draw_signature(signature, as_file=True)
+        #
+        #             # Read the file content
+        #             with open(signature_file_path, 'rb') as f:
+        #                 image_content = f.read()
+        #
+        #             # # Decode the base64 image and save it to the media folder
+        #             # # image_data = base64.b64decode(signature_file_path)
+        #             # image = ContentFile(signature_file_path, 'signature.png')
+        #
+        #             # Save the instance of the Jsignature field (neither image nor file) to the database
+        #             signature_model = SignatureModel(
+        #                 signature=signature,
+        #                 # file=signature_file_path,  # This saves the image version of the signature
+        #             )
+        #             signature_model.file.save('signature.png', ContentFile(image_content))
+        #
+        #             # signature_model.file.save(signature_file_path)
+        #             # signature_model.file.save('signature.png', image)
+        #             # signature_model.file.save('signature.png', signature_file_path)
+        #             signature_model.save()
+        #             # FIN de la prueba de meter una Firma Dibujada en la base de datos usando Django JSignature
 
         if request.method == 'POST' and 'subir_fotos' in request.POST:
             form = FotoEstadoViviendaForm(request.POST, request.FILES)
@@ -227,20 +230,57 @@ def gestionar_contrato(request, contrato_id=None):
             else:
                 messages.error(request, "No se pudo subir la foto. Verifica el formulario.")
 
+        # Esto firma el contrato. Lo voy a modificar para que meta una imagen en lugar de un hash.
+        # BOOKMARK
         if request.method == 'POST' and 'firmar' in request.POST:
+
+            # Necesitas haber subido al menos una foto antes de firmar el contrato
             if not contrato.fotos_estado.exists():
                 messages.error(request, "Debes subir al menos una foto antes de firmar el contrato.")
                 return redirect('gestionar_contrato', contrato_id=contrato.id)
 
-            contrato.firma_anfitrion = contrato.generar_firma(usuario)
-            contrato.save()
+            # Esto agarra la Firma Dibujada, la convierte en imagen, y la guarda en el modelo de Contrato
+
+            # Detecto si el usuario dibujó la firma usando mi Formulario de Firmas usando Jsignature
+            form_firma_dibujada = SignatureForm(request.POST)
+
+            # Esto valida la firma dibujada
+            if form_firma_dibujada.is_valid():
+
+                # Agarra la firma dibujada del campo que te deja dibujar la firma del formulario
+                signature = form_firma_dibujada.cleaned_data.get('signature')
+                if signature:
+                    # Esto convierte la firma dibujada en una imagen como un archivo temporal
+                    signature_file_path = draw_signature(signature, as_file=True)
+
+                    # Abre la imagen de la firma, y luego la lee. Necesito esto antes de poder guardar la imagen.
+                    with open(signature_file_path, 'rb') as f:
+                        image_content = f.read()
+
+                    # # Save the instance of the Jsignature field (neither image nor file) to the database
+                    # signature_model = SignatureModel(
+                    #     signature=signature,
+                    #     # file=signature_file_path,  # This saves the image version of the signature
+                    # )
+
+                    # Metiendo de manera permanente la imagen de la firma del anfitrión en el modelo de Contrato
+                    contrato.firma_anfitrion.save('signature.png', ContentFile(image_content))
+
+                    contrato.save()  # Guarda todos los cambios hechos en el modelo de Contrato
+                    # FIN del snippet que mete una Firma Dibujada en la base de datos usando Django JSignature
+
+            # # Esto genera la firma creando un Hash. MODIFICAR.
+            # contrato.firma_anfitrion = contrato.generar_firma(usuario)
+
+            contrato.save()  # Guarda la firma en el modelo de Contrato
             messages.success(request, "Has firmado el contrato.")
 
         return render(request, 'contratos/gestionar_contrato_anfitrion.html', {
             'contrato': contrato,
             'fotos': fotos,
             'form': form,
-            'form_firma_prueba': form_firma_prueba,
+            'form_firma_dibujada': form_firma_dibujada,  # Formulario de para Dibujar una Firma
+            # 'form_firma_prueba': form_firma_prueba,
         })
 
     if hasattr(usuario, 'estudiante') and contrato.estudiante.user == usuario:
