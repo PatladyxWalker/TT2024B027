@@ -512,6 +512,16 @@ The issue is that the firma_anfitrion field is being accessed directly as a URL,
 settings.MEDIA_URL to generate the correct URL for the image.  Solution: Use settings.MEDIA_URL to generate the correct 
 URL for the signature image. This change ensures that the URL for the signature image is correctly generated using
 settings.MEDIA_URL.
+
+El tipo de inmueble lo debo agarrar de la página de Generar el Contrato de Arrendamiento (el que tiene
+el botón de "Generar Contrato", y genera el contrato en PDF). Aquí, lo estoy agarrando del modelo de Contrato. Eso
+no se hace. Voy a volver a modificar este view para que el tipo de Inmueble lo agarre del formulario del
+template de Generar el Contrato de Arrendamiento.
+
+Ahora quiero que, al editar el tipo de inmueble desde el template de Gestionar el Contrato de Arrendamiento, quiero que 
+también se modifique en el modelo de Vivienda para el Contrato seleccionado, para que así se modifique en la base de 
+datos.
+
 """
 
 
@@ -527,6 +537,10 @@ def generar_contrato_pdf(request, contrato_id):
         # Agarrando el tipo de inmueble del campo "Tipo de Inmueble" del modelo de Vivienda.
         # Cambié de opinion, y el tipo de inmueble lo tomaré del formulario.
         tipo_inmueble = request.POST.get("tipo_inmueble", "Inmueble")
+
+        # Update the tipo_inmueble field in the Vivienda model with the new value from the template's form
+        contrato.vivienda.tipo_inmueble = tipo_inmueble
+        contrato.vivienda.save()
 
         # tipo_inmueble = contrato.vivienda.tipo_inmueble
 
