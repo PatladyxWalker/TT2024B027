@@ -21,6 +21,9 @@
 </head>
 
 <body>
+
+    {#    Este es el Layout / Disposición para los Anfitriones  #}
+
     <header class="header">
         <div id="cabecera">
             <img src="{% static 'images/escudoESCOM.png' %}" alt="Escudo ESCOM" />
@@ -56,25 +59,25 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item" style="padding-right: 20px;">
-                            <a class="nav-link" href="{% url 'Inicio' %}" style="color: white">Inicio</a>
+                            <a class="nav-link" href="{% url 'Inicio de Anfitrion' %}" style="color: white">Inicio</a>
                         </li>
                         <li class="nav-item" style="padding-right: 20px;">
                             <a class="nav-link" href="{% url 'listar_viviendas' %}" style="color: white">Vivienda</a>
                         </li>
                         <li class="nav-item" style="padding-right: 20px;">
-                            <a class="nav-link" href="{% url 'Inicio' %}" style="color: white">Realizar Consulta</a>
+                            <a class="nav-link" href="{% url 'Inicio de Anfitrion' %}" style="color: white">Realizar Consulta</a>
                         </li>
                         <li class="nav-item" style="padding-right: 20px;">
-                            <a class="nav-link" href="{% url 'Inicio' %}" style="color: white">Chat</a>
+                            <a class="nav-link" href="{% url 'Inicio de Anfitrion' %}" style="color: white">Chat</a>
                         </li>
                         <li class="nav-item" style="padding-right: 20px;">
                             <a class="nav-link" href="{% url 'gestionar_contrato' %}" style="color: white">Contratos</a>
                         </li>
                         <li class="nav-item" style="padding-right: 20px;">
-                            <a class="nav-link" href="{% url 'Inicio' %}" style="color: white">Cuenta</a>
+                            <a class="nav-link" href="{% url 'Inicio de Anfitrion' %}" style="color: white">Cuenta</a>
                         </li>
                         <li class="nav-item" style="padding-right: 20px;">
-                            <a class="nav-link" href="{% url 'Inicio' %}" style="color: white">Acerca de Nosotros</a>
+                            <a class="nav-link" href="{% url 'Inicio de Anfitrion' %}" style="color: white">Acerca de Nosotros</a>
                         </li>
                         {% if user.is_authenticated %}
                             <li class="nav-item dropdown">
