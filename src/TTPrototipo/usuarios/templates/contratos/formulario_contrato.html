@@ -15,6 +15,18 @@
 
     <h1>Generar Contrato de Arrendamiento</h1>
 
+    {# Formulario para generar un contrato de arrendamiento. Aquí puedes modificar la Ciudad, la Fecha, y el Tipo de #}
+    {# Inmueble al momento de generar el contrato.#}
+    {# #}
+    {# I'm selecting a dropdown menu that has 3 options: "Casa", "departamento", and "habitación". It should work like #}
+    {# this: "if casa, leave the option casa; else if departamento, mark the option as departamento; else, just #}
+    {# leave it as habitacion".#}
+    {##}
+    {#    El tipo de inmueble se tomará de la base de datos del modelo de Vivienda para el contrato seleccionado. Pero,#}
+    {#    para modificar el contrato, se puede cambiar el tipo de inmueble aquí. Así, si seleccionas otro tipo de inmueble,#}
+    {#    al generar el PDF del contrato se modificará el tipo de inmueble. Sin embargo, si no se modifica el tipo #}
+    {#    de inmueble en el modelo de Vivienda para el contrato seleccionado, el tipo de inmueble NO se modificará #}
+    {#    en la base de datos.#}
     <form method="post">
         {% csrf_token %}
         <label for="ciudad">Ciudad:</label>
@@ -23,26 +35,46 @@
         <label for="fecha">Fecha:</label>
         <input type="date" id="fecha" name="fecha" required><br><br>
 
+        <!-- Tipo de Inmueble -->
         <label for="tipo_inmueble">Tipo de Inmueble:</label>
         <select id="tipo_inmueble" name="tipo_inmueble">
-            {% if contrato.vivienda.detalles_inmueble.tipo == "Casa" %}
+            {% if contrato.vivienda.tipo_inmueble == "Casa" %}
                 <option value="Casa" selected>Casa</option>
+                <option value="Departamento">Departamento</option>
+                <option value="Habitación">Habitación</option>
+            {% elif contrato.vivienda.tipo_inmueble == "Departamento" %}
+                <option value="Casa">Casa</option>
+                <option value="Departamento" selected>Departamento</option>
+                <option value="Habitación">Habitación</option>
             {% else %}
                 <option value="Casa">Casa</option>
-            {% endif %}
-
-            {% if contrato.vivienda.detalles_inmueble.tipo == "Departamento" %}
-                <option value="Departamento" selected>Departamento</option>
-            {% else %}
                 <option value="Departamento">Departamento</option>
-            {% endif %}
-
-            {% if contrato.vivienda.detalles_inmueble.tipo == "Habitación" %}
                 <option value="Habitación" selected>Habitación</option>
-            {% else %}
-                <option value="Habitación">Habitación</option>
             {% endif %}
-        </select><br><br>
+        </select><br><br> <!-- Fin del Tipo de Inmueble -->
+
+
+
+        {#        <label for="tipo_inmueble">Tipo de Inmueble:</label>#}
+        {#        <select id="tipo_inmueble" name="tipo_inmueble">#}
+        {#            {% if contrato.vivienda.detalles_inmueble.tipo == "Casa" %}#}
+        {#                <option value="Casa" selected>Casa</option>#}
+        {#            {% else %}#}
+        {#                <option value="Casa">Casa</option>#}
+        {#            {% endif %}#}
+        {##}
+        {#            {% if contrato.vivienda.detalles_inmueble.tipo == "Departamento" %}#}
+        {#                <option value="Departamento" selected>Departamento</option>#}
+        {#            {% else %}#}
+        {#                <option value="Departamento">Departamento</option>#}
+        {#            {% endif %}#}
+        {##}
+        {#            {% if contrato.vivienda.detalles_inmueble.tipo == "Habitación" %}#}
+        {#                <option value="Habitación" selected>Habitación</option>#}
+        {#            {% else %}#}
+        {#                <option value="Habitación">Habitación</option>#}
+        {#            {% endif %}#}
+        {#        </select><br><br>#}
         <button type="submit">Generar Contrato</button>
     </form>
 

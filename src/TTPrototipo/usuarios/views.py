@@ -518,13 +518,17 @@ settings.MEDIA_URL.
 def generar_contrato_pdf(request, contrato_id):
     contrato = get_object_or_404(Contrato, id=contrato_id)
 
+    # Si el usuario Envía el Formulario para Generar el Contrato en PDF
     if request.method == "POST":
         ciudad = request.POST.get("ciudad", "Ciudad de México")  # Valor por defecto
         fecha = request.POST.get("fecha", "")
 
-        # Esto debería resolver el bug que no me deja generar el contrato.
+        # Esto resuelve el bug que no me dejaba generar el contrato.
         # Agarrando el tipo de inmueble del campo "Tipo de Inmueble" del modelo de Vivienda.
-        tipo_inmueble = contrato.vivienda.tipo_inmueble
+        # Cambié de opinion, y el tipo de inmueble lo tomaré del formulario.
+        tipo_inmueble = request.POST.get("tipo_inmueble", "Inmueble")
+
+        # tipo_inmueble = contrato.vivienda.tipo_inmueble
 
         # NO FUNCIONO.
         # detalles_inmueble = ast.literal_eval(contrato.vivienda.detalles_inmueble)
