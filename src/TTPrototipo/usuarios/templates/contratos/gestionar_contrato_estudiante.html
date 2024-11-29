@@ -5,6 +5,24 @@
 </head>
 <body>
     <h1>Gestionar Contrato</h1>
+
+    <!-- Página para Gestionar un Contrato como un Estudiante -->
+
+    <!-- Mensajes Flash de Confirmación y de error -->
+    {% if messages %}
+
+        <!-- Si el mensaje flash es de error, quiero que aparezca rojo, mientras que, si es de confirmación,
+        quiero que aparezca verde.
+        -->
+        <ul class="messages" style="list-style-type:none">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: {% if 'success' in message.tags %}green{% elif 'error' in message.tags %}red{% endif %}">
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     <p><strong>ID del Contrato:</strong> {{ contrato.id }}</p>
     <p><strong>Anfitrión:</strong> {{ contrato.anfitrion.nombre }}</p>
     <p><strong>Estudiante:</strong> {{ contrato.estudiante.nombre }}</p>
