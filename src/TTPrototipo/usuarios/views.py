@@ -137,6 +137,9 @@ PNG, y me guarda la firma dibujada.
 To change the name of the generated image to include the username of the logged user, you can retrieve the username 
 from the request.user object and concatenate it to the filename. I'm retrieving the username of the logged user and 
 I use it to create a new filename for the signature image. The image is then saved with this new filename.
+
+To add an else statement for the if form_firma_dibujada.is_valid() condition, you can use the 
+form_firma_dibujada.errors to get the error messages and pass them to messages.error.
 """
 
 
@@ -154,6 +157,8 @@ def gestionar_contrato(request, contrato_id=None):
     filename = f'signature_{username}.png'
 
     # Caso 1: Sin contrato_id
+    # Esto es principalmente para Estudiantes. Si el estudiante no está asociado a ningún contrato, se le redirige a
+    # una página con una lista de viviendas para que escoja una.
     if contrato_id is None:
         if hasattr(usuario, 'estudiante'):
             estudiante = usuario.estudiante
@@ -184,10 +189,12 @@ def gestionar_contrato(request, contrato_id=None):
             return render(request, 'contratos/listar_contratos_anfitrion.html', {'contratos': contratos})
 
         return HttpResponseForbidden("No tienes permisos para acceder a esta página.")
+    # Fin del Caso 1
 
     # Caso 2: Con contrato_id
     contrato = get_object_or_404(Contrato, id=contrato_id)
 
+    # Si el usuario es un Anfitrión
     if hasattr(usuario, 'anfitrion') and contrato.anfitrion.user == usuario:
         fotos = contrato.fotos_estado.all()
         form = FotoEstadoViviendaForm()
@@ -278,13 +285,25 @@ def gestionar_contrato(request, contrato_id=None):
                     contrato.firma_anfitrion.save(filename, ContentFile(image_content))
 
                     contrato.save()  # Guarda todos los cambios hechos en el modelo de Contrato
+
+                    # # Esto genera la firma creando un Hash. MODIFICAR.
+                    # contrato.firma_anfitrion = contrato.generar_firma(usuario)
+
+                    contrato.save()  # Guarda la firma en el modelo de Contrato
+
+                    # Mensaje de confirmación de que se firmó el contrato
+                    messages.success(request, "Has firmado el contrato.")
+
                     # FIN del snippet que mete una Firma Dibujada en la base de datos usando Django JSignature
 
-            # # Esto genera la firma creando un Hash. MODIFICAR.
-            # contrato.firma_anfitrion = contrato.generar_firma(usuario)
+            # Si la firma está vacía os en inválida, se muestra un mensaje de error
+            else:
+                # Insertar los mensajes de error generados por is_valid() en messages.error
+                for field, errors in form_firma_dibujada.errors.items():
+                    for error in errors:
+                        messages.error(request, f"Error en el campo {field}: {error}")
 
-            contrato.save()  # Guarda la firma en el modelo de Contrato
-            messages.success(request, "Has firmado el contrato.")
+
 
         return render(request, 'contratos/gestionar_contrato_anfitrion.html', {
             'contrato': contrato,
@@ -294,9 +313,14 @@ def gestionar_contrato(request, contrato_id=None):
             # 'form_firma_prueba': form_firma_prueba,
         })
 
+    # Si el usuario es un Estudiante
+    # BOOKMARK
     if hasattr(usuario, 'estudiante') and contrato.estudiante.user == usuario:
         fotos = contrato.fotos_estado.all()
         form = FotoEstadoViviendaForm()
+
+        # Formulario para Dibujar una Firma. Esta es para los Estudiantes.
+        form_firma_dibujada_estudiante = SignatureForm()
 
         if request.method == 'POST' and 'subir_fotos' in request.POST:
             form = FotoEstadoViviendaForm(request.POST, request.FILES)
