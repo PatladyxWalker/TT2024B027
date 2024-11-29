@@ -294,16 +294,13 @@ def gestionar_contrato(request, contrato_id=None):
                     # Mensaje de confirmación de que se firmó el contrato
                     messages.success(request, "Has firmado el contrato.")
 
-                    # FIN del snippet que mete una Firma Dibujada en la base de datos usando Django JSignature
-
             # Si la firma está vacía os en inválida, se muestra un mensaje de error
             else:
                 # Insertar los mensajes de error generados por is_valid() en messages.error
                 for field, errors in form_firma_dibujada.errors.items():
                     for error in errors:
                         messages.error(request, f"Error en el campo {field}: {error}")
-
-
+                        # FIN del snippet que mete una Firma Dibujada en la base de datos usando Django JSignature
 
         return render(request, 'contratos/gestionar_contrato_anfitrion.html', {
             'contrato': contrato,
@@ -333,16 +330,52 @@ def gestionar_contrato(request, contrato_id=None):
             else:
                 messages.error(request, "No se pudo subir la foto. Verifica el formulario.")
 
-        # BOOKMARK
-        # Esto firma el contrato. Lo voy a modificar para que meta una imagen en lugar de un hash.
+        # Si el Estudiante envía el Formulario con el campo de la Firma Dibujada
         if request.method == 'POST' and 'firmar' in request.POST:
+
+            # Necesitas haber subido al menos una foto antes de firmar el contrato
             if not contrato.fotos_estado.exists():
                 messages.error(request, "Debes subir al menos una foto antes de firmar el contrato.")
                 return redirect('gestionar_contrato', contrato_id=contrato.id)
 
-            contrato.firma_estudiante = contrato.generar_firma(usuario)
-            contrato.save()
-            messages.success(request, "Has firmado el contrato.")
+            # Esto firma el contrato. Lo voy a modificar para que meta una imagen en lugar de un hash.
+            # Esto agarra la Firma Dibujada, la convierte en imagen, y la guarda en el modelo de Contrato
+
+            # Detecto si el usuario dibujó la firma usando mi Formulario de Firmas usando Jsignature
+            form_firma_dibujada_estudiante = SignatureForm(request.POST)
+
+            # BOOKMARK
+            # Esto valida la firma dibujada
+            if form_firma_dibujada_estudiante.is_valid():
+
+                # Agarra la firma dibujada del campo que te deja dibujar la firma del formulario
+                signature = form_firma_dibujada_estudiante.cleaned_data.get('signature')
+                if signature:
+                    # Esto convierte la firma dibujada en una imagen como un archivo temporal
+                    signature_file_path = draw_signature(signature, as_file=True)
+
+                    # Abre la imagen de la firma, y luego la lee. Necesito esto antes de poder guardar la imagen.
+                    with open(signature_file_path, 'rb') as f:
+                        image_content = f.read()
+
+                    # contrato.firma_estudiante = contrato.generar_firma(usuario)
+
+                    # Metiendo de manera permanente la imagen de la firma del anfitrión en el modelo de Contrato
+                    contrato.firma_estudiante.save(filename, ContentFile(image_content))
+
+                    contrato.save()  # Guarda todos los cambios hechos en el modelo de Contrato
+
+                    # Mensaje de confirmación de que se firmó el contrato
+                    messages.success(request, "Has firmado el contrato.")
+
+            # Si la firma está vacía o es en inválida, se muestra un mensaje de error
+            else:
+                # Insertar los mensajes de error generados por is_valid() en messages.error
+                for field, errors in form_firma_dibujada_estudiante.errors.items():
+                    for error in errors:
+                        messages.error(request, f"Error en el campo {field}: {error}")
+
+            # FIN del snippet que mete una Firma Dibujada en la base de datos usando Django JSignature
 
         # FIN del snippet que debo modificar par meter la Firma Dibujada del Estudiante
 
