@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 
+# Esto me permite agarrar las variables de entorno del archivo .env (por ejemplo, la del SECRET_KEY)
+from dotenv import load_dotenv
+
+# Esto carga las variables de entorno del archivo .env, y permite que la web app de Django las use
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 MEDIA_URL = '/media/'
@@ -25,11 +31,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# ESTO NO DEBERIA ESTAR AQUI. ESTO SE METE EN UN .env!
-SECRET_KEY = 'django-insecure-6)qlq!i0#36@ds_i)&i1tlgt7e6ac(_lku3u)-s#bnf&4gc(t1'
+# Esto lo metí en el archivo .env, y lo cargo con la librería python-dotenv por motivos de seguridad
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Esto lo metí en el archivo .env, y lo cargo con la librería python-dotenv por motivos de seguridad
+DEBUG = os.environ.get('DEBUG')
 
 ALLOWED_HOSTS = []
 
