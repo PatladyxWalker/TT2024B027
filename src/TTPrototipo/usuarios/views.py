@@ -314,7 +314,6 @@ def gestionar_contrato(request, contrato_id=None):
         })
 
     # Si el usuario es un Estudiante
-    # BOOKMARK
     if hasattr(usuario, 'estudiante') and contrato.estudiante.user == usuario:
         fotos = contrato.fotos_estado.all()
         form = FotoEstadoViviendaForm()
@@ -334,6 +333,8 @@ def gestionar_contrato(request, contrato_id=None):
             else:
                 messages.error(request, "No se pudo subir la foto. Verifica el formulario.")
 
+        # BOOKMARK
+        # Esto firma el contrato. Lo voy a modificar para que meta una imagen en lugar de un hash.
         if request.method == 'POST' and 'firmar' in request.POST:
             if not contrato.fotos_estado.exists():
                 messages.error(request, "Debes subir al menos una foto antes de firmar el contrato.")
@@ -343,10 +344,13 @@ def gestionar_contrato(request, contrato_id=None):
             contrato.save()
             messages.success(request, "Has firmado el contrato.")
 
+        # FIN del snippet que debo modificar par meter la Firma Dibujada del Estudiante
+
         return render(request, 'contratos/gestionar_contrato_estudiante.html', {
             'contrato': contrato,
             'fotos': fotos,
             'form': form,
+            'form_firma_dibujada_estudiante': form_firma_dibujada_estudiante,  # Formulario de para Dibujar una Firma
         })
 
     return HttpResponseForbidden("No tienes permisos para gestionar este contrato.")

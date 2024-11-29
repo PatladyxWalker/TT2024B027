@@ -74,9 +74,14 @@
     {% if contrato.puede_firmarse %}
 
         {#  Esto renderiza el formulario para que el estudiante pueda dibujar una firma usando JSignature   #}
-        {#        {{ form_firma_estudiante.media }}#}
         <form method="post">
             {% csrf_token %}
+
+            {# Es decir, esto crea el Canvas para que el Estudiante pueda dibujar la firma. #}
+            {{ form_firma_dibujada_estudiante.media }}
+            {{ form_firma_dibujada_estudiante }}
+
+            {#  Esto envía la firma con un POST request. Este es el botón de "Submit".   #}
             <button type="submit" name="firmar">Firmar Contrato</button>
         </form>
 
