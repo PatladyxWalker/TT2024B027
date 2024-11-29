@@ -344,7 +344,6 @@ def gestionar_contrato(request, contrato_id=None):
             # Detecto si el usuario dibujó la firma usando mi Formulario de Firmas usando Jsignature
             form_firma_dibujada_estudiante = SignatureForm(request.POST)
 
-            # BOOKMARK
             # Esto valida la firma dibujada
             if form_firma_dibujada_estudiante.is_valid():
 
