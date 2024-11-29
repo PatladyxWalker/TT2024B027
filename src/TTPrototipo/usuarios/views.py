@@ -130,6 +130,10 @@ en la carpeta "firmas/archivos" de la carpeta "media". Se mete en el modelo de S
 
 Ahora, voy a modificar el view de gestionar_contrato del anfitrión para que, cuando cliques en “Firmar”, se envíe es la 
 firma del Jsignature, NO la del hash. Ya no quiero generar el hash.
+
+Ya puedo guardar la firma dibujada del anfitrión correctamente en el campo de la firma del anfitrión como una imagen 
+PNG, y me guarda la firma dibujada.
+
 """
 
 
