@@ -507,8 +507,7 @@ Entonces, los pasos a seguir para arreglar este bug y agarrar el tipo de inmuebl
 4) En el view de generar_contrato_pdf(), agarrare el tipo del inmueble del campo “tipo de inmueble” del modelo de 
 Vivienda.
 
-En ningun momento se estaban agarrando las firmas, fueran en hash, o fueran en imagen. Voy a agarrar las firmas
-como imagenes, y las intentaré meter en el PDF del contrato.
+Voy a agarrar las firmas como imagenes, y las intentaré meter en el PDF del contrato.
 
 The issue is that the firma_anfitrion field is being accessed directly as a URL, but it should be accessed through the 
 settings.MEDIA_URL to generate the correct URL for the image.  Solution: Use settings.MEDIA_URL to generate the correct 
@@ -548,6 +547,9 @@ def generar_contrato_pdf(request, contrato_id):
 
         # firma_anfitrion = contrato.firma_anfitrion.url
 
+        # Esto agarra la Firma del Estudiante como imagen
+        firma_estudiante = request.build_absolute_uri(settings.MEDIA_URL + contrato.firma_estudiante.name)
+
         html_content = render_to_string("contratos/contrato.html", {
             "contrato": contrato,
             "ciudad": ciudad,
@@ -558,6 +560,7 @@ def generar_contrato_pdf(request, contrato_id):
             "nombre_arrendatario": nombre_arrendatario,
             "fotos": fotos_urls,
             "firma_anfitrion": firma_anfitrion,  # Mete la imagen de la firma del anfitrión en el PDF
+            "firma_estudiante": firma_estudiante,  # Mete la imagen de la firma del estudiante en el PDF
         })
 
         pdf = HTML(string=html_content).write_pdf()
