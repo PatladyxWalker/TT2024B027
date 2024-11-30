@@ -1129,8 +1129,23 @@ def InicioAnfitrion(request):
     return render(request, 'inicio/InicioAnfitrion.html')
 
 
+""" Vista de la Página de Inicio para los Estudiantes.
+
+Si no estás autenticado, serás redirigido a la página de inicio de sesión.
+
+Si un anfitrión intenta acceder a esta página, será redirigido a una página de error.
+"""
+
+
 @login_required(login_url='Inicio de Sesion')
 def InicioEstudiante(request):
+
+    # Si el usuario autenticado no es un estudiante, redirigirlo a la página de inicio de sesión
+    if not hasattr(request.user, 'estudiante'):
+        # Mensaje flash de error
+        messages.error(request, "No tienes permiso para acceder a esta página.")
+        return redirect('prohibido')  # Redirige a la página de inicio de sesión
+
     return render(request, 'inicio/InicioEstudiante.html')
 
 
