@@ -32,7 +32,7 @@ te redirigirá a la página de inicio de sesión.
 """
 
 
-@login_required
+@login_required(login_url='Inicio de Sesion')
 def listar_viviendas(request):
     if not hasattr(request.user, 'anfitrion'):
         messages.error(request, "No tienes permiso para acceder a esta página.")
@@ -55,7 +55,7 @@ campos separados en el modelo de Vivienda.
 """
 
 
-@login_required
+@login_required(login_url='Inicio de Sesion')
 def editar_vivienda(request, vivienda_id):
     vivienda = get_object_or_404(Vivienda, id=vivienda_id)
 
@@ -81,7 +81,7 @@ No te sale un mensaje de confirmación antes de borrar la vivienda. Solo se borr
 """
 
 
-@login_required
+@login_required(login_url='Inicio de Sesion')
 def eliminar_vivienda(request, vivienda_id):
     vivienda = get_object_or_404(Vivienda, id=vivienda_id)
 
@@ -143,7 +143,7 @@ form_firma_dibujada.errors to get the error messages and pass them to messages.e
 """
 
 
-@login_required
+@login_required(login_url='Inicio de Sesion')
 def gestionar_contrato(request, contrato_id=None):
     """
     Vista general para gestionar contratos.
@@ -402,7 +402,7 @@ Te redirige a la página principal después de cancelar el contrato.
 """
 
 
-@login_required
+@login_required(login_url='Inicio de Sesion')
 def cancelar_contrato(request, contrato_id):
     contrato = get_object_or_404(Contrato, id=contrato_id)
 
@@ -421,7 +421,7 @@ def cancelar_contrato(request, contrato_id):
         return redirect('gestionar_contrato', contrato_id=contrato.id)
 
 
-@login_required
+@login_required(login_url='Inicio de Sesion')
 def seleccionar_vivienda(request):
     # Asegurarse de que el usuario sea un estudiante
     if not hasattr(request.user, 'estudiante'):
@@ -456,7 +456,7 @@ def seleccionar_vivienda(request):
     return render(request, 'viviendas/seleccionar_vivienda.html', {'viviendas': viviendas})
 
 
-@login_required
+@login_required(login_url='Inicio de Sesion')
 def subir_fotos(request, contrato_id):
     contrato = get_object_or_404(Contrato, id=contrato_id)
     usuario = request.user
@@ -590,7 +590,7 @@ def generar_contrato_pdf(request, contrato_id):
 
 
 # Firmar Contrato
-@login_required
+@login_required(login_url='Inicio de Sesion')
 def firmar_contrato(request, contrato_id):
     contrato = get_object_or_404(Contrato, id=contrato_id)
     usuario = request.user
@@ -693,7 +693,7 @@ me dejaba generar el contrato como PDF.
 """
 
 
-@login_required
+@login_required(login_url='Inicio de Sesion')
 def Registrovivienda(request):
     if request.method == 'POST':
         # Verificar que el usuario esté autenticado y que tenga un perfil de anfitrión
@@ -917,7 +917,7 @@ Voy a validar el formulario por razones de ciberseguridad.
 """
 
 
-@login_required
+@login_required(login_url='Inicio de Sesion')
 def crear_contrato(request):
     # Si el usuario es un estudiante, redirigirlo a la página de inicio de estudiante
     if hasattr(request.user, 'estudiante'):
@@ -998,7 +998,7 @@ for editing the contract.
 """
 
 
-@login_required
+@login_required(login_url='Inicio de Sesion')
 def editar_contrato(request, contrato_id):
     # Esto verifica que el contrato exista, y agarra la instancia del contrato del modelo de Contrato
     contrato = get_object_or_404(Contrato, id=contrato_id)
@@ -1042,7 +1042,7 @@ Esta vista debería ser como una API. No debe renderizar ninguna página cuando 
 """
 
 
-@login_required
+@login_required(login_url='Inicio de Sesion')
 def eliminar_contrato(request, contrato_id):
     contrato = get_object_or_404(Contrato, id=contrato_id)
 
