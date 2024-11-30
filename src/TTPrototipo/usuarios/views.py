@@ -1107,8 +1107,23 @@ def logout_view(request):
     return redirect('Inicio')
 
 
+""" Vista de la Pagina de Inicio para los Anfitriones.
+
+Si no estás autenticado, y si no eres un anfitrión, deberías ser redirigido a la página con el formulario de inicio de 
+sesión.
+"""
+
+
 @login_required
 def InicioAnfitrion(request):
+
+    # Si el usuario autenticado no es un anfitrión, redirigirlo a la página de inicio de sesión
+    if not hasattr(request.user, 'anfitrion'):
+
+        # Mensaje flash de error
+        messages.error(request, "No tienes permiso para acceder a esta página.")
+        return redirect('Inicio de Sesion')   # Redirige a la página de inicio de sesión
+
     return render(request, 'inicio/InicioAnfitrion.html')
 
 
