@@ -1109,12 +1109,16 @@ def logout_view(request):
 
 """ Vista de la Pagina de Inicio para los Anfitriones.
 
-Si no estás autenticado, y si no eres un anfitrión, deberías ser redirigido a la página con el formulario de inicio de 
-sesión.
+Si no estás autenticado, serás redirigido a la página de inicio de sesión.
+
+Si un estudiantes intenta acceder a esta página, se le mostrará un mensaje de error.
+
+This code ensures that unauthenticated users are redirected to the login page if they try to access the InicioAnfitrion 
+page. 
 """
 
 
-@login_required
+@login_required(login_url='Inicio de Sesion')
 def InicioAnfitrion(request):
 
     # Si el usuario autenticado no es un anfitrión, redirigirlo a la página de inicio de sesión
@@ -1127,7 +1131,7 @@ def InicioAnfitrion(request):
     return render(request, 'inicio/InicioAnfitrion.html')
 
 
-@login_required
+@login_required(login_url='Inicio de Sesion')
 def InicioEstudiante(request):
     return render(request, 'inicio/InicioEstudiante.html')
 
