@@ -1120,13 +1120,11 @@ page.
 
 @login_required(login_url='Inicio de Sesion')
 def InicioAnfitrion(request):
-
     # Si el usuario autenticado no es un anfitrión, redirigirlo a la página de inicio de sesión
     if not hasattr(request.user, 'anfitrion'):
-
         # Mensaje flash de error
         messages.error(request, "No tienes permiso para acceder a esta página.")
-        return redirect('Inicio de Sesion')   # Redirige a la página de inicio de sesión
+        return redirect('prohibido')  # Redirige a la página de inicio de sesión
 
     return render(request, 'inicio/InicioAnfitrion.html')
 
@@ -1138,3 +1136,13 @@ def InicioEstudiante(request):
 
 def Inicio(request):
     return render(request, 'inicio/Inicio.html')
+
+
+""" Vista de Página Prohibida.
+
+Esta vista se muestra cuando un usuario intenta acceder a una página para la que no tiene permiso.
+"""
+
+
+def prohibido(request):
+    return render(request, 'prohibido.html')

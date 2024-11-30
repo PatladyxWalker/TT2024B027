@@ -52,6 +52,9 @@ urlpatterns = [
                   # Para Editar una Vivienda
                   path('viviendas/editar/<int:vivienda_id>/', views.editar_vivienda, name='editar_vivienda'),
                   path('viviendas/eliminar/<int:vivienda_id>/', views.eliminar_vivienda, name='eliminar_vivienda'),
+
+                  # Por si el usuario intenta entrar a una página para la cual no tiene permisos
+                  path('prohibido/', views.prohibido, name='prohibido'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
