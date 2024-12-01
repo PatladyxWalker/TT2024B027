@@ -1091,7 +1091,7 @@ def login_view(request):
                 return render(request, 'inicio/InicioSesion.html')
                 # return redirect('login')
         else:
-            messages.error(request, "Nombre de usuario o contraseña incorrectos.")
+            messages.error(request, "Nombre de usuario y/o contraseña incorrectos.")
 
             # Esto redirige al usuario a esta misma página
             return render(request, 'inicio/InicioSesion.html')
