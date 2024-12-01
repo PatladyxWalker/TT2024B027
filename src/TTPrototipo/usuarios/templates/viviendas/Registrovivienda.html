@@ -1,4 +1,4 @@
-{% extends 'layout/layout.html' %}
+{% extends 'layout/layout3.html' %}
 
 {% block title %}Registro de Vivienda{% endblock %}
 
@@ -6,10 +6,32 @@
 {% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/registrov.css' %}">
 <script async src="https://maps.googleapis.com/maps/api/js?key=MYKEY"></script>
+
+{#    Página para Registrar una Vivienda.#}
+{##}
+{#    Cambié la Disposición al Layout 3 porque el Layout 3 tiene un menú de navegación que me permite ir a la #}
+{#    página de inicio de los Anfitriones, y al resto de los enlaces del resto de las páginas a las cuales tiene #}
+{#    acceso los anfitriones.  #}
 <main class="main-container">
     <br>
     <h1>Registra una vivienda</h1>
     <br>
+
+    {#    Mensajes Flash de Confirmación o Error #}
+    {% if messages %}
+
+        <!-- Si el mensaje flash es de error, quiero que aparezca rojo, mientras que, si es de confirmación,
+        quiero que aparezca verde.
+        -->
+        <ul class="messages" style="list-style-type:none">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: {% if 'success' in message.tags %}green{% elif 'error' in message.tags %}red{% endif %}">
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
 
     <!-- Formulario -->
     <form id="registerViviendaForm" action="{% url 'Registro de vivienda' %}" method="post" enctype="multipart/form-data">
