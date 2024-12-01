@@ -1,0 +1,123 @@
+{% extends 'layout/layout3.html' %}
+
+{% block title %}Contratos Asociados{% endblock %}
+
+{% block content %}
+
+    <h1>Contratos Asociados</h1>
+
+    <!-- Aquí imprimiré un mensaje flash de confirmación cuando el anfitrión registre una vivienda. -->
+    {% if messages %}
+
+        <!-- Quiero que el mensaje sea verde, y que no salgan los puntos de las listas. -->
+        <ul class="messages" style="list-style-type:none">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: green">
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <!-- Fin del mensaje flash de confirmación. -->
+
+    <!-- Botón o Enlace para Crear un Nuevo Contrato -->
+    <a href="{% url 'crear_contrato'  %}" class="btn btn-primary mb-3">Crear un Nuevo Contrato</a>
+
+    <!-- Lista de Contratos -->
+    {# Tabla con la Lista de Contratos. #}
+    {##}
+    {# Para meterle la ID del Contrato Seleccionado como parámetro a las URLs de Gestionar Contrato, Editar, Contrato,#}
+    {# y Eliminar Contrato, utilizo la variable contrato.id en el atributo href de los enlaces. El "contrato.id" es la#}
+    {# forma en Jinja y Django para meterle el parámetro del ID del contrato a las URLs de los enlaces al usar #}
+    {# 'url'. #}
+    {#    #}
+    {#    Le metí una clase de Bootstrap a la Tabla para que se vea más bonito y mejor diseñado, y sea más fácil de #}
+    {# diferenciar entre contrato y contrato. #}
+    {#    #}
+    {#    Y decidí separar cada detalle del contrato en títulos o encabezados distintos. Esto hace que la tabla sea más #}
+    {# fácil de entender y esté mejor presentada.#}
+    {#    #}
+    {# Fuente de las clases de Boostrap que usé para la tabla: https://getbootstrap.com/docs/5.0/content/tables/ .#}
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>    <!-- Encabezados o Títulos de la Tabla -->
+                <th>ID del Contrato</th>
+                <th>Vivienda</th>
+                <th>Estudiante</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contrato in contratos %}
+            <tr>
+                <!-- Datos del Contrato -->
+                <td>    <!-- ID del Contrato -->
+                    {{ contrato.id }} <br>
+                </td>
+                <td>    <!-- Vivienda del contrato -->
+                    {{ contrato.vivienda.calle }} <br>
+
+                </td>
+                <td> <!-- Estudiante -->
+                    {{ contrato.estudiante.nombre }} <br>
+                </td>
+                <td>    <!-- Estado del Contrato -->
+                    {% if contrato.firmado %}
+                        Firmado
+                    {% else %}
+                        Pendiente de firma
+                    {% endif %}
+                    {#                    <a href="{% url 'gestionar_contrato' contrato.id %}">Gestionar Contrato</a>#}
+                </td>
+
+                <td>
+                    <!-- Botón para Gestionar el Contrato Seleccionado -->
+                    <a href="{% url 'gestionar_contrato' contrato.id %}" class="btn btn-secondary">
+                        Gestionar Contrato
+                    </a>
+                    <!-- Botón para Editar el Contrato Seleccionado -->
+                    <a href="{% url 'editar_contrato' contrato.id %}" class="btn btn-secondary">
+                        Editar
+                    </a>
+
+                    <!-- Botón para Eliminar el Contrato Seleccionado -->
+                    <a href="{% url 'eliminar_contrato' contrato.id %}" class="btn btn-danger">
+                        Eliminar
+                    </a>
+
+                    {#                    <form action="#" method="POST" style="display:inline;">#}
+                    {#                        {% csrf_token %}#}
+                    {#                        <button type="submit" class="btn btn-danger">Eliminar</button>#}
+                    {#                    </form>#}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+    {#    <ul>#}
+    {#        {% for contrato in contratos %}#}
+    {#            <li>#}
+    {#                Vivienda: {{ contrato.vivienda.calle }} <br>#}
+    {#                Estudiante: {{ contrato.estudiante.nombre }} <br>#}
+    {#                Estado:#}
+    {#                {% if contrato.firmado %}#}
+    {#                    Firmado#}
+    {#                {% else %}#}
+    {#                    Pendiente de firma#}
+    {#                {% endif %}#}
+    {#                <a href="{% url 'gestionar_contrato' contrato.id %}">Gestionar Contrato</a>#}
+    {#            </li>#}
+    {#        {% endfor %}#}
+    {#    </ul>#}
+
+{% endblock %}

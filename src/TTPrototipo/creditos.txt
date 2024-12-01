@@ -1,0 +1,7 @@
+# Créditos
+
+## Uso de Inteligencias Artificiales tipo LLM para la generación de texto
+
+Se usó la inteligencia artificial de Copilot de GitHub para escribir parte del código de este proyecto.
+
+También se uó la inteligencia artificial de Bing de bing.com ("Copilot") para escribir parte del código de este proyecto.

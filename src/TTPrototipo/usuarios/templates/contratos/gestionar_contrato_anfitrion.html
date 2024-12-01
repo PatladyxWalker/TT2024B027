@@ -1,0 +1,141 @@
+{% extends 'layout/layout3.html' %}
+
+{% block title %}Gestionar Contrato (Anfitrión){% endblock %}
+
+{% block content %}
+
+    {#<!DOCTYPE html>#}
+    {#<html>#}
+    {#<head>#}
+    {#    <title>Gestionar Contrato (Anfitrión)</title>#}
+    {#</head>#}
+    {#<body>#}
+
+    {#    Esto me permite usar la biblioteca Signature Pad para dejarme dibujar una firma en la pantalla #}
+    {#    ESTO ES INNECESARIO. LO DESACTIVÉ. BORRAR DESPUÉS.    #}
+    {#    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>#}
+
+    {#    Esto me instala jQuery para poder usar Django JSignature #}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+    <!-- Página para Anfitriones para Editar al Contrato Seleccionado -->
+    <h1>Gestionar Contrato</h1>
+
+    <!-- Mensajes Flash de Confirmación y de error -->
+    {% if messages %}
+
+        <!-- Si el mensaje flash es de error, quiero que aparezca rojo, mientras que, si es de confirmación,
+        quiero que aparezca verde.
+        -->
+        <ul class="messages" style="list-style-type:none">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: {% if 'success' in message.tags %}green{% elif 'error' in message.tags %}red{% endif %}">
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <p><strong>ID del Contrato:</strong> {{ contrato.id }}</p>
+    <p><strong>Estudiante:</strong> {{ contrato.estudiante.nombre }}</p>
+    <p><strong>Vivienda:</strong> {{ contrato.vivienda.calle }}, {{ contrato.vivienda.numero_exterior }}</p>
+    <p><strong>Estado del Contrato:</strong>
+        {% if contrato.firmado %}
+            Firmado por ambas partes.
+        {% else %}
+            Pendiente de firma.
+        {% endif %}
+    </p>
+    <ul>
+        <li>Firma del Estudiante: {% if contrato.firma_estudiante %}✅ Firmada{% else %}❌ Pendiente{% endif %}</li>
+        <li>Firma del Anfitrión: {% if contrato.firma_anfitrion %}✅ Firmada{% else %}❌ Pendiente{% endif %}</li>
+    </ul>
+
+
+    <h2>Fotos del Estado de la Vivienda</h2>
+    {% if fotos %}
+        {% for foto in fotos %}
+        <div>
+            <img src="{{ foto.imagen.url }}" alt="Foto de la vivienda" style="width: 300px; height: auto;">
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No se han subido fotos.</p>
+    {% endif %}
+
+    <h3>Subir Fotos Obligatorias</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="subir_fotos">Subir Foto</button>
+    </form>
+
+    <!-- Sección Firmar el Contrato Seleccionado -->
+    <h3>Firmar Contrato</h3>
+
+    {#    <!-- Prueba para usar el Canvas de Django JSignature para dibujar una Firma -->#}
+    {#    {{ form_firma_prueba.media }}#}
+    {#    <form action="" method="post">#}
+    {#        {{ form_firma_prueba }}#}
+    {#        <input type="submit" value="Save" />#}
+    {#        {% csrf_token %}#}
+    {#    </form>#}
+
+    {% if contrato.puede_firmarse %}
+
+        <!-- Formulario para que el Anfitrión firme. El usuario deberá dibujar la firma -->
+        <form method="post">
+            {% csrf_token %}
+
+            {#  Esto me permite usar la biblioteca Signature Pad para dejarme dibujar una firma en la pantalla #}
+            {# Es decir, esto crea el Canvas para que puedas dibujar la firma. #}
+            {{ form_firma_dibujada.media }}
+            {{ form_firma_dibujada }}
+
+            {#  Canvas para dibujar la Firma del Anfitrión #}
+            {#            <div>#}
+            {#                <canvas id="signature-pad" width="400" height="200" style="border: 1px solid #000;"></canvas>#}
+            {#                <button type="button" id="clear">Clear</button>#}
+            {#            </div>#}
+            {#            <input type="hidden" name="signature" id="signature">#}
+
+            <br>
+
+            <!-- Esto envía la Firma del Anfitrión al back-end -->
+            <button type="submit" name="firmar">Firmar Contrato</button>
+        </form>
+    {% else %}
+        <p>No puedes firmar el contrato hasta que se suban las fotos obligatorias.</p>
+    {% endif %}
+    <!-- Fin de la Sección Firmar el Contrato Seleccionado -->
+
+    <h3>Previsualizar Contrato</h3>
+    <form method="get" action="{% url 'generar_contrato_pdf' contrato.id %}">
+        <button type="submit">Previsualizar Contrato</button>
+    </form>
+
+    {#</body>#}
+    {#</html>#}
+
+{#    <script>#}
+{#        var canvas = document.getElementById('signature-pad');#}
+{#        var signaturePad = new SignaturePad(canvas);#}
+{##}
+{#        document.getElementById('clear').addEventListener('click', function () {#}
+{#            signaturePad.clear();#}
+{#        });#}
+{##}
+{#        document.querySelector('form').addEventListener('submit', function (e) {#}
+{#            if (signaturePad.isEmpty()) {#}
+{#                alert('Please provide a signature first.');#}
+{#                e.preventDefault();#}
+{#            } else {#}
+{#                var dataURL = signaturePad.toDataURL('image/jpeg');#}
+{#                document.getElementById('signature').value = dataURL;#}
+{#            }#}
+{#        });#}
+{#    </script>#}
+
+{% endblock %}

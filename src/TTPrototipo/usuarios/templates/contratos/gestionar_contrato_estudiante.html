@@ -1,14 +1,43 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Gestionar Contrato</title>
-</head>
-<body>
+{% extends 'layout/layout2.html' %}
+
+{% block title %}Gestionar Contrato (Estudiante){% endblock %}
+
+{% block content %}
+
+    {#<!DOCTYPE html>#}
+    {#<html>#}
+    {#<head>#}
+    {#    <title>Gestionar Contrato</title>#}
+    {#</head>#}
+    {#<body>#}
+
+    {#    Esto me instala jQuery para poder usar Django JSignature #}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <h1>Gestionar Contrato</h1>
+
+    <!-- Página para Gestionar el Contrato de un Estudiante -->
+
+    <!-- Mensajes Flash de Confirmación y de error -->
+    {% if messages %}
+
+        <!-- Si el mensaje flash es de error, quiero que aparezca rojo, mientras que, si es de confirmación,
+        quiero que aparezca verde.
+        -->
+        <ul class="messages" style="list-style-type:none">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: {% if 'success' in message.tags %}green{% elif 'error' in message.tags %}red{% endif %}">
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     <p><strong>ID del Contrato:</strong> {{ contrato.id }}</p>
     <p><strong>Anfitrión:</strong> {{ contrato.anfitrion.nombre }}</p>
     <p><strong>Estudiante:</strong> {{ contrato.estudiante.nombre }}</p>
     <p><strong>Vivienda:</strong> {{ contrato.vivienda.calle }}, {{ contrato.vivienda.numero_exterior }}</p>
+
     <p><strong>Estado del Contrato:</strong>
         {% if contrato.firmado %}
             Firmado por ambas partes.
@@ -38,15 +67,29 @@
         <button type="submit" name="subir_fotos">Subir Fotos</button>
     </form>
 
+    <!-- Sección para Firmar el Contrato Seleccionado -->
     <h3>Firmar Contrato</h3>
+
+    {# Si tanto el estudiante como el anfitrión han subido las fotos de la vivienda, puedes firmar el contrato #}
     {% if contrato.puede_firmarse %}
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" name="firmar">Firmar Contrato</button>
-    </form>
+
+        {#  Esto renderiza el formulario para que el estudiante pueda dibujar una firma usando JSignature   #}
+        <form method="post">
+            {% csrf_token %}
+
+            {# Es decir, esto crea el Canvas para que el Estudiante pueda dibujar la firma. #}
+            {{ form_firma_dibujada_estudiante.media }}
+            {{ form_firma_dibujada_estudiante }}
+
+            {#  Esto envía la firma con un POST request. Este es el botón de "Submit".   #}
+            <button type="submit" name="firmar">Firmar Contrato</button>
+        </form>
+
+    {# De lo contrario, imprimiré un mensaje aclarando que no puedes firmar el contrato #}
     {% else %}
-    <p>El contrato no está listo para ser firmado.</p>
+        <p>El contrato no está listo para ser firmado.</p>
     {% endif %}
+    <!-- Fin de la Sección para Firmar el Contrato Seleccionado -->
 
     <h3>Previsualizar Contrato</h3>
     <form method="get" action="{% url 'generar_contrato_pdf' contrato.id %}">
@@ -65,5 +108,7 @@
         <p>No puedes cancelar este contrato porque ya ha sido firmado.</p>
     {% endif %}
 
-</body>
-</html>
+    {#</body>#}
+    {#</html>#}
+
+{% endblock %}

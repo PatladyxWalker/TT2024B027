@@ -13,27 +13,32 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 
+# Esto me permite agarrar las variables de entorno del archivo .env (por ejemplo, la del SECRET_KEY)
+from dotenv import load_dotenv
+
+# Esto carga las variables de entorno del archivo .env, y permite que la web app de Django las use
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6)qlq!i0#36@ds_i)&i1tlgt7e6ac(_lku3u)-s#bnf&4gc(t1'
+# Esto lo metí en el archivo .env, y lo cargo con la librería python-dotenv por motivos de seguridad
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Esto lo metí en el archivo .env, y lo cargo con la librería python-dotenv por motivos de seguridad
+DEBUG = os.environ.get('DEBUG')
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -45,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'usuarios.apps.UsuariosConfig',
+    'jsignature',  # Esto me Permite Firmar Contratos Dibujando en la Pantalla
 ]
 
 MIDDLEWARE = [
@@ -79,7 +85,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'TTPrototipo.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -89,7 +94,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -109,18 +113,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# Quiero que la web app esté en español
+LANGUAGE_CODE = 'es-es'
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
@@ -133,3 +136,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+""" Configuración de JSignatureField
+"""
+JSIGNATURE_WIDTH = 500
+JSIGNATURE_HEIGHT = 200

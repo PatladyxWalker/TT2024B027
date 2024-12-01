@@ -1,0 +1,22 @@
+{% extends 'layout/layout3.html' %}
+
+{% block title %}Registrar Contrato{% endblock %}
+
+{% block content %}
+{% load static %}
+
+    <!-- Página para Crear un Contrato -->
+
+    <h1>Registra un Contrato</h1>
+    <br>
+
+    <!-- Formulario -->
+    <form id="crearContratoForm" action="{% url 'crear_contrato' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar Cambios</button>
+    </form>
+
+
+
+{% endblock %}

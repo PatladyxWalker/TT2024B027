@@ -1,0 +1,64 @@
+{% extends 'layout/layout3.html' %}
+
+{% block title %}Mis Viviendas{% endblock %}
+
+{% block content %}
+
+    <!-- Metí todo excepto las tanlas en un container de Boostrap para agregar más padding horizontal, y así la web
+    esté más presentable.
+
+    -->
+    <div class="container">
+        <h1>Mis Viviendas</h1>
+
+        <a href="{% url 'Registro de vivienda' %}">Registrar Nueva Vivienda</a>
+    </div>  <!-- Fin del container de Boostrap. -->
+
+
+
+    <!-- Aquí imprimiré un mensaje flash de confirmación cuando el anfitrión registre una vivienda. -->
+    {% if messages %}
+
+        <!-- Quiero que el mensaje sea verde, y que no salgan los puntos de las listas. -->
+        <ul class="messages" style="list-style-type:none">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: green">
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <!-- Fin del mensaje flash de confirmación. -->
+
+    <!-- Tabla con la lista de Viviendas. -->
+    <table>
+        <thead>
+            <tr>
+                <th>Calle</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vivienda in viviendas %}
+            <tr>
+                <td>{{ vivienda.calle }}</td>
+                <td>{{ vivienda.precio_renta }} MXN</td>
+                <td>
+                    <a href="{% url 'editar_vivienda' vivienda.id %}">Editar</a>
+
+                    <!-- Botón para Eliminar Vivienda. Te saldrá un mensjae de confirmación si quieres eliminar la
+                    vivienda.
+                    -->
+                    <a href="{% url 'eliminar_vivienda' vivienda.id %}" class="btn btn-danger">Eliminar</a>
+
+                    {#                    <form action="{% url 'eliminar_vivienda' vivienda.id %}" method="POST" style="display:inline;">#}
+                    {#                        {% csrf_token %}#}
+                    {#                        <button type="submit">Eliminar</button>#}
+                    {#                    </form>#}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>    <!-- Fin de la Tabla con la lista de Viviendas. -->
+{% endblock %}

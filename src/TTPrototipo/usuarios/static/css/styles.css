@@ -78,5 +78,81 @@ header{
   background: rgba(255, 255, 255, 0.2);
 }
 
+/* Estilos para crear un menú desplegable al que, si le pasas el mouse encima al nombre de usuario del usuario
+autenticado en la barra de navegación, saldrá el enlace para poder cerrar sesión.
+
+ELIMINÉ la funcionalidad de mostrar u ocultar el boton de Cerrar Sesion al pasar el mouse por encima del nombre de
+usuario. Prefiero que el botón de Cerrar Sesión solo aparezca cuando el usuario haga click en su nombre de usuario.
+*/
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    cursor: pointer;
+    /*text-decoration: underline; !* Add underline to the username *!*/
+
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: black;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    padding: 40px 22px;
+}
+
+/* Esto no hace nada. */
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+/* Comenté esto para quitar la funcionalidad que hace que el menú desplegable se muestre al pasar el mouse por encima
+del nombre de usuario. */
+/*.dropdown:hover .dropdown-content {*/
+/*    display: block;*/
+/*}*/
+
+/* Fin de los estilos para el menú desplegable */
+
+/* Estilos para las Tablas */
+.custom-table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.custom-table th,
+.custom-table td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+/* Fin de los estilos para las Tablas */
+
+/* Estilos para personalizar la barra de Navegación de Boostrap que agregué.
+*/
+/*.custom-navbar {*/
+/*    background-color: rgba(0, 0, 0, 0.6) !important;*/
+/*}*/
+
+/*.custom-navbar .nav-link {*/
+/*    color: white !important;*/
+/*}*/
+
+
+/* Fin de los estilos para la barra de navegación de Bootstrap que agregué */
+
 
 

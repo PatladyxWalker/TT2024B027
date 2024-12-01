@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}{% endblock %}
+        | Trabajo Terminal 2024-B027
+    </title>
+
+    {% load static %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+    <!-- Boostrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+    {#    Este es el Layout / Disposición cuando nadie ha iniciado sesión  #}
+
+    <header class="header">
+        <div id="cabecera">
+            <img src="{% static 'images/escudoESCOM.png' %}" alt="Escudo ESCOM" />
+            <h1>TT 2024-B027 </h1>
+            <img src="{% static 'images/escudoIPN.png' %}" alt="Escudo IPN" />
+        </div>
+
+        {# Navbar de Boostrap.  #}
+        {##}
+        {#  Al menos es Responsive, por lo que se ve mejor en móviles que el navbar que venía por defecto.  #}
+        {##}
+        {#  ELIMINAR DESPUES si no es lo que se quería.  #}
+        {##}
+        {#  Le puse el mismo color que el navbar anterior, y puse el color de las letras de cada opción en blanco.  #}
+        {##}
+        {# Puse un icono de Font Awesome para el toggler de la barra de navegación (cuando se contrae la barra de  #}
+        {#  navegación).#}
+        {##}
+        {# Agregué más padding horizontal entre cada enlace de la barra de navegación para que se vea más espaciado.  #}
+        <nav class="navbar navbar-expand-lg navbar-light"
+             style="background-color: rgba(0, 0, 0, 0.6); border-radius: 10px;"
+        >
+
+            <div class="container-fluid">
+                {#        <a class="navbar-brand" href="{% url 'Inicio' %}">TT 2024-B027</a>#}
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"
+                >
+                    {# Icono de Font Awesome para el toggler de la barra de navegación.#}
+                    <i class="fas fa-bars" style="color: white;"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item" style="padding-right: 20px;">
+                            <a class="nav-link" href="{% url 'Inicio' %}" style="color: white">Inicio</a>
+                        </li>
+                        <li class="nav-item" style="padding-right: 20px;">
+                            <a class="nav-link" href="{% url 'Inicio' %}" style="color: white">
+                                Acerca de Nosotros
+                            </a>
+                        </li>
+                        <li class="nav-item" style="padding-right: 20px;">
+                            <a class="nav-link" href="{% url 'Inicio' %}" style="color: white">
+                                Ayuda
+                            </a>
+                        </li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false" style="color: white"
+                                >
+                                    <b>{{ user.username }}</b>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'logout' %}">
+                                            Cerrar Sesión
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'Inicio de Sesion' %}" style="color: white">
+                                    Iniciar Sesión
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>  <!-- Fin de la barra de navegación de Boostrap. -->
+
+        {#                <!-- Barra de Navegación que vino con el Código Fuente. Lo desactivé porque no es responsive. -->#}
+        {#                <nav class="navegacion">#}
+        {#                    <ul class="paginacion">#}
+        {#                        <li><a href="{% url 'Inicio' %}">Inicio</a></li>#}
+        {#                        <li><a href="{% url 'Inicio' %}">Acerca de nosotros</a></li>#}
+        {#                        <li><a href="{% url 'Inicio' %}">Ayuda</a></li>#}
+        {#                        {% if user.is_authenticated %}#}
+        {#                            <!-- Esto solo saldrá si el usuario está autenticado -->#}
+        {#                            <!-- Nombre de Usuario del Usuario Autenticado -->#}
+        {#                            <li><a href="#">{{ user.username }}</a></li>#}
+        {#                        {% else %}#}
+        {#                            <!-- Enlace para iniciar sesión -->#}
+        {#                            <li><a href="{% url 'Inicio de Sesion' %}">Iniciar Sesión</a></li>#}
+        {#                        {% endif %}#}
+        {#                    </ul>#}
+        {#                </nav>  <!-- Fin de la Barra de Navegación que venía con el código fuente -->#}
+
+
+
+    </header>
+
+    <div id="content">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+
+</body>
+</html>
