@@ -53,6 +53,23 @@ sería el tipo de dato más adecuado para la mayoría de los campos que usaban J
 
 Creé un nuevo campo llamado "tipo de inmueble" para que el usuario pueda seleccionar si es un departamento, casa, etc.
 Esto será usado al generar el PDF con el contrato para evitar un bug que no me dejaba generar el contrato.
+
+Con un edificio, veo difícil que distintos anfitriones no puedan registrar la misma dirección: Si 2 anfitriones venden 
+pisos distintos o habitaciones distintas en el mismo edificio, no podrán hacerlo, ya que les prohibiría que 2 
+anfitriones registren el mismo edificio. Creo que lo ideal sería que también ponga el número de piso o habitación como 
+un nuevo campo al registrar una vivienda.
+
+Pero en fin, para que 2 anfitriones no puedan registrar la misma dirección, tendría poner una restricción en la base de
+datos que diga que la combinación de “Calle”, “Numero Exterior”, y “Codigo Postal” siempre sea unico. Que 2 anfitriones 
+no puedan poner la misma combinación de “Calle”, “Numero Exterior”, y “Codigo Postal”.
+
+Para evitar lo que dije, pondré un nuevo campo llamado “numero de piso o habitacion”, el cual sera opcional (que diga 
+incluso “opcional”). Así, evitaría el bug de que 2 anfitriones no puedan vender distintos pisos en el mismo edificio. 
+
+Entonces, pondría que la combinacion de “Calle”, “Numero Exterior”, “Numero de habitacion o piso” y “Codigo Postal” 
+debe ser único. De lo contrario, mostraré un mensaje de error diciendo “ya otro anfitrión ha registrado esa dirección” 
+con un messages.error.
+
 """
 
 

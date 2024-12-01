@@ -690,6 +690,16 @@ estaban como "Refri" y "Micro", por lo que siempre marcaba esos valores como "Of
 Voy a meter el tipo de inmueble en un nuevo campo del modelo de Vivienda llamado "Tipo de Inmueble", mientras que el
 resto de los detalles del inmueble los dejaré en el campo "Detalles del Inmueble". Esto es apra corregir un bug que no
 me dejaba generar el contrato como PDF.
+
+**Problem 1: Incorrect retrieval of `Anfitrion` instance**
+
+The code is attempting to access an `anfitrion` field on the `User` model, which does not exist. Instead, you need to 
+retrieve the `Anfitrion` instance by checking if the logged-in user is associated with an `Anfitrion` instance through 
+a One-to-One relationship.
+
+**Solution:**
+Use the `get` method on the `Anfitrion` model to retrieve the instance where the `user` field matches the logged-in 
+user.
 """
 
 
@@ -700,9 +710,23 @@ def Registrovivienda(request):
         if not request.user.is_authenticated:
             messages.error(request, "Necesitas iniciar sesión para registrar una vivienda.")
             return redirect('Inicio de Sesion')
+
+        # Esto verifica que el tipo de usuario autenticado sea un Anfitrion
         try:
-            anfitrion = request.user.anfitrion  # Obtiene el anfitrión autenticado
-            print(f"Anfitrion ID asociado al usuario autenticado: {anfitrion.id}")  # Verifica el ID del anfitrión
+            if hasattr(request.user, 'anfitrion'):
+
+                # Obtiene el anfitrión autenticado usando la instancia de User del usuario autenticado
+                anfitrion = get_object_or_404(Anfitrion, user=request.user)
+
+                # # ESTO TIENE UN BUG.
+                # anfitrion = request.user.anfitrion  # Obtiene el anfitrión autenticado
+
+                print(f"Anfitrion ID asociado al usuario autenticado: {anfitrion.id}")  # Verifica el ID del anfitrión
+
+                # # Esto imprime el ID del usuario del anfitrion autenticado
+                # printf(f"Anfitrion ID asociado al usuario autenticado: {request.user.id}")
+
+        # Si el usuario autenticado no tiene un perfil de anfitrión, se muestra un mensaje de error
         except Anfitrion.DoesNotExist:
             messages.error(request, "No tienes un perfil de anfitrión. Por favor, regístrate como anfitrión primero.")
             return redirect('Registro de Usuario')
